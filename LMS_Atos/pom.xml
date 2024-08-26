@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>atos</groupId>
 	<artifactId>LMS_Atos</artifactId>
 	<packaging>war</packaging>
@@ -8,29 +8,29 @@
 	<url>http://www.egovframe.go.kr</url>
 
 	<licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-    
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
 	<properties>
-	    <spring.maven.artifact.version>5.3.20</spring.maven.artifact.version>
+		<spring.maven.artifact.version>5.3.20</spring.maven.artifact.version>
 		<org.egovframe.rte.version>4.1.0</org.egovframe.rte.version>
 	</properties>
 
 	<repositories>
-        <repository>
-            <id>mvn2s</id>
-            <url>https://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
+		<repository>
+			<id>mvn2s</id>
+			<url>https://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>egovframe</id>
 			<url>https://maven.egovframe.go.kr/maven/</url>
 			<releases>
@@ -41,771 +41,809 @@
 			</snapshots>
 		</repository>
 		<repository>
-		    <id>projectRepository</id> 
-		    <name>Project Repository</name> 
-		    <url>file://${project.basedir}/src/main/webapp/WEB-INF/lib</url>
+			<id>projectRepository</id>
+			<name>Project Repository</name>
+			<url>file://${project.basedir}/src/main/webapp/WEB-INF/lib</url>
 		</repository>
-    </repositories>
+	</repositories>
 
 	<dependencies>
-		<!-- 표준프레임워크 실행환경 -->
-        <dependency>
-		    <groupId>org.egovframe.rte</groupId>
-		    <artifactId>org.egovframe.rte.ptl.mvc</artifactId>
-		    <version>${org.egovframe.rte.version}</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<artifactId>commons-logging</artifactId>
-		    		<groupId>commons-logging</groupId>
-		    	</exclusion>
-		    </exclusions>
-        </dependency>
-        <dependency>
-		    <groupId>org.egovframe.rte</groupId>
-		    <artifactId>org.egovframe.rte.psl.dataaccess</artifactId>
-		    <version>${org.egovframe.rte.version}</version>
-        </dependency>
-        <dependency>
-			<groupId>org.egovframe.rte</groupId>
-			<artifactId>org.egovframe.rte.fdl.idgnr</artifactId>
-			<version>${org.egovframe.rte.version}</version>
-		</dependency>
-       	<dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 1. 실행환경 라이브러리 -->
+		<dependency>
+			<!-- 프로퍼티 파일 관리 -->
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>org.egovframe.rte.fdl.property</artifactId>
 			<version>${org.egovframe.rte.version}</version>
 		</dependency>
-
-        <dependency>
+		<dependency>
+			<!-- ID 생성 기능을 제공 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.fdl.idgnr</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- 보안 기능 제공 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.fdl.security</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- 암호화 기능 제공 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.fdl.crypto</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- 접근 제어 기능 제공 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.fdl.access</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- MVC 패턴 구현을 지원 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.ptl.mvc</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- Excel 파일 처리 기능 제공 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.fdl.excel</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- 배치 작업 지원 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.bat.core</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<dependency>
+			<!-- 데이터 접근 모듈, 데이터베이스와의 상호작용을 관리 -->
+			<groupId>org.egovframe.rte</groupId>
+			<artifactId>org.egovframe.rte.psl.dataaccess</artifactId>
+			<version>${org.egovframe.rte.version}</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 2. 데이터베이스 및 로깅 관련 라이브러리 -->
+		<!-- 2.1. 로깅 -->
+		<dependency>
+			<!-- SQL 쿼리 로깅 지원 -->
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 2.2. 데이터베이스 연결 -->
+		<dependency>
+			<!-- 데이터베이스 연결 풀 관리 -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<!-- 2.3. JDBC 드라이버 -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>3.0.4</version>
+		</dependency>
+		<!-- 2.4. 내장형 데이터베이스 -->
+		<dependency>
+			<!-- 테스트나 간단한 애플리케이션에 사용 -->
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<!-- 테스트와 개발 시 자주 사용 -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.212</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 3. 웹 관련 라이브러리 -->
+		<!-- 3.1. Servlet & JSP -->
+		<dependency>
+			<!-- Servlet API 제공 -->
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 			<version>3.1.0</version>
 		</dependency>
 		<dependency>
-            <groupId>javax.servlet.jsp.jstl</groupId>
-            <artifactId>jstl-api</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-		    <groupId>taglibs</groupId>
-		    <artifactId>standard</artifactId>
-		    <version>1.1.2</version>
-        </dependency>
-		<dependency>
-	        <groupId>org.antlr</groupId>
-	        <artifactId>antlr</artifactId>
-	        <version>3.5</version>
-   		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.5.2</version>
-		</dependency>
-        
-        <!-- mysql이나 oracle DB 사용시 아래 설정 추가  
-        <dependency>
-            <groupId>com.googlecode.log4jdbc</groupId>
-            <artifactId>log4jdbc</artifactId>
-            <version>1.2</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
-        <dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-dbcp2</artifactId>
-		    <version>2.9.0</version>
-		</dependency>
-        
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ojdbc</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>14</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc-14.jar</systemPath>
-        </dependency>
-        -->
-
-	<!-- 사이트매쉬-->
-<!-- 	<dependency>
-	    <groupId>opensymphony</groupId>
-	    <artifactId>sitemesh</artifactId>
-	    <version>2.4.2</version>
-	</dependency>-->
-	
-			<!-- 타일즈 관련 라이브러리 
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
-			<version>2.2.2</version>
+			<!-- JSTL 구현 라이브러리 -->
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>jstl-api</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>2.2.2</version>
+			<!-- JSP 표준 태그 라이브러리(JSTL) API 제공 -->
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
 		</dependency>
+		<!-- 3.2. 웹 소켓 -->
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-servlet</artifactId>
-			<version>2.2.2</version>
+			<!-- WebSocket API 제공 -->
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
 		</dependency>
-		-->
+		<!-- 3.3. 크로스 사이트 스크립팅 보호 -->
 		<dependency>
+			<!-- JSP API의 특정 버전 -->
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.3.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 3.4. Apache Tiles 템플릿 -->
+		<dependency>
+			<!-- Apache Tiles는 템플릿의 핵심 기능 -->
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
 			<version>3.0.8</version>
 		</dependency>
 		<dependency>
+			<!-- Apache Tiles는 템플릿의 추가적인 유틸리티 -->
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-extras</artifactId>
 			<version>3.0.8</version>
 		</dependency>
-	
-	
-	<dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.security</artifactId>
-            <version>${org.egovframe.rte.version}</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.excel</artifactId>
-            <version>${org.egovframe.rte.version}</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.bat.core</artifactId>
-            <version>${org.egovframe.rte.version}</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.crypto</artifactId>
-            <version>${org.egovframe.rte.version}</version>
-        </dependency>
-	
-	<dependency>
-			<groupId>org.egovframe.rte</groupId>
-			<artifactId>org.egovframe.rte.fdl.access</artifactId>
-			<version>${org.egovframe.rte.version}</version>
+		<!-- ==================================================================================================== -->
+		<!-- 4. 보안 및 암호화 라이브러리 -->
+		<!-- 4.1. 암호화 -->
+		<dependency>
+			<!-- 텍스트 암호화 및 복호화 기능 제공 -->
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.3</version>
 		</dependency>
-	
-	<dependency>
-            <groupId>com.googlecode.log4jdbc</groupId>
-            <artifactId>log4jdbc</artifactId>
-            <version>1.2</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-dbcp2</artifactId>
-		    <version>2.9.0</version>
+		<dependency>
+			<!-- 동적 프록시 생성을 지원하는 라이브러리 -->
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.3.0</version>
 		</dependency>
-	
-	<dependency>
-            <groupId>org.jasypt</groupId>
-            <artifactId>jasypt</artifactId>
-            <version>1.9.3</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.21</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.12.2</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>2.3.2</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>oro</groupId>
-            <artifactId>oro</artifactId>
-            <version>2.0.8</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.ibm.icu</groupId>
-            <artifactId>icu4j</artifactId>
-            <version>71.1</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
-            <version>3.8.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-email</artifactId>
-            <version>1.5</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>egovframework.com.ems</groupId>
-            <artifactId>sndng-mail</artifactId>
-            <version>1.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.3.3</version>
-            <scope>provided</scope>
-        </dependency>
-	
-	<dependency>
-            <groupId>ldapsdk</groupId>
-            <artifactId>ldapsdk</artifactId>
-            <version>4.1</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.artofsolving</groupId>
-            <artifactId>jodconverter</artifactId>
-            <version>2.2.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-core</artifactId>
-            <version>4.0.7</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>net.sourceforge.ajaxtags</groupId>
-            <artifactId>ajaxtags-resources</artifactId>
-            <version>1.5.7</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.ckeditor</groupId>
-            <artifactId>ckeditor-java-core</artifactId>
-            <version>3.5.3</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-ext</artifactId>
-            <version>1.14</version>
-        </dependency>
-	
-	<dependency>
-		    <groupId>org.springframework.social</groupId>
-		    <artifactId>spring-social-facebook</artifactId>
-		    <version>2.0.3.RELEASE</version>
-		    <exclusions>
-            	<exclusion>
-            		<artifactId>spring-web</artifactId>
-            		<groupId>org.springframework</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>spring-webmvc</artifactId>
-            		<groupId>org.springframework</groupId>
-            	</exclusion>
-            </exclusions>
+		<!-- 4.2. LDAP SDK -->
+		<dependency>
+			<!-- LDAP 서버와의 저수준 통신을 위한 SDK -->
+			<groupId>ldapsdk</groupId>
+			<artifactId>ldapsdk</artifactId>
+			<version>4.1</version>
 		</dependency>
-	
-	<dependency>
-              <groupId>com.github.scribejava</groupId>
-              <artifactId>scribejava-apis</artifactId>
-              <version>8.3.1</version>
-        </dependency>
-	
-	<dependency>
-              <groupId>com.github.scribejava</groupId>
-              <artifactId>scribejava-core</artifactId>
-              <version>8.3.1</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.1.212</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>1.1.4</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.13.3</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.13.3</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>org.springframework.ldap</groupId>
-            <artifactId>spring-ldap-core</artifactId>
-            <version>2.4.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-beans</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-tx</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-	
-	<dependency>  
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
-        </dependency>
-	
-	<dependency>
-		    <groupId>org.mariadb.jdbc</groupId>
-		    <artifactId>mariadb-java-client</artifactId>
-		    <version>3.0.4</version>
+		<dependency>
+			<!-- Spring 프레임워크와 통합된 LDAP 기능을 제공 -->
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+			<version>2.4.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-	
-	<dependency>
-		     <groupId>org.postgresql</groupId>
-		     <artifactId>postgresql</artifactId>
-		     <version>42.3.6</version>
+		<!-- 4.3. HTTP 통신 -->
+		<dependency>
+			<!-- HTTP 프로토콜을 사용하여 서버와 통신할 수 있는 기능을 제공 -->
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-	
-	<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
+		<!-- ==================================================================================================== -->
+		<!-- 5. 파일 처리 및 압축 관련 라이브러리 -->
+		<!-- 5.1. 파일 업로드 -->
+		<dependency>
+			<!-- 파일 업로드 기능 지원 -->
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.5</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-	
-	<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.24</version>
-			<scope>provided</scope>
+		<!-- 5.2. 압축 -->
+		<dependency>
+			<!-- 파일 압축 및 압축 해제 기능 지원 -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.21</version>
 		</dependency>
-	
-	<dependency>
-		    <groupId>com.github.javaparser</groupId>
-		    <artifactId>javaparser-core</artifactId>
-		    <version>3.22.1</version>
+		<!-- 5.3. XML 파싱 -->
+		<dependency>
+			<!-- XML 파싱 기능 제공 -->
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.12.2</version>
+			<exclusions>
+				<exclusion>
+					<!-- javax.xml 충돌대문에 예외 처리 -->
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-	
-	<dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 6. 스케줄링 관련 라이브러리 -->
+		<!-- 6.1. Quartz -->
+		<dependency>
+			<!-- 작업 스케줄링 기능 제공 -->
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.3.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- Quartz의 기본 작업(Job) 제공 -->
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 7. JSON 처리 관련 라이브러리 -->
+		<!-- 7.1. JSON 처리 -->
+		<dependency>
+			<!-- Java API for JSON Processing (JSR 353)의 구현체로, 표준 JSON 처리 기능을 제공 -->
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1.4</version>
+		</dependency>
+		<!-- 7.2. Gson -->
+		<dependency>
+			<!-- Java 객체를 JSON으로 직렬화하거나 JSON을 Java 객체로 역직렬화하는 데 사용 -->
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.9</version>
+		</dependency>
+		<!-- 7.3. Jackson -->
+		<dependency>
+			<!-- Jackson 라이브러리의 핵심 모듈로, JSON 데이터 처리의 기본 기능을 제공 -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+		<dependency>
+			<!-- Jackson에서 사용할 수 있는 다양한 어노테이션을 제공, 직렬화 및 역직렬화 -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+		<dependency>
+			<!-- JSON 데이터와 Java 객체 간의 바인딩을 처리하는 모듈로, JSON을 Java 객체로 변환하거나 반대로 변환하는 
+				기능을 제공 -->
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.3</version>
+		</dependency>
+		<dependency>
+			<!-- Jackson의 이전 버전(1.x)에 해당하는 Mapper 모듈, 최신 버전과의 호환성 문제로 함께 사용하는 것을 피하는 
+				것이 좋습니다.XXXXXXXXXXXXXXXXXXXXXXXX -->
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 8. 기타 유틸리티 및 3rd 파티 라이브러리 -->
+		<!-- 8.1. SMEAPI -->
+		<dependency>
+			<!-- 특정 비즈니스 로직이나 외부 시스템과의 통합을 위한 API 라이브러리 -->
+			<groupId>project</groupId>
+			<artifactId>smeapi</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<!-- 8.2. OmniEnt SDK: 특정 엔터프라이즈 시스템과 통합하기 위한 SDK -->
+		<dependency>
+			<!-- 다양한 서버 및 클라이언트 기능을 제공하여 엔터프라이즈 환경에서의 다양한 시스템 통합을 지원 -->
+			<groupId>project</groupId>
+			<artifactId>OmniEntSDKCore</artifactId>
+			<version>1.0.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>project</groupId>
+			<artifactId>OmniEntSDKServerCore</artifactId>
+			<version>1.0.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>project</groupId>
+			<artifactId>OmniEntSDKVerifier</artifactId>
+			<version>1.0.3.6</version>
+		</dependency>
+		<!-- 8.3. RSLicense SDK: 소프트웨어 라이센스 관리 기능을 제공하는 라이브러리 -->
+		<dependency>
+			<!-- 라이센스의 생성, 검증, 관리를 지원 -->
+			<groupId>project</groupId>
+			<artifactId>RSLicenseSDK</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<!-- 8.4. 유틸리티 -->
+		<dependency>
+			<!-- 파서 생성기 -->
+			<!-- eGov: Validation 에서 사용 antlr.TokenStream -->
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>3.5</version>
+		</dependency>
+		<dependency>
+			<!-- 정규 표현식 관련 기능 제공 -->
+			<!-- eGov: 우편번호를 위한 라이브러리 -->
+			<groupId>oro</groupId>
+			<artifactId>oro</artifactId>
+			<version>2.0.8</version>
+		</dependency>
+		<dependency>
+			<!-- 국제화(i18n) 관련 기능 제공 -->
+			<!-- eGov: 요소기술 달력을 위한 라이브러리 -->
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>71.1</version>
+		</dependency>
+		<!-- 8.5. 이메일 -->
+		<dependency>
+			<!-- 이메일 발송 기능 지원 -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<!-- eGovFramework 이메일 발송 컴포넌트 -->
+			<groupId>egovframework.com.ems</groupId>
+			<artifactId>sndng-mail</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- 8.6. FTP -->
+		<dependency>
+			<!-- FTP 관련 기능 제공 -->
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.8.0</version>
+		</dependency>
+		<!-- 8.7. PDF 변환 -->
+		<dependency>
+			<!-- PDF 변환 기능 지원 -->
+			<groupId>com.artofsolving</groupId>
+			<artifactId>jodconverter</artifactId>
+			<version>2.2.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- 8.8. Ajax -->
+		<dependency>
+			<!-- Ajax 기능 지원 -->
+			<groupId>net.sourceforge.ajaxtags</groupId>
+			<artifactId>ajaxtags-resources</artifactId>
+			<version>1.5.7</version>
+		</dependency>
+		<!-- 8.9. WYSIWYG Editor -->
+		<dependency>
+			<!-- CKEditor 통합 지원 -->
+			<groupId>com.ckeditor</groupId>
+			<artifactId>ckeditor-java-core</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+		<!-- 8.10. XML 파싱 -->
+		<dependency>
+			<!-- 처리 관련 기능 제공 -->
+			<groupId>org.apache.xmlgraphics</groupId>
+			<artifactId>batik-ext</artifactId>
+			<version>1.14</version>
+		</dependency>
+		<!-- 8.11. Guava -->
+		<dependency>
+			<!-- Google에서 제공하는 Java 유틸리티 라이브러리로, 컬렉션, 캐싱, 문자열 처리 등 다양한 기능을 제공 -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>20.0</version>
+		</dependency>
+		<!-- 8.12. Apache Commons Lang3 -->
+		<dependency>
+			<!-- Java에서 기본적으로 제공하지 않는 다양한 유틸리티 기능을 추가로 제공 -> 문자열 처리, 배열 처리, 숫자 변환 
+				등 많은 유용한 메서드를 포함 -->
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 9. 테스트 관련 라이브러리 -->
+		<!-- 9.1. Spring Test -->
+		<dependency>
+			<!-- 스프링 프레임워크를 사용한 테스트를 지원하는 라이브러리, 유닛 테스트와 통합 테스트에 유용 -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.maven.artifact.version}</version>
 			<scope>test</scope>
 		</dependency>
-	
-	<dependency>
+		<!-- 9.2. inject -->
+		<dependency>
+			<!-- Java에서 의존성 주입을 지원하는 표준 API -->
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 			<scope>test</scope>
 		</dependency>
-	
-	<dependency>
+		<!-- 9.3. annotation -->
+		<dependency>
+			<!-- 자바에서 사용되는 표준 애노테이션을 제공 -->
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.3.2</version>
 			<scope>test</scope>
 		</dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.3</version>
-        </dependency>
-	
-	<dependency>
-        	 <groupId>project</groupId>
-        	 <artifactId>altibase</artifactId>
-        	 <version>7.1.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>tibero5</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>cubrid</artifactId>
-            <version>10.2.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>goldilocks8</artifactId>
-            <version>8.0.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>smeapi</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>gpkisecureweb</artifactId>
-            <version>1.0.4.9</version>
-        </dependency>
-	
-	<dependency>
-            <groupId>project</groupId>
-            <artifactId>libgpkiapi</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-	
-	<dependency>
+		<!-- 9.4. JUnit -->
+		<dependency>
+			<!-- 단위 테스트 기능 제공 -->
+			<!-- eGov: https://mvnrepository.com/artifact/junit/junit -->
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 9.5. Lombok -->
+		<dependency>
+			<!-- 보일러플레이트 코드를 줄여주는 유틸리티 -->
+			<!-- eGov: https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 9.6. JavaParser -->
+		<dependency>
+			<!-- 자바 소스 코드 파싱 및 분석 -->
+			<!-- eGov: https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
+			<groupId>com.github.javaparser</groupId>
+			<artifactId>javaparser-core</artifactId>
+			<version>3.22.1</version>
+		</dependency>
+		<!-- ==================================================================================================== -->
+		<!-- 10. 기타 라이브러리 -->
+		<!-- Facebook -->
+		<dependency>
+			<!-- Facebook과의 소셜 통합을 지원하는 라이브러리 -->
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>2.0.3.RELEASE</version>
+			<exclusions>
+				<!-- spring-web과 spring-webmvc의 의존성을 제외 -->
+				<exclusion>
+					<artifactId>spring-web</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-webmvc</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- ScribeJava: OAuth 인증을 지원하는 라이브러리 -->
+		<dependency>
+			<!-- 특정 API(깃허브)에 대한 지원을 제공 -->
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-apis</artifactId>
+			<version>8.3.1</version>
+		</dependency>
+		<dependency>
+			<!-- 기본적인 OAuth 기능을 제공 -->
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-core</artifactId>
+			<version>8.3.1</version>
+		</dependency>
+		<!-- GPKI: 한국 공공 기관에서 사용하는 공인 인증 시스템 -->
+		<dependency>
+			<!-- GPKI 인증서와 관련된 보안 기능을 제공하며, 전자 서명 및 암호화 기능을 구현 -->
+			<groupId>project</groupId>
+			<artifactId>gpkisecureweb</artifactId>
+			<version>1.0.4.9</version>
+		</dependency>
+		<dependency>
+			<!-- GPKI 인증서와 관련된 보안 기능을 제공하며, 전자 서명 및 암호화 기능을 구현 -->
+			<groupId>project</groupId>
+			<artifactId>libgpkiapi</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<!-- OnePass -->
+		<dependency>
+			<!-- 통합 인증 솔루션으로 여러 인증 시스템을 단일 인증 방식으로 통합하여 관리 -->
 			<groupId>project</groupId>
 			<artifactId>onepass</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-	
-	<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKServerCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKVerifier</artifactId>
-			<version>1.0.3.6</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>project</groupId>
-			<artifactId>RSLicenseSDK</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>20.0</version>
-		</dependency>
-	
-	<dependency>
-			<groupId>com.madgag.spongycastle</groupId>
-			<artifactId>pkix</artifactId>
-			<version>1.54.0.0</version>
-		</dependency>
-	
-	<dependency>
+		<!-- Spongycastle 및 BouncyCastle -->
+		<dependency>
+			<!-- Java용 암호화 라이브러리로, 다양한 암호화 알고리즘과 프로토콜을 제공 -->
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.70</version>
 		</dependency>
-	
-	<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.12.0</version>
+		<dependency>
+			<!-- Android 환경에서의 사용을 위해 BouncyCastle의 일부 기능을 제공 -->
+			<groupId>com.madgag.spongycastle</groupId>
+			<artifactId>pkix</artifactId>
+			<version>1.54.0.0</version>
 		</dependency>
+		<!-- ==================================================================================================== -->
 	</dependencies>
 
+	<!-- build: -->
 	<build>
-        <defaultGoal>install</defaultGoal>
-        <directory>${basedir}/target</directory>
-        <finalName>${artifactId}-${version}</finalName>
-        <pluginManagement>
-            <plugins>
+		<!-- install: 프로젝트(Maven) 빌드 후 패키지화된 파일을 로컬 리포지토리에 설치 package: 프로젝트를 패키지(예: 
+			JAR, WAR)로 빌드 clean install: 빌드 디렉토리를 삭제하고 다시 빌드를 수행한 후 결과를 로컬 리포지토리에 설치 -->
+		<defaultGoal>install</defaultGoal>
+		<!-- 빌드 아티팩트를 생성할 디렉터리 위치를 지정 -->
+		<directory>${basedir}/target</directory>
+		<!-- 생성될 최종 빌드 아티팩트(예: JAR, WAR)의 이름을 지정 -->
+		<finalName>${artifactId}-${version}</finalName>
+		<pluginManagement>
+			<plugins>
+				<!-- Cargo Maven Plugin: 컨테이너 관리 및 애플리케이션 배포를 지원 -->
 				<plugin>
 					<groupId>org.codehaus.cargo</groupId>
 					<artifactId>cargo-maven3-plugin</artifactId>
 					<version>1.9.13</version>
 					<configuration>
 						<container>
+							<!-- 사용할 컨테이너를 지정 -->
 							<containerId>tomcat8x</containerId>
+							<!-- 내장형(embedded)으로 설정, Maven 빌드 시 Tomcat 서버를 내장하여 실행 -->
 							<type>embedded</type>
 						</container>
 						<configuration>
-							<properties>
-								<cargo.servlet.port>8080</cargo.servlet.port>
-							</properties>
+							<!-- Tomcat 서버의 포트를 8080으로 설정 -->
+							<property name="cargo.servlet.port" value="8080" />
 						</configuration>
 					</configuration>
 				</plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
-                </plugin>
-                <plugin>
-                	<groupId>org.apache.maven.plugins</groupId>
-                	<artifactId>maven-war-plugin</artifactId>
-                	<version>3.3.2</version>
-                	<configuration>
-                		<failOnMissingWebXml>false</failOnMissingWebXml>
-                	</configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>hibernate3-maven-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <components>
-                            <component>
-                                <name>hbm2ddl</name>
-                                <implementation>annotationconfiguration</implementation>
-                            </component>
-                        </components>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.hsqldb</groupId>
-                            <artifactId>hsqldb</artifactId>
-                            <version>2.5.2</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <!-- EMMA -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>emma-maven-plugin</artifactId>
-                    <version>1.0-alpha-3</version>
-                </plugin>
-                <!-- PMD manven plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.17.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <!-- EMMA -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                    <forkMode>once</forkMode>
-                    <reportFormat>xml</reportFormat>
-                    <excludes>
-                        <exclude>**/Abstract*.java</exclude>
-                        <exclude>**/*Suite.java</exclude>
-                    </excludes>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>emma-maven-plugin</artifactId>
-                <inherited>true</inherited>
-            </plugin>
-            <!-- JavaDoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-        </plugins>
-    </build>
-    <reporting>
-        <outputDirectory>${basedir}/target/site</outputDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.3.0</version>
-                <reportSets>
-                    <reportSet>
-                        <id>sunlink</id>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                        <inherited>true</inherited>
-                        <configuration>
-                            <links>
-                                <link>https://docs.oracle.com/javase/8/docs/api/</link>
-                            </links>
-                        </configuration>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <!-- JUnit Test Results & EMMA Coverage Reporting -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>emma-maven-plugin</artifactId>
-                <inherited>true</inherited>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-                <inherited>true</inherited>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report-only</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <!-- Generating JavaDoc Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <minmemory>128m</minmemory>
-                    <maxmemory>512m</maxmemory>
-                    <encoding>${encoding}</encoding>
-                    <docencoding>${encoding}</docencoding>
-                    <charset>${encoding}</charset>
-                </configuration>
-            </plugin>
-            <!-- Generating Java Source in HTML -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <configuration>
-                    <inputEncoding>${encoding}</inputEncoding>
-                    <outputEncoding>${encoding}</outputEncoding>
-                    <linkJavadoc>true</linkJavadoc>
-                    <javadocDir>apidocs</javadocDir>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
+				<!-- Maven Compiler Plugin: 소스 코드 컴파일을 관리 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.10.1</version>
+					<configuration>
+						<!-- 컴파일할 Java 소스 코드의 버전을 지정 -->
+						<source>11</source>
+						<!-- 생성될 바이트코드의 타겟 JVM 버전을 지정 -->
+						<target>11</target>
+						<!-- 소스 파일의 인코딩 방식을 UTF-8로 설정 -->
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<!-- Maven WAR Plugin: 프로젝트를 WAR(Web Application Archive) 파일로 패키징 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.3.2</version>
+					<configuration>
+						<!-- web.xml이 없을 때 빌드를 실패하게 할지 여부를 설정 -->
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<!-- Hibernate3 Maven Plugin: Hibernate 작업을 지원, 주로 데이터베이스 스키마를 자동으로 생성하거나 
+					업데이트할 때 사용 -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>hibernate3-maven-plugin</artifactId>
+					<version>3.0</version>
+					<executions>
+						<execution>
+							<configuration>
+								<components>
+									<component>
+										<!-- Hibernate의 hbm2ddl 기능을 사용하여 데이터베이스 스키마를 생성 -->
+										<name>hbm2ddl</name>
+										<!-- Hibernate의 Annotation 설정을 사용 -->
+										<implementation>annotationconfiguration</implementation>
+									</component>
+								</components>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<!-- HSQLDB (HyperSQL Database)의 의존성을 추가하여 테스트 목적으로 데이터베이스를 내장형으로 사용 
+							가능 -->
+						<dependency>
+							<groupId>org.hsqldb</groupId>
+							<artifactId>hsqldb</artifactId>
+							<version>2.5.2</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<!-- EMMA Maven Plugin: 코드 커버리지 도구로, 테스트 코드가 얼마나 소스 코드를 실행했는지 분석 -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>emma-maven-plugin</artifactId>
+					<version>1.0-alpha-3</version>
+				</plugin>
+				<!-- PMD Maven Plugin: 코드 품질 검사 도구로, 코드에서 발견될 수 있는 잠재적인 문제를 분석, 정적 코드 
+					분석을 통해 문제를 탐지 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.17.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<!-- 실제로 빌드 프로세스에서 사용되는 플러그인들을 정의, 여기 정의된 플러그인들은 이 프로젝트 빌드에 직접적으로 영향 미침 -->
+		<plugins>
+			<!-- Maven Surefire Plugin: 단위 테스트를 실행하는 데 사용 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<!-- 테스트 스킵 여부: true - 테스트를 실행하지 않음 -->
+					<skipTests>true</skipTests>
+					<!-- 포크 횟수 설정: once - 한 번만 포크하여 모든 테스트를 실행 -->
+					<forkMode>once</forkMode>
+					<!-- 테스트 보고서 형식 -->
+					<reportFormat>xml</reportFormat>
+					<!-- 실행 범위 제외 -->
+					<excludes>
+						<exclude>**/Abstract*.java</exclude>
+						<exclude>**/*Suite.java</exclude>
+					</excludes>
+					<!-- 실행 범위 포함 -->
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<!-- EMMA Maven Plugin: 코드 커버리지 분석을 통해 테스트의 범위를 평가, 이 플러그인은 pluginManagement와 
+				중복으로 정의되어 있지만, pluginManagement의 설정을 상속받아 사용 가능 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<inherited>true</inherited>
+			</plugin>
+			<!-- Maven Javadoc Plugin: 프로젝트의 Java 소스 파일에서 Javadoc을 생성, 코드에 대한 문서를 
+				자동으로 생성 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.4.0</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- reporting: mvn site 명령을 실행할 때만 수행 -->
+	<reporting>
+		<outputDirectory>${basedir}/target/site</outputDirectory>
+		<plugins>
+			<!-- Maven Project Info Reports Plugin: 프로젝트와 관련된 다양한 정보를 보고서 형태로 제공, 
+				프로젝트의 일반적인 정보를 수집하고, 이를 기반으로 문서화 -->
+			<!-- 생성 보고서 1 >> Javadoc: 프로젝트의 Java 소스 코드에서 생성된 Javadoc을 기반으로 API 문서를 
+				생성 -->
+			<!-- 생성 보고서 2 >> 프로젝트 정보 보고서: 라이센스, 의존성, 플러그인, 개발자 정보 등 다양한 프로젝트 관련 보고서를 
+				생성 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.4.0</version>
+				<!-- 보고서의 집합을 정의 -->
+				<reportSets>
+					<reportSet>
+						<id>sunlink</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+						<inherited>true</inherited>
+						<!-- links 태그를 통해 외부 Javadoc 링크를 포함 -->
+						<configuration>
+							<links>
+								<link>https://docs.oracle.com/javase/8/docs/api/</link>
+							</links>
+						</configuration>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<!-- EMMA Maven Plugin: 코드 커버리지 도구로, 테스트 중 실행된 코드의 비율을 분석, 테스트 실행 중 코드의 
+				어느 부분이 실행되었는지 측정하여 커버리지 보고서를 생성 -->
+			<!-- 생성 보고서 1 >> 커버리지 보고서 생성: 프로젝트에서 단위 테스트가 실행된 코드의 커버리지 비율을 보고서 형태로 
+				제공 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<inherited>true</inherited>
+			</plugin>
+			<!-- Surefire Report Maven Plugin: Maven Surefire 플러그인이 생성한 테스트 결과를 기반으로 
+				보고서를 생성 -->
+			<!-- EMMA와 함께 사용하여, 테스트 커버리지 및 결과를 종합적으로 평가 -->
+			<!-- 생성 보고서 1 >> 테스트 결과 보고서: 테스트의 성공/실패, 테스트 실행 시간, 각 테스트 케이스의 결과 등을 요약하여 
+				제공하는 보고서를 생성 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>surefire-report-maven-plugin</artifactId>
+				<inherited>true</inherited>
+				<!-- -->
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report-only</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<!-- Maven Javadoc Plugin: Java 소스 코드에서 Javadoc을 생성하고, 이를 HTML 형식의 문서로 
+				변환 -->
+			<!-- 생성 보고서 1 >> API 문서: Java 소스 코드에 주석으로 작성된 문서를 기반으로 Javadoc을 생성하여 프로젝트의 
+				API 문서를 제공 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- Javadoc 생성 시 사용할 최소 및 최대 메모리 크기를 지정 -->
+					<minmemory>128m</minmemory>
+					<maxmemory>512m</maxmemory>
+					<!-- 소스 코드와 생성될 문서의 인코딩 방식을 지정, 여기서는 UTF-8 -->
+					<encoding>${encoding}</encoding>
+					<docencoding>${encoding}</docencoding>
+					<charset>${encoding}</charset>
+				</configuration>
+			</plugin>
+			<!-- Maven JXR Plugin: Java 소스 코드를 HTML 형식으로 변환 -->
+			<!-- 생성 보고서 1 >> HTML 소스 코드: Java 소스 코드를 HTML로 변환 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<configuration>
+					<!-- 입력과 출력에 사용할 인코딩 방식을 지정, UTF-8 -->
+					<inputEncoding>${encoding}</inputEncoding>
+					<outputEncoding>${encoding}</outputEncoding>
+					<!-- Javadoc 링크를 활성화하여 소스 코드에서 참조 -->
+					<linkJavadoc>true</linkJavadoc>
+					<!-- Javadoc이 생성될 디렉터리를 지정 -->
+					<javadocDir>apidocs</javadocDir>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
