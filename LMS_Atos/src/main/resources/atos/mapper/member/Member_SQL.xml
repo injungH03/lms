@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="statusCode != null and statusCode != ''">
+				AND a.STATUS = #{statusCode}
+			</if>
+			<if test="corpBiz != null and corpBiz != ''">
+				AND a.BIZ_REG_NO = #{corpBiz}
+			</if>
+			
+			<if test="searchCnd == 0">
+					AND a.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			<if test="searchCnd == 1">
+					AND a.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>	
+
+		</trim>
+	</sql>
+	
+	<select id="selectStatusCode" resultType="atos.lms.member.service.MemberMasterVO">
+		SELECT
+			CODE AS statusCode, 
+			NAME AS statusName
+		FROM
+			ATOS_STATUS
+		WHERE CODE IN ('1001', '1002', '1003', '1004')
+	</select>
+	
+	<select id="selectCompany" resultType="atos.lms.member.service.MemberMasterVO">
+		SELECT
+			BIZ_REG_NO AS corpBiz,
+			CORP_NAME AS corpName
+		FROM
+			ATOS_COMPANY
+	</select>
+
+	<select id="selectMemberList" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberVO">
+		SELECT
+			a.ID, a.NAME, a.PHONE_NO, a.BIZ_REG_NO, a.STATUS, c.CORP_NAME, b.NAME as statusName
+		FROM
+			ATOS_STUDENT a
+		LEFT JOIN ATOS_STATUS b
+			ON a.STATUS = b.CODE
+		LEFT JOIN
+			ATOS_COMPANY c
+		ON a.BIZ_REG_NO = c.BIZ_REG_NO	
+		<include refid="whereClause" />				
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>	
+	
+	<select id="selectMemberListCnt" parameterType="atos.lms.member.service.MemberVO" resultType="java.lang.Integer">
+		SELECT
+			COUNT(ID)
+		FROM
+			ATOS_STUDENT a
+		<include refid="whereClause" />
+	</select>
+	
+	
+</mapper>

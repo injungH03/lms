@@ -14,11 +14,7 @@
 
 <script>
 
-function fn_egov_select_linkPage(pageNo){
-	document.board.pageIndex.value = pageNo;
-	document.board.action = "<c:url value='/test/boardList.do'/>";
-   	document.board.submit();
-}
+
 
 function fn_egov_init(){
 	

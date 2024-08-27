@@ -4,6 +4,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<script>
+function fn_egov_select_linkPage(pageNo){
+	document.boardForm.pageIndex.value = pageNo;
+	document.boardForm.action = "<c:url value='/test/boardList.do'/>";
+   	document.boardForm.submit();
+}
+</script>
 <div class="board">
     <form name="boardForm" action="<c:url value='/test/boardList.do'/>" method="post" onSubmit="fn_egov_search_article(); return false;">
         <h1>게시판 목록</h1>

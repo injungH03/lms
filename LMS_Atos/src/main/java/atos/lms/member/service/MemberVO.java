@@ -3,7 +3,7 @@ package atos.lms.member.service;
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
-public class StudentVO implements GeneralModel {
+public class MemberVO extends MemberMasterVO implements GeneralModel {
 	
 	private String id;
 	private String password;
