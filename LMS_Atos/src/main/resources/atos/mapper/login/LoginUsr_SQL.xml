@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoginUsr_">
+	<!-- 로그인 처리를 위한 resultMap -->
+	<resultMap id="atos_login" type="egovframework.com.cmm.LoginVO">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+		<result property="email" column="email" />
+		<result property="userSe" column="userSe" />
+	</resultMap>
+
+	<!-- 아이디 찾기를 위한 resultMap -->
+	<resultMap id="atos_id" type="egovframework.com.cmm.LoginVO">
+		<result property="id" column="id" />
+	</resultMap>
+
+	<!-- 비밀번호 처리를 위한 resultMap -->
+	<resultMap id="atos_password" type="egovframework.com.cmm.LoginVO">
+		<result property="password" column="password" />
+	</resultMap>
+
+	<!-- 일반 로그인 -->
+	<select id="actionLogin" resultMap="atos_login">
+		<!-- 교육생 -->
+		<if test="userSe != null and userSe == 'STU'">
+			SELECT ID AS id
+			     , NAME AS name
+			     , PASSWORD AS password
+			     , EMAIL AS email
+			     , 'STU' AS userSe
+			  FROM ATOS_STUDENT
+			 WHERE ID = #{id}
+			   AND PASSWORD = #{password}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 강사 -->
+		<if test="userSe != null and userSe == 'INS'">
+			SELECT ID AS id
+			     , NAME AS name
+			     , PASSWORD AS password
+			     , EMAIL AS email
+			     , 'INS' AS userSe
+			  FROM ATOS_INSTRUCTOR
+			 WHERE ID = #{id}
+			   AND PASSWORD = #{password}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 관리자 -->
+		<if test="userSe != null and userSe == 'ADM'">
+			SELECT ID AS id
+			     , NAME AS name
+			     , PASSWORD AS password
+			     , EMAIL AS email
+			     , 'ADM' AS userSe
+			  FROM ATOS_ADMIN
+			 WHERE ID = #{id}
+			   AND PASSWORD = #{password}
+			   AND STATUS = '1002'
+		</if>
+	</select>
+
+	<!-- 아이디 찾기 -->
+	<select id="searchId" resultMap="atos_id">
+		<!-- 수강생 -->
+		<if test="userSe != null and userSe == 'STU'">
+			SELECT ID AS id
+			  FROM ATOS_STUDENT
+			 WHERE NAME = #{name}
+			   AND EMAIL = #{email}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 강사 -->
+		<if test="userSe != null and userSe == 'INS'">
+			SELECT ID AS id
+			  FROM ATOS_INSTRUCTOR
+			 WHERE NAME = #{name}
+			   AND EMAIL = #{email}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 관리자 -->
+		<if test="userSe != null and userSe == 'ADM'">
+			SELECT ID AS id
+			FROM ATOS_ADMIN
+			WHERE NAME = #{name}
+			AND STATUS = '1002'
+		</if>
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<select id="searchPassword" resultMap="atos_password">
+		<!-- 수강생 -->
+		<if test="userSe != null and userSe == 'STU'">
+			SELECT PASSWORD AS password
+			  FROM ATOS_STUDENT
+			 WHERE ID = #{id}
+			   AND NAME = #{name}
+			   AND EMAIL = #{email}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 강사 -->
+		<if test="userSe != null and userSe == 'INS'">
+			SELECT PASSWORD AS password
+			  FROM ATOS_INSTRUCTOR
+			 WHERE ID = #{id}
+			   AND NAME = #{name}
+			   AND EMAIL = #{email}
+			   AND STATUS = '1002'
+		</if>
+		<!-- 관리자 -->
+		<if test="userSe != null and userSe == 'ADM'">
+			SELECT PASSWORD AS password
+			  FROM ATOS_ADMIN
+			 WHERE ID = #{id}
+			   AND NAME = #{name}
+			   AND EMAIL = #{email}
+			   AND STATUS = '1002'
+		</if>
+	</select>
+
+	<!-- 변경된 비밀번호를 저장 -->
+	<update id="updatePassword">
+		<!-- 수강생 -->
+		<if test="userSe != null and userSe == 'STU'">
+			UPDATE ATOS_STUDENT
+			   SET PASSWORD = #{password}
+			WHERE ID = #{id}
+
+		</if>
+		<!-- 강사 -->
+		<if test="userSe != null and userSe == 'INS'">
+			UPDATE ATOS_INSTRUCTOR
+			   SET PASSWORD = #{password}
+			WHERE ID = #{id}
+		</if>
+		<!-- 관리자 -->
+		<if test="userSe != null and userSe == 'ADM'">
+			UPDATE ATOS_ADMIN
+			   SET PASSWORD = #{password}
+			WHERE ID = #{id}
+		</if>
+	</update>
+
+</mapper>
