@@ -33,7 +33,7 @@
 			  FROM ATOS_STUDENT
 			 WHERE ID = #{id}
 			   AND PASSWORD = #{password}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 강사 -->
 		<if test="userSe != null and userSe == 'INS'">
@@ -45,7 +45,7 @@
 			  FROM ATOS_INSTRUCTOR
 			 WHERE ID = #{id}
 			   AND PASSWORD = #{password}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
@@ -57,7 +57,7 @@
 			  FROM ATOS_ADMIN
 			 WHERE ID = #{id}
 			   AND PASSWORD = #{password}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 	</select>
 
@@ -69,7 +69,7 @@
 			  FROM ATOS_STUDENT
 			 WHERE NAME = #{name}
 			   AND EMAIL = #{email}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 강사 -->
 		<if test="userSe != null and userSe == 'INS'">
@@ -77,14 +77,14 @@
 			  FROM ATOS_INSTRUCTOR
 			 WHERE NAME = #{name}
 			   AND EMAIL = #{email}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
 			SELECT ID AS id
 			FROM ATOS_ADMIN
 			WHERE NAME = #{name}
-			AND STATUS = '0001'
+			AND STATUS = '1002'
 		</if>
 	</select>
 
@@ -97,7 +97,7 @@
 			 WHERE ID = #{id}
 			   AND NAME = #{name}
 			   AND EMAIL = #{email}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 강사 -->
 		<if test="userSe != null and userSe == 'INS'">
@@ -106,7 +106,7 @@
 			 WHERE ID = #{id}
 			   AND NAME = #{name}
 			   AND EMAIL = #{email}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
@@ -115,7 +115,7 @@
 			 WHERE ID = #{id}
 			   AND NAME = #{name}
 			   AND EMAIL = #{email}
-			   AND STATUS = '0001'
+			   AND STATUS = '1002'
 		</if>
 	</select>
 

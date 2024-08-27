@@ -17,6 +17,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.utl.sim.service.EgovClntInfo;
 
 @Controller
 public class LoginController {
@@ -43,10 +44,11 @@ public class LoginController {
 	 * @return 로그인 페이지
 	 * @exception Exception
 	 */
-	@IncludedInfo(name = "로그인2", listUrl = "/login/LoginUser.do", order =9, gid = 10)
+	@IncludedInfo(name = "로그인2", listUrl = "/login/LoginUser.do", order = 9, gid = 10)
 	@RequestMapping(value = "/login/LoginUser.do")
 	public String loginUsrView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request,
 			HttpServletResponse response, ModelMap model) throws Exception {
+
 		if (EgovComponentChecker.hasComponent("mberManageService")) {
 			model.addAttribute("useMemberManage", "true");
 		}
@@ -64,4 +66,39 @@ public class LoginController {
 
 		return "login/LoginUser";
 	}
+	
+	/**
+	 * 일반(세션) 로그인을 처리한다
+	 * @param vo - 아이디, 비밀번호가 담긴 LoginVO
+	 * @param request - 세션처리를 위한 HttpServletRequest
+	 * @return result - 로그인결과(세션정보)
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/login/actionLogin.do")
+	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model) throws Exception {
+		
+		// 2. 로그인 처리
+		LoginVO resultVO = loginService.actionLogin(loginVO);
+		String userIp = EgovClntInfo.getClntIP(request);
+
+		resultVO.setIp(userIp);
+
+		// 3. 일반 로그인 처리
+		// 2022.11.11 시큐어코딩 처리
+		if (resultVO.getId() != null && !resultVO.getId().equals("")) {
+
+			// 3-1. 로그인 정보를 세션에 저장
+			request.getSession().setAttribute("loginVO", resultVO);
+			// 2019.10.01 로그인 인증세션 추가
+			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
+
+			return "redirect:/test/boardList.do";
+
+		} else {
+
+			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+			return "redirect:/login/LoginUser.do";
+		}
+	}
+	
 }

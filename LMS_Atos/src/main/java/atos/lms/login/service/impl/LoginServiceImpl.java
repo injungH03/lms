@@ -35,6 +35,7 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
 
 		// 1. 입력한 비밀번호를 암호화한다.
 		String enpassword = EgovFileScrty.encryptPassword(vo.getPassword(), vo.getId());
+
 		vo.setPassword(enpassword);
 
 		// 2. 아이디와 암호화된 비밀번호가 DB와 일치하는지 확인한다.

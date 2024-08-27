@@ -127,7 +127,7 @@
 			// 비밀번호를 입력하세요.
 			alert("<spring:message code="comUatUia.validate.passCheck" />");
 		} else {
-			document.loginForm.action = "<c:url value='/uat/uia/actionLogin.do'/>";
+			document.loginForm.action = "<c:url value='/login/actionLogin.do'/>";
 			document.loginForm.submit();
 		}
 	}
@@ -173,7 +173,7 @@
 
 	<!-- 로그인 -->
 	<div class="login_form">
-		<form name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
+		<form name="loginForm" id="loginForm" action="<c:url value='/login/actionLogin.do'/>" method="post">
 			<!-- hidden input tag -->
 			<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>"> <input name="userSe" type="hidden" value="GNR" /> <input name="j_username" type="hidden" />
 			<!--  -->
