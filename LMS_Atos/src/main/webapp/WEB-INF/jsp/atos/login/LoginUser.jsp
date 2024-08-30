@@ -9,12 +9,12 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="login.title" /></title>
-
+<!--  -->
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/uat/uia/login.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
-
+<!--  -->
 <script type="text/javaScript">
 	// ----------------------------------------------------------------------------------------------------
 	// 유틸리티 함수: 공통적으로 사용되는 작은 기능을 제공하는 함수
