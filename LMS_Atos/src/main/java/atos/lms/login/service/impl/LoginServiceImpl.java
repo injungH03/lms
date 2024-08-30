@@ -116,7 +116,7 @@ public class LoginServiceImpl extends EgovAbstractServiceImpl implements LoginSe
 		SndngMailVO sndngMailVO = new SndngMailVO();
 		sndngMailVO.setDsptchPerson("webmaster");
 		sndngMailVO.setRecptnPerson(vo.getEmail());
-		sndngMailVO.setSj("[MOIS] 임시 비밀번호를 발송했습니다.");
+		sndngMailVO.setSj("[ATOS] 임시 비밀번호를 발송했습니다.");
 		sndngMailVO.setEmailCn("고객님의 임시 비밀번호는 " + newpassword + " 입니다.");
 		sndngMailVO.setAtchFileId("");
 
