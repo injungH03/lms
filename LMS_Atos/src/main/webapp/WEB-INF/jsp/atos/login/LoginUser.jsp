@@ -74,11 +74,13 @@
 	    	alert("loginMessage:<c:out value='${loginMessage}'/>");
 	    </c:if>
 	    
-	    // 상위 프레인이 없는 경우 콘솔에 로그
-	    if (parent.frames["_top"] == undefined)
-	    	console.log("'_top' frame is not exist!");
-	    // 최상위 프레임 페이지 다시 로드
-	    parent.frames["_top"].location.reload();
+		// 상위 프레임이 없는 경우 콘솔에 로그를 남김
+	    if (typeof parent.frames["_top"] !== 'undefined' && parent.frames["_top"] !== null) {
+	        // 최상위 프레임 페이지 다시 로드
+	        parent.frames["_top"].location.reload();
+	    } else {
+	        console.log("'_top' frame does not exist!");
+	    }
 	}
 
 	// ----------------------------------------------------------------------------------------------------
@@ -178,7 +180,7 @@
 		var userSe = document.loginForm.userSe.value;
 		if (userSe == "STU") {
 			// 수강생 회원가입 페이지로 이동
-			document.loginForm.action = "<c:url value='/uss/umt/EgovStplatCnfirmMber.do'/>";
+			document.loginForm.action = "<c:url value='/**/*.do'/>";
 			document.loginForm.submit();
 		} else if (userSe == "INS") {
 			// 강사 회원가입 불필요 메시지 표시
@@ -195,8 +197,8 @@
 	 * 아이디/비밀번호 찾기 페이지로 리다이렉트합니다.
 	 */
 	function goFindId() {
-		document.defaultForm.action = "<c:url value='/uat/uia/egovIdPasswordSearch.do'/>";
-		document.defaultForm.submit();
+		document.loginForm.action = "<c:url value='/login/IdPasswordSearch.do'/>";
+		document.loginForm.submit();
 	}
 </script>
 </head>
@@ -267,7 +269,7 @@
 
 						<!-- 로그인 버튼: input을 button으로 바꾸고 싶었지만 안됨. -->
 						<li>
-							<input type="button" class="btn_login" value="<spring:message code="login.loginForm.login"/>" onclick="actionLogin()">
+							<input type="button" class="btn_login" value="<spring:message code='login.loginForm.login'/>" onclick="actionLogin()">
 						</li>
 
 						<!-- 회원가입 및 아이디/비밀번호 찾기 -->
