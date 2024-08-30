@@ -200,7 +200,7 @@ public class LoginController {
 		} else {
 			// 결과가 없는 경우 실패 메시지를 모델에 추가하고 결과 페이지로 이동
 			model.addAttribute("resultInfo", egovMessageSource.getMessage("fail.common.idsearch"));
-			return "atos/log/IdPasswordResult";
+			return "atos/login/IdPasswordResult";
 		}
 	}
 
@@ -214,7 +214,6 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/login/searchPassword.do")
 	public String searchPassword(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
-
 		// 입력 값이 유효하지 않은 경우 에러 페이지로 이동
 		if (loginVO == null || (loginVO.getId() == null || loginVO.getId().equals("")) && (loginVO.getName() == null || "".equals(loginVO.getName())) && (loginVO.getEmail() == null || loginVO.getEmail().equals("")) && (loginVO.getPasswordHint() == null || "".equals(loginVO.getPasswordHint())) && (loginVO.getPasswordCnsr() == null || "".equals(loginVO.getPasswordCnsr())) && (loginVO.getUserSe() == null || "".equals(loginVO.getUserSe()))) {
 			return "egovframework/com/cmm/egovError";
