@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
@@ -13,9 +11,9 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/uat/uia/idpw.css' />">
 <!--  -->
 <script type="text/javascript">
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	//사용자 유형 선택 함수: 아이디 및 비밀번호 찾기 페이지에서 사용자 유형을 선택하는 함수
-	//----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 
 	/* fnCheckUsrId(userSe)
 	 * - userSe: 선택된 사용자 유형 (문자열)
@@ -115,7 +113,7 @@
 	<div class="idpw_form">
 		<!-- 아이디 찾기 -->
 		<fieldset class="id_search">
-			<form name="idForm" action="<c:url value='/losgin/searchId.do'/>" method="post">
+			<form name="idForm" action="<c:url value='/login/searchId.do'/>" method="post">
 				<legend>
 					<spring:message code="login.idPw.searchId" />
 				</legend>
