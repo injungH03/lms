@@ -28,6 +28,7 @@
 				<value>classpath:/org/egovframe/rte/fdl/idgnr/messages/idgnr</value>
 				<value>classpath:/org/egovframe/rte/fdl/property/messages/properties</value>
 				<value>classpath:/egovframework/egovProps/globals</value>
+				<value>classpath*:atos/message/**/*</value>
 			</list>
 		</property>
 		 
