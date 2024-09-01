@@ -1,5 +1,7 @@
 package atos.lms.member.service;
 
+import java.util.List;
+
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
@@ -50,7 +52,11 @@ public class MemberMasterVO implements GeneralModel {
     /** 첨부가능파일사이즈 */
     private String atchPosblFileSize = "";
     
+    /** id리스트 */
+    private List<String> idlist;
     
+    /** 상태변경 */
+    private String status;
 	
     public int getAtchPosblFileNumber() {
 		return atchPosblFileNumber;
@@ -142,6 +148,18 @@ public class MemberMasterVO implements GeneralModel {
 	}
 	public void setCorpBiz(String corpBiz) {
 		this.corpBiz = corpBiz;
+	}
+	public List<String> getIdlist() {
+		return idlist;
+	}
+	public void setIdlist(List<String> idlist) {
+		this.idlist = idlist;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

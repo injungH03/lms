@@ -62,5 +62,13 @@
 		<include refid="whereClause" />
 	</select>
 	
+	<update id="updateStatus">
+		UPDATE ATOS_STUDENT
+		SET STATUS = #{status}
+		WHERE ID IN
+		<foreach item="id" collection="idlist" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
 	
 </mapper>

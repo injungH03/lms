@@ -70,7 +70,7 @@ function fn_egov_select_linkPage(pageNo){
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
 	        <button class="s_submit">EXCEL</button>
 	        <button class="s_submit">일괄등록</button>
-	        <button class="s_submit">등록</button>
+	        <button class="s_submit" id="regist">등록</button>
 	    </div>
     </div>
 
@@ -123,17 +123,19 @@ function fn_egov_select_linkPage(pageNo){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modalContent">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="statusRadio" id="status1" value="상태1" checked>
-            <label class="form-check-label" for="status1">상태1</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="statusRadio" id="status2" value="상태2">
-            <label class="form-check-label" for="status2">상태2</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="statusRadio" id="status3" value="상태3">
-            <label class="form-check-label" for="status3">상태3</label>
+        <div class="d-flex justify-content-around">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="statusRadio" id="status1" value="1002" checked>
+                <label class="form-check-label" for="status1">정상</label>
+            </div>
+            <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="statusRadio" id="status2" value="1004">
+                <label class="form-check-label" for="status2">정지</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="statusRadio" id="status3" value="1003">
+                <label class="form-check-label" for="status3">휴면</label>
+            </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -146,6 +148,12 @@ function fn_egov_select_linkPage(pageNo){
 
 <script>
 $(document).ready(function() {
+	
+	//등록 이동
+	$('#regist').on('click', function() {
+		window.location.href = "<c:url value='/member/memberRegistView.do'/>";
+	});
+	
     // 전체 선택/해제 기능
     $('#checkAll').on('click', function() {
         $('tbody input[name="rowCheck"]').prop('checked', this.checked);
@@ -181,19 +189,15 @@ $(document).ready(function() {
         if (selectedIds.length > 0) {
             // AJAX 요청으로 서버에 상태 변경 요청
             $.ajax({
-                url: '/updateStatus', // 서버에서 상태를 업데이트하는 엔드포인트
+                url: '/member/updateStatus', // 서버에서 상태를 업데이트하는 엔드포인트
                 method: 'POST',
                 data: {
                     ids: selectedIds.join(','), // 배열을 문자열로 변환하여 전송
                     status: selectedStatus
                 },
                 success: function(response) {
-                    // 성공적으로 업데이트된 경우 페이지 새로고침
-                    if (response.success) {
-                        location.reload(); // 페이지 새로고침하여 업데이트된 상태를 반영
-                    } else {
-                        alert('상태 변경에 실패했습니다.');
-                    }
+                	alert(response);
+                    location.reload(); // 페이지 새로고침하여 업데이트된 상태를 반영
                 },
                 error: function() {
                     alert('서버와의 통신에 실패했습니다.');

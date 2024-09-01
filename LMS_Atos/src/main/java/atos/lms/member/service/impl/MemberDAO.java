@@ -27,5 +27,8 @@ public class MemberDAO extends EgovComAbstractDAO {
 		return selectList("member.selectCompany");
 	}
 	
+	public void updateStatus(MemberMasterVO memberMasterVO) {
+		update("member.updateStatus", memberMasterVO);
+	}
 
 }

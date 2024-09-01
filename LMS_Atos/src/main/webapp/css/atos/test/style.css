@@ -320,3 +320,19 @@ body {
     color: red;
     font-weight: bold;
 }
+
+#loadingContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* 어두운 배경을 만듭니다. */
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#loadingIndicator {
+    display: inline-block;
+}

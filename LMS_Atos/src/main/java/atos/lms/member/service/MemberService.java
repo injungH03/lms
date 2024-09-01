@@ -10,5 +10,9 @@ public interface MemberService {
 	List<MemberMasterVO> selectStatusCode();
 	
 	List<MemberMasterVO> selectCompany();
+	
+	void updateStatus(String ids, String status);
+	
+	
 
 }

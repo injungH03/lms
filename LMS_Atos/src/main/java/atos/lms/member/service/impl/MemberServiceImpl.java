@@ -1,5 +1,6 @@
 package atos.lms.member.service.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,15 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	@Override
 	public List<MemberMasterVO> selectCompany() {
 		return memberDao.selectCompany();
+	}
+
+	@Override
+	public void updateStatus(String ids, String status) {
+		MemberMasterVO memberMasterVO = new MemberMasterVO();
+		memberMasterVO.setIdlist(Arrays.asList(ids.split(",")));
+		memberMasterVO.setStatus(status);
+		
+		memberDao.updateStatus(memberMasterVO);
 	}
 
 

@@ -8,10 +8,13 @@ import javax.annotation.Resource;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.member.service.MemberMasterVO;
 import atos.lms.member.service.MemberService;
@@ -57,6 +60,37 @@ public class MemberController {
     	model.addAttribute("company", company);
     	
     	return "member/memberList";
+    }
+    
+    @RequestMapping("/member/memberRegistView.do")
+    public String memberRegistView(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
+    	
+    	List<MemberMasterVO> company = memberService.selectCompany();
+    	model.addAttribute("company", company);
+    	
+    	return "member/memberRegist";
+    }
+    
+    
+    @RequestMapping("/member/updateStatus")
+    @ResponseBody
+    public ResponseEntity<String> updateStatus(
+    		@RequestParam("ids") String ids,
+            @RequestParam("status") String status) throws Exception {
+    	
+    	memberService.updateStatus(ids, status);
+    	
+    	return ResponseEntity.ok("상태 변경 완료");
+    }
+    
+    @RequestMapping("/member/companyDetail")
+    @ResponseBody
+    public ResponseEntity<String> companyDetail(
+    		@RequestParam("corpBiz") String corpBiz) throws Exception {
+    	
+    	
+    	
+    	return 
     }
     
 
