@@ -90,7 +90,7 @@ public class MemberController {
     	
     	
     	
-    	return 
+    	return ResponseEntity.ok("");
     }
     
 
