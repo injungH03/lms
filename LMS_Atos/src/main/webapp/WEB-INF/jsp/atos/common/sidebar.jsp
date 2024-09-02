@@ -3,7 +3,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/sidebar.css' />">
 <div class="sidebar">
     <div class="menu-group member-menu">
-        <h3>회원관리</h3>
+        <h3 id="memberManagement">회원관리</h3>
         <ul>
             <li><a href="<c:url value='/member/memberList.do'/>">회원목록</a></li>
             <li><a href="#">강사목록</a></li>
@@ -17,7 +17,7 @@
         </ul>
     </div>
     <div class="menu-group company-menu" style="display:none;">
-        <h3>업체관리</h3>
+        <h3 id="companyManagement">업체관리</h3>
         <ul>
             <li><a href="/company/companyList.do">업체목록</a></li>
             <li><a href="#">메뉴2</a></li>
@@ -25,7 +25,7 @@
         </ul>
     </div>
     <div class="menu-group education-menu" style="display:none;">
-        <h3>교육정보관리</h3>
+        <h3 id="educationManagement">교육정보관리</h3>
         <ul>
             <li><a href="#">교육목록</a></li>
             <li><a href="#">메뉴2</a></li>
