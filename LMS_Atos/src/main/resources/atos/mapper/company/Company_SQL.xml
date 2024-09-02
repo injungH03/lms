@@ -18,7 +18,9 @@
 			<if test="searchCnd == 1">
 				AND a.TRAIN_MANAGER LIKE CONCAT ('%', #{searchWrd},'%')
 			</if>
-
+			<if test="searchCnd == 2">
+				AND a.BIZ_REG_NO LIKE CONCAT ('%', #{searchWrd},'%')
+			</if>
 		</trim>
 	</sql>
 
@@ -63,15 +65,6 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 
-<!-- 			
-			a.BIZ_REG_NO AS bizRegNo,
-			a.CORP_NAME AS corpName,
-			a.REP_NAME AS repName,
-			a.EMP_COUNT AS empCount,
-			a.TRAIN_MANAGER AS trainManager,
-			a.STATUS AS statusName,
-			a.REG_DATE AS regDate 
-												-->
 
 	<select id="selectCompanyListCnt"
 		parameterType="atos.lms.company.service.CompanyVO"

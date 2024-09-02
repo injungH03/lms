@@ -1,5 +1,6 @@
 package atos.lms.company.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import atos.lms.exam.service.GeneralModel;
@@ -25,7 +26,7 @@ public class CompanyVO extends CompanyMasterVO implements GeneralModel {
 	private String taxPhone; // 세금계산서담당자(전화번호)
 	private String status; // 상태정보
 	private String memo; // 메모
-	private LocalDateTime regDate; //등록일
+	private LocalDate regDate; //등록일
 	private String zipcode; //우편번호
 	private String addr1; //주소1
 	private String addr2; //주소2
@@ -261,13 +262,13 @@ public class CompanyVO extends CompanyMasterVO implements GeneralModel {
 
 
 
-	public LocalDateTime getRegDate() {
+	public LocalDate getRegDate() {
 		return regDate;
 	}
 
 
 
-	public void setRegDate(LocalDateTime regDate) {
+	public void setRegDate(LocalDate regDate) {
 		this.regDate = regDate;
 	}
 

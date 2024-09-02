@@ -47,7 +47,9 @@ function fn_egov_select_linkPage(pageNo){
 					<option value="0"
 						<c:if test="${companySearchVO.searchCnd == '0'}">selected="selected"</c:if>>회사명</option>
 					<option value="1"
-						<c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>이름</option>
+						<c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>담당자명</option>
+					<option value="2"
+						<c:if test="${companySearchVO.searchCnd == '2'}">selected="selected"</c:if>>사업자등록번호</option>
 				</select> <input type="text" id="searchText" name="searchWrd"
 					title="검색 조건 입력" placeholder="텍스트를 입력해 주세요."
 					value='<c:out value="${companySearchVO.searchWrd}"/>' maxlength="155">
