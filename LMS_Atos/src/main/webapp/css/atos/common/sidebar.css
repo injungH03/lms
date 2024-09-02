@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: #ffffff; /* 배경을 흰색으로 설정 */
+    padding: 10px 0; /* 패딩을 줄여서 더 컴팩트하게 */
+    border-right: 1px solid #ddd;
+    font-size: 16px; /* 기본 폰트 크기 한 단계 증가 */
+}
+
+.sidebar .menu-group {
+    margin-bottom: 10px; /* 각 메뉴 그룹 사이에 여백 추가 */
+    border-bottom: 1px solid #ddd; /* 메뉴 그룹 하단에 구분선 추가 */
+}
+
+.sidebar .menu-group:last-child {
+    border-bottom: none; /* 마지막 메뉴 그룹에는 구분선 제거 */
+}
+
+.sidebar .menu-group h3 {
+    margin: 0;
+    padding: 12px 18px; /* 텍스트와의 간격을 조절 */
+    font-size: 17px; /* 헤더의 폰트 크기 한 단계 증가 */
+    font-weight: bold;
+    color: #333;
+    background-color: #f5f5f5; /* 헤더의 배경색을 밝은 회색으로 설정 */
+    border-left: 5px solid #292b2d; /* 헤더 왼쪽에 강조선 추가 */
+    cursor: pointer; /* 클릭 가능하다는 느낌을 주기 위해 커서 변경 */
+}
+
+.sidebar .menu-group ul {
+    list-style-type: none;
+    padding-left: 15px; /* 하위 메뉴와 헤더의 간격을 좁힘 */
+    margin: 0;
+    display: none; /* 기본적으로 하위 메뉴는 숨김 */
+}
+
+.sidebar .menu-group ul li {
+    padding: 6px 0;
+}
+
+.sidebar .menu-group ul li a {
+    display: flex;
+    align-items: center;
+    padding: 6px 15px; /* 각 하위 메뉴 항목에 패딩 추가 */
+    color: #555;
+    text-decoration: none;
+    font-size: 15px; /* 하위 메뉴의 폰트 크기 한 단계 증가 */
+}
+
+.sidebar .menu-group ul li a:hover {
+    background-color: #f0f0f0; /* 하위 메뉴 항목 호버 시 배경색 변경 */
+    color: #333;
+}
+
+.sidebar .menu-group ul li a::before {
+    content: "\25B6"; /* 삼각형 아이콘 추가 (>) */
+    margin-right: 10px;
+    font-size: 12px; /* 아이콘 크기 조정 */
+    color: #555; /* 아이콘 색상 */
+}

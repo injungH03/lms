@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+.header {
+    grid-area: header;
+    background-color: #4cae4c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.header .logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin-right: 20px;
+}
+
+.header .header-links {
+    display: flex;
+    flex-grow: 1;
+}
+
+.header .header-links a {
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header .header-links a.active, .header .header-links a:hover {
+    background-color: #63eb0e; /* 메뉴 항목 활성화 및 호버 색상 */
+    color: white;
+}
+
+.header .header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header .welcome-msg {
+    margin-right: 15px;
+    font-size: 14px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.header .logout-btn, .header .customer-center-btn, .header .site-btn {
+    background-color: #4CAF50; /* 버튼 배경색 설정 */
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+.header .customer-center-btn {
+    background-color: #5cb85c; /* 고객센터 버튼 색상 */
+}
+
+.header .site-btn {
+    background-color: #337ab7; /* 사이트 버튼 색상 */
+}
