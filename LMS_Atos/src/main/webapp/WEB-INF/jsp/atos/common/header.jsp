@@ -22,8 +22,31 @@
 <script>
 
 $(document).ready(function() {
+    // 현재 URL 기반으로 헤더의 메뉴와 사이드바 메뉴 설정
+    var currentUrl = window.location.pathname;
+
+    $('.menu-link').each(function() {
+        var menuType = $(this).data('menu');
+
+        // menuType과 currentUrl을 비교하여 메뉴를 활성화
+        if (currentUrl.includes(menuType)) {
+            $(this).addClass('active');
+
+            // 사이드바 메뉴 표시
+            $('.sidebar .menu-group').hide(); // 모든 메뉴 숨기기
+            if (menuType === 'member') {
+                $('.sidebar .member-menu').show(); // 회원 관리 메뉴 표시
+            } else if (menuType === 'company') {
+                $('.sidebar .company-menu').show(); // 업체 관리 메뉴 표시
+            } else if (menuType === 'education') {
+                $('.sidebar .education-menu').show(); // 교육 관리 메뉴 표시
+            }
+        }
+    });
+
+    // 헤더 메뉴 클릭 시 active 상태 관리
     $('.menu-link').click(function(e) {
-    	e.preventDefault(); // 기본 클릭 동작 방지
+        e.preventDefault(); // 기본 클릭 동작 방지
         $('.menu-link').removeClass('active'); // 모든 메뉴에서 active 클래스 제거
         $(this).addClass('active');
         
@@ -36,7 +59,6 @@ $(document).ready(function() {
         } else if (menuType === 'education') {
             $('.sidebar .education-menu').show(); // 교육 관리 메뉴를 표시
         }
-        // 필요한 다른 메뉴들에 대한 조건을 여기에 추가
     });
 
     // 사이드바의 하위 메뉴 토글
