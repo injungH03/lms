@@ -34,13 +34,9 @@ $(document).ready(function() {
 
             // 사이드바 메뉴 표시
             $('.sidebar .menu-group').hide(); // 모든 메뉴 숨기기
-            if (menuType === 'member') {
-                $('.sidebar .member-menu').show(); // 회원 관리 메뉴 표시
-            } else if (menuType === 'company') {
-                $('.sidebar .company-menu').show(); // 업체 관리 메뉴 표시
-            } else if (menuType === 'education') {
-                $('.sidebar .education-menu').show(); // 교육 관리 메뉴 표시
-            }
+            
+            $('.sidebar .' + menuType + '-menu').show();
+
         }
     });
 
@@ -52,13 +48,7 @@ $(document).ready(function() {
         
         var menuType = $(this).data('menu');
         $('.sidebar .menu-group').hide(); // 모든 메뉴를 숨기고
-        if (menuType === 'member') {
-            $('.sidebar .member-menu').show(); // 회원 관리 메뉴를 표시
-        } else if (menuType === 'company') {
-            $('.sidebar .company-menu').show(); // 업체 관리 메뉴를 표시
-        } else if (menuType === 'education') {
-            $('.sidebar .education-menu').show(); // 교육 관리 메뉴를 표시
-        }
+        $('.sidebar .' + menuType + '-menu').show(); // 해당 메뉴를 표시
     });
 
     // 사이드바의 하위 메뉴 토글
@@ -69,12 +59,3 @@ $(document).ready(function() {
 
 </script>
 
-
-
-
-
-<div id="loadingContainer">
-    <div id="loadingIndicator">
-        <img src="<c:url value='/images/atos/loading.gif'/>" alt="Loading..." />
-    </div>
-</div>

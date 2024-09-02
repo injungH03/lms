@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><tiles:getAsString name="title" /></title>
     <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
+    <script type="text/javascript" src="<c:url value='/js/atos/common/fetchFunction.js'/>" ></script>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/test/style.css' />">
 </head>
 <body>
