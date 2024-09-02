@@ -50,7 +50,6 @@ public class LoginController {
 	 * @return 로그인 페이지의 뷰 이름
 	 * @throws Exception
 	 */
-	@IncludedInfo(name = "로그인2", listUrl = "/login/LoginUser.do", order = 9, gid = 10)
 	@RequestMapping(value = "/login/LoginUser.do")
 	public String loginUserView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
@@ -98,6 +97,8 @@ public class LoginController {
 
 			// 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
+			// 로그인 유형 정보를 세션에 저장
+			request.getSession().setAttribute("userType", resultVO.getUserSe());
 			// 로그인 인증세션
 			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 
@@ -120,19 +121,24 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/login/actionMain.do")
 	public String actionMain(HttpServletRequest request, ModelMap model) throws Exception {
+		System.out.println(1);
 		// 인증된 사용자 정보를 가져옴
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		System.out.println(2);
 		// 사용자 ID를 디버깅 로그로 출력 (2022 시큐어 코딩 적용)
 		LOGGER.debug("User Id : {}", EgovStringUtil.isNullToString(user.getId()));
 
+		System.out.println(3);
 		// 메인 페이지로 이동
 		String main_page = Globals.MAIN_PAGE;
 
+		System.out.println(4);
 		// 메인 페이지 설정 값을 디버깅 로그로 출력
 		LOGGER.debug("Globals.MAIN_PAGE > " + Globals.MAIN_PAGE);
 		LOGGER.debug("main_page > {}", main_page);
 
+		System.out.println(5);
 		// 메인 페이지가 "/"로 시작하는 경우, 해당 페이지로 포워드
 		if (main_page.startsWith("/")) {
 			return "forward:" + main_page;

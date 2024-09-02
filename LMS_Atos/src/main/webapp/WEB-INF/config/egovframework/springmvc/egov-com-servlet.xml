@@ -1,71 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+						   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						   http://www.springframework.org/schema/context
+						   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						   http://www.springframework.org/schema/mvc
+						   http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+	<!-- Component Scans -->
 	<context:component-scan base-package="egovframework">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-	
 	<context:component-scan base-package="atos">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-	
-	
-	<!-- For Pagination Tag -->
-	<bean id="imageRenderer" class="egovframework.com.cmm.ImagePaginationRenderer"/>
 
+	<!-- Pagination -->
+	<bean id="imageRenderer" class="egovframework.com.cmm.ImagePaginationRenderer" />
 	<bean id="paginationManager" class="org.egovframe.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
 		<property name="rendererType">
 			<map>
-				<entry key="image" value-ref="imageRenderer"/>
+				<entry key="image" value-ref="imageRenderer" />
 			</map>
 		</property>
 	</bean>
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
-        </property>
-        <property name="messageConverters">
+	<!-- Request Mapping Handler Adapter -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="egovframework.com.cmm.web.EgovBindingInitializer" />
+		</property>
+		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 			</list>
 		</property>
-    </bean>
-    
-    <!-- setting Locale Locale Interceptor 설정하기  -->
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
-        p:paramName="lang" />
+	</bean>
 
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
-    
-	<!--
-	<bean id="egovWebLogInterceptor" class="egovframework.com.sym.log.wlg.web.EgovWebLogInterceptor" />
-	-->
+	<!-- Locale Change Interceptor -->
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor"/>
-                <!-- <ref bean="egovWebLogInterceptor"/> -->
-            </list>
-        </property>
-    </bean>
-    
-    <!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->
-    <!-- 분리 -->
-    
+	<!-- Auth Interceptor -->
+	<bean id="authInterceptor" class="atos.lms.commons.interceptor.AuthInterceptor" />
+
+	<!-- Request Mapping Handler Mapping -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="authInterceptor" /> <!-- Url 권한 Interceptor -->
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Exception Resolver -->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="defaultErrorView" value="egovframework/com/cmm/error/egovError"/>
+		<property name="defaultErrorView" value="egovframework/com/cmm/error/egovError" />
 		<property name="exceptionMappings">
 			<props>
 				<prop key="org.springframework.dao.DataAccessException">egovframework/com/cmm/error/dataAccessFailure</prop>
@@ -78,50 +77,56 @@
 		</property>
 	</bean>
 
+	<!-- View Resolvers -->
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" p:order="0" />
-	
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-	    <property name="definitions">
-	        <list>
-	            <value>/WEB-INF/tiles_main.xml</value>
-	        </list>
-	    </property>
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles_main.xml</value>
+			</list>
+		</property>
 	</bean>
 
-	<!-- for JFile -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
-
+	<!-- Additional View Resolvers for JFile -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1" />
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
-		  p:viewClass="org.springframework.web.servlet.view.JstlView"
-		  p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
-		  
-	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-		<property name="contentType" value="text/html;charset=UTF-8"/>
-	</bean>
-	
-	<!-- Facebook 설정 -->
-	<mvc:default-servlet-handler />
-	<!--
-	<bean class="org.springframework.social.connect.web.ProviderSignInController">
-		<constructor-arg ref="connectionFactoryLocator" />
-		<constructor-arg ref="usersConnectionRepository" />
-		<constructor-arg>
-			<bean class="egovframework.com.uss.ion.fbk.web.FacebookSimpleSignInAdapter"/>
-		</constructor-arg>
-		<property name="signInUrl" value="/uss/ion/fbk/facebookSignin.do"/>
-		<property name="postSignInUrl" value="/uss/ion/fbk/facebook.do"/>
-	</bean>
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/uss/ion/fbk/**" />
-			<bean class="egovframework.com.uss.ion.fbk.web.FacebookUserInterceptor" >
-				<constructor-arg ref="usersConnectionRepository"/>
-			</bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
-	<mvc:view-controller path="/uss/ion/fbk/facebook.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
-	<mvc:view-controller path="/uss/ion/fbk/facebookSignin.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookSignin" />
-	<mvc:view-controller path="/uss/ion/fbk/facebookSignout.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
-	-->
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
 
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<property name="contentType" value="text/html;charset=UTF-8" />
+	</bean>
+
+	<!-- Default Servlet Handler -->
+	<mvc:default-servlet-handler />
+	
+	<!-- Setting Interceptors -->
+	<!-- <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			접근이 제회되는 경로
+			<mvc:exclude-mapping path="/" />
+			<mvc:exclude-mapping path="/login/**"/>
+			<mvc:exclude-mapping path="/test/**"/>
+			egov
+			<mvc:exclude-mapping path="/index.do"/>
+			<mvc:exclude-mapping path="/EgovTop.do"/>
+			<mvc:exclude-mapping path="/EgovBottom.do"/>
+			<mvc:exclude-mapping path="/EgovContent.do"/>
+			<mvc:exclude-mapping path="/EgovLeft.do"/>
+			<mvc:exclude-mapping path="/egovCSRFAccessDenied.do"/>
+			<mvc:exclude-mapping path="/EgovPageLink.do"/>
+			<mvc:exclude-mapping path="/EgovModal.do"/>
+			<mvc:exclude-mapping path="/validator.do"/>
+			<mvc:exclude-mapping path="/cmm/**"/>
+			<mvc:exclude-mapping path="/cop/**"/>
+			<mvc:exclude-mapping path="/sec/**"/>
+			<mvc:exclude-mapping path="/sym/**"/>
+			<mvc:exclude-mapping path="/uat/**"/>
+			<mvc:exclude-mapping path="/utl/**"/>
+			webapp
+			기타 제외할 경로들
+            <ref bean="authInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors> -->
 </beans>
