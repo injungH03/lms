@@ -6,7 +6,7 @@ const formToSerialize = (formId) => {
 
 const myFetch = (args) => {
     // 로딩 컨테이너 표시
-    document.getElementById('loadingContainer').style.display = 'flex';
+    //document.getElementById('loadingContainer').style.display = 'flex';
 
     let body = typeof (args.data) == "string" ? formToSerialize(args.data) : JSON.stringify(args.data);
 
@@ -24,6 +24,6 @@ const myFetch = (args) => {
         }
     }).always(() => {
         // 로딩 컨테이너 숨김
-        document.getElementById('loadingContainer').style.display = 'none';
+        //document.getElementById('loadingContainer').style.display = 'none';
     });
 };
