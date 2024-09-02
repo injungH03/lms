@@ -9,10 +9,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		// 디버깅 로그 추가
-		System.out.println("Request URI: " + request.getRequestURI());
-		System.out.println("User Type: " + request.getSession().getAttribute("userType"));
-
 		// 세션에서 로그인 유형 가져오기
 		String userType = (String) request.getSession().getAttribute("userType");
 
