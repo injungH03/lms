@@ -161,10 +161,11 @@ public class LoginController {
 
 		// 세션에서 사용자 정보를 제거하여 로그아웃 처리
 		request.getSession().setAttribute("loginVO", null);
+		request.getSession().setAttribute("userType", null);
 		request.getSession().setAttribute("accessUser", null);
 
 		// 로그아웃 후 메인 컨텐츠 페이지로 리다이렉트
-		return "redirect:/EgovContent.do";
+		return "redirect:/login/LoginUser.do";
 	}
 
 	/**
