@@ -25,6 +25,7 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	public Map<String, Object> selectCompanyList(CompanyVO companyVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		
 		map.put("resultList", companyDao.selectCompanyList(companyVO));
 		map.put("resultCnt", companyDao.selectCompanyListCnt(companyVO));
 		

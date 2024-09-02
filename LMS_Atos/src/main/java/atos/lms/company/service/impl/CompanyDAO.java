@@ -18,7 +18,8 @@ public class CompanyDAO extends EgovComAbstractDAO {
 	public int selectCompanyListCnt(CompanyVO companyVO) {
 		return (Integer) selectOne("company.selectCompanyListCnt", companyVO);
 	}
-
+	
+	
 	public List<CompanyMasterVO> selectStatusCode() {
 		return selectList("company.selectStatusCode");
 	}

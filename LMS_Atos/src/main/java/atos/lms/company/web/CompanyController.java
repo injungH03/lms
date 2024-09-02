@@ -66,7 +66,9 @@ public class CompanyController {
     	model.addAttribute("status", status);
     	model.addAttribute("company", company);
     	
-		
+    	System.out.println("resultList: " + map.get("resultList"));
+    	
+    	
 		return "company/companyList";
 	}
 

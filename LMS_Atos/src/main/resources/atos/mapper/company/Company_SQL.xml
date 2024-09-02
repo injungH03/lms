@@ -45,13 +45,14 @@
 		parameterType="atos.lms.company.service.CompanyVO"
 		resultType="atos.lms.company.service.CompanyVO">
 		SELECT
-			a.BIZ_REG_NO AS bizRegNo,
-			a.CORP_NAME AS corpName,
-			a.REP_NAME AS repName,
-			a.EMP_COUNT AS empCount,
-			a.TRAIN_MANAGER AS trainManager,
-			a.STATUS AS statusName,
-			a.REG_DATE AS regDate
+			a.BIZ_REG_NO,
+			a.CORP_NAME,
+			a.REP_NAME,
+			a.EMP_COUNT,
+			a.TRAIN_MANAGER,
+			a.STATUS,
+			b.NAME AS statusName,
+			a.REG_DATE
 		FROM
 			ATOS_COMPANY a
 		LEFT JOIN
@@ -62,7 +63,15 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 
-
+<!-- 			
+			a.BIZ_REG_NO AS bizRegNo,
+			a.CORP_NAME AS corpName,
+			a.REP_NAME AS repName,
+			a.EMP_COUNT AS empCount,
+			a.TRAIN_MANAGER AS trainManager,
+			a.STATUS AS statusName,
+			a.REG_DATE AS regDate 
+												-->
 
 	<select id="selectCompanyListCnt"
 		parameterType="atos.lms.company.service.CompanyVO"
