@@ -50,7 +50,7 @@
 			a.REP_NAME AS repName,
 			a.EMP_COUNT AS empCount,
 			a.TRAIN_MANAGER AS trainManager,
-			a.STATUS AS status,
+			a.STATUS AS statusName,
 			a.REG_DATE AS regDate
 		FROM
 			ATOS_COMPANY a

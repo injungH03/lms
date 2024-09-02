@@ -13,7 +13,7 @@
     <div class="menu-group company-menu" style="display:none;">
         <h3>업체관리</h3>
         <ul>
-            <li><a href="#">업체목록</a></li>
+            <li><a href="/company/companyList.do">업체목록</a></li>
             <li><a href="#">메뉴2</a></li>
             <li><a href="#">메뉴3</a></li>
         </ul>

@@ -91,7 +91,7 @@ function fn_egov_select_linkPage(pageNo){
                 <td>${resultInfo.bizRegNo }</td>
                 <td>${resultInfo.empCount }</td>
                 <td>${resultInfo.trainManager }</td>
-                <td>${resultInfo.status }</td>
+                <td>${resultInfo.statusName }</td>
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.corpName }"></td>
             </tr>
         </c:forEach>
