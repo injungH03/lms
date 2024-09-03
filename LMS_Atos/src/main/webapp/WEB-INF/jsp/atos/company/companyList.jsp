@@ -66,7 +66,7 @@ function fn_egov_select_linkPage(pageNo){
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
 	        <button class="s_submit">EXCEL</button>
 	        <button class="s_submit">일괄등록</button>
-	        <button class="s_submit">등록</button>
+	        <button class="s_submit" onclick="location.href='<c:url value='/company/CompanyRegistView.do' />'">등록</button>
 	    </div>
     </div>
 

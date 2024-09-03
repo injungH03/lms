@@ -43,5 +43,10 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 		return companyDao.selectCompany();
 	}
 
+    // 업체 등록 메서드 추가
+    @Override
+    public void insertCompany(CompanyVO companyVO) {
+        companyDao.insertCompany(companyVO);
+    }
 	
 }

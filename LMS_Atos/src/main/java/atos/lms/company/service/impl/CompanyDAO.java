@@ -27,5 +27,10 @@ public class CompanyDAO extends EgovComAbstractDAO {
 	public List<CompanyMasterVO> selectCompany() {
 		return selectList("company.selectCompany");
 	}
+	
+    // 업체 등록 메서드 추가
+    public void insertCompany(CompanyVO companyVO) {
+        insert("company.insertCompany", companyVO);
+    }
 
 }

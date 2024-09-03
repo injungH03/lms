@@ -28,8 +28,8 @@ public class CompanyVO extends CompanyMasterVO implements GeneralModel {
 	private String memo; // 메모
 	private LocalDate regDate; //등록일
 	private String zipcode; //우편번호
-	private String addr1; //주소1
-	private String addr2; //주소2
+	private String addr1; //주소
+	private String addr2; //상세주소
 	
 	
 	

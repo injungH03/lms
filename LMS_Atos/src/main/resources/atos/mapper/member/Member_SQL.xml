@@ -71,4 +71,13 @@
 		</foreach>
 	</update>
 	
+	
+	    <!-- 업체 등록 쿼리 -->
+    <insert id="insertCompany" parameterType="atos.lms.company.service.CompanyVO">
+        INSERT INTO ATOS_COMPANY 
+        (BIZ_REG_NO, CORP_NAME, REP_NAME, BIZ_TYPE, BIZ_ITEM, PHONE_NO, FAX_NO, TAX_INVOICE, EMP_COUNT, TRAIN_COUNT, TRAIN_MANAGER, TRAIN_EMAIL, TRAIN_PHONE, TAX_MANAGER, TAX_EMAIL, TAX_PHONE, STATUS, MEMO, REG_DATE, ZIPCODE, ADDR1, ADDR2)
+        VALUES
+        (#{bizRegNo}, #{corpName}, #{repName}, #{bizType}, #{bizItem}, #{phoneNo}, #{faxNo}, #{taxInvoice}, #{empCount}, #{trainCount}, #{trainManager}, #{trainEmail}, #{trainPhone}, #{taxManager}, #{taxEmail}, #{taxPhone}, #{status}, #{memo}, #{regDate}, #{zipcode}, #{addr1}, #{addr2});
+    </insert>
+	
 </mapper>
