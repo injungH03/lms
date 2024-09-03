@@ -47,7 +47,9 @@ function fn_egov_select_linkPage(pageNo){
 					<option value="0"
 						<c:if test="${companySearchVO.searchCnd == '0'}">selected="selected"</c:if>>회사명</option>
 					<option value="1"
-						<c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>이름</option>
+						<c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>담당자명</option>
+					<option value="2"
+						<c:if test="${companySearchVO.searchCnd == '2'}">selected="selected"</c:if>>사업자등록번호</option>
 				</select> <input type="text" id="searchText" name="searchWrd"
 					title="검색 조건 입력" placeholder="텍스트를 입력해 주세요."
 					value='<c:out value="${companySearchVO.searchWrd}"/>' maxlength="155">
@@ -64,7 +66,7 @@ function fn_egov_select_linkPage(pageNo){
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
 	        <button class="s_submit">EXCEL</button>
 	        <button class="s_submit">일괄등록</button>
-	        <button class="s_submit">등록</button>
+	        <button class="s_submit" onclick="location.href='<c:url value='/company/CompanyRegistView.do' />'">등록</button>
 	    </div>
     </div>
 
@@ -91,7 +93,7 @@ function fn_egov_select_linkPage(pageNo){
                 <td>${resultInfo.bizRegNo }</td>
                 <td>${resultInfo.empCount }</td>
                 <td>${resultInfo.trainManager }</td>
-                <td>${resultInfo.status }</td>
+                <td>${resultInfo.statusName }</td>
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.corpName }"></td>
             </tr>
         </c:forEach>
