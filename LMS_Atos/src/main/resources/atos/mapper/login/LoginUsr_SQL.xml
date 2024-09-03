@@ -47,12 +47,24 @@
 			   AND PASSWORD = #{password}
 			   AND STATUS = '1002'
 		</if>
+		<!-- 업체 -->
+		<if test="userSe != null and userSe == 'COM'">
+			SELECT ID AS id
+			     , NAME AS name
+			     , PASSWORD AS password
+			     , '' AS email
+			     , 'COM' AS userSe
+			  FROM ATOS_COMPANY_ACCOUNT
+			 WHERE ID = #{id}
+			   AND PASSWORD = #{password}
+			   AND STATUS = '1002'
+		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
 			SELECT ID AS id
 			     , NAME AS name
 			     , PASSWORD AS password
-			     , EMAIL AS email
+			     , '' AS email
 			     , 'ADM' AS userSe
 			  FROM ATOS_ADMIN
 			 WHERE ID = #{id}
@@ -78,6 +90,13 @@
 			 WHERE NAME = #{name}
 			   AND EMAIL = #{email}
 			   AND STATUS = '1002'
+		</if>
+		<!-- 업체 -->
+		<if test="userSe != null and userSe == 'COM'">
+			SELECT ID AS id
+			FROM ATOS_COMPANY_ACCOUNT
+			WHERE NAME = #{name}
+			AND STATUS = '1002'
 		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
@@ -108,13 +127,20 @@
 			   AND EMAIL = #{email}
 			   AND STATUS = '1002'
 		</if>
+		<!-- 업체 -->
+		<if test="userSe != null and userSe == 'COM'">
+			SELECT PASSWORD AS password
+			  FROM ATOS_COMPANY_ACCOUNT
+			 WHERE ID = #{id}
+			   AND NAME = #{name}
+			   AND STATUS = '1002'
+		</if>
 		<!-- 관리자 -->
 		<if test="userSe != null and userSe == 'ADM'">
 			SELECT PASSWORD AS password
 			  FROM ATOS_ADMIN
 			 WHERE ID = #{id}
 			   AND NAME = #{name}
-			   AND EMAIL = #{email}
 			   AND STATUS = '1002'
 		</if>
 	</select>
@@ -131,6 +157,12 @@
 		<!-- 강사 -->
 		<if test="userSe != null and userSe == 'INS'">
 			UPDATE ATOS_INSTRUCTOR
+			   SET PASSWORD = #{password}
+			WHERE ID = #{id}
+		</if>
+		<!-- 업체 -->
+		<if test="userSe != null and userSe == 'COM'">
+			UPDATE ATOS_COMPANY_ACCOUNT
 			   SET PASSWORD = #{password}
 			WHERE ID = #{id}
 		</if>

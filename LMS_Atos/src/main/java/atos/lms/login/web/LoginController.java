@@ -69,7 +69,7 @@ public class LoginController {
 			model.addAttribute("loginMessage", message);
 
 		// 로그인 페이지로 이동
-		return "login/LoginUser";
+		return "/atos/login/LoginUser";
 	}
 
 	/**

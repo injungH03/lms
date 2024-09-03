@@ -25,16 +25,25 @@
 		if (userSe == "STU") { // 수강생
 			document.getElementById("idStu").className = "on";
 			document.getElementById("idIns").className = "";
+			document.getElementById("idCom").className = "";
 			document.getElementById("idAdm").className = "";
 			document.idForm.userSe.value = "STU";
 		} else if (userSe == "INS") { // 강사
 			document.getElementById("idStu").className = "";
 			document.getElementById("idIns").className = "on";
+			document.getElementById("idCom").className = "";
 			document.getElementById("idAdm").className = "";
 			document.idForm.userSe.value = "INS";
+		} else if (userSe == "COM") { // 업체
+			document.getElementById("idStu").className = "";
+			document.getElementById("idIns").className = "";
+			document.getElementById("idCom").className = "on";
+			document.getElementById("idAdm").className = "";
+			document.idForm.userSe.value = "COM";
 		} else if (userSe == "ADM") { // 관리자
 			document.getElementById("idStu").className = "";
 			document.getElementById("idIns").className = "";
+			document.getElementById("idCom").className = "";
 			document.getElementById("idAdm").className = "on";
 			document.idForm.userSe.value = "ADM";
 		}
@@ -50,16 +59,25 @@
 		if (userSe == "STU") { // 수강생
 			document.getElementById("pwStu").className = "on";
 			document.getElementById("pwIns").className = "";
+			document.getElementById("pwCom").className = "";
 			document.getElementById("pwAdm").className = "";
 			document.passwordForm.userSe.value = "STU";
 		} else if (userSe == "INS") { // 강사
 			document.getElementById("pwStu").className = "";
 			document.getElementById("pwIns").className = "on";
+			document.getElementById("pwCom").className = "";
 			document.getElementById("pwAdm").className = "";
 			document.passwordForm.userSe.value = "INS";
+		} else if (userSe == "COM") { // 업체
+			document.getElementById("pwStu").className = "";
+			document.getElementById("pwIns").className = "";
+			document.getElementById("pwCom").className = "on";
+			document.getElementById("pwAdm").className = "";
+			document.passwordForm.userSe.value = "COM";
 		} else if (userSe == "ADM") { // 관리자
 			document.getElementById("pwStu").className = "";
 			document.getElementById("pwIns").className = "";
+			document.getElementById("pwCom").className = "";
 			document.getElementById("pwAdm").className = "on";
 			document.passwordForm.userSe.value = "ADM";
 		}
@@ -135,6 +153,11 @@
 							</a>
 						</li>
 						<li>
+							<a id="idCom" onclick="fnCheckUsrId('COM');">
+								<spring:message code="login.idPw.COM" />
+							</a>
+						</li>
+						<li>
 							<a id="idAdm" onclick="fnCheckUsrId('ADM');">
 								<spring:message code="login.idPw.ADM" />
 							</a>
@@ -182,6 +205,11 @@
 						<li>
 							<a id="pwIns" onclick="fnCheckUsrPassword('INS');">
 								<spring:message code="login.idPw.INS" />
+							</a>
+						</li>
+						<li>
+							<a id="pwCom" onclick="fnCheckUsrPassword('COM');">
+								<spring:message code="login.idPw.COM" />
 							</a>
 						</li>
 						<li>
