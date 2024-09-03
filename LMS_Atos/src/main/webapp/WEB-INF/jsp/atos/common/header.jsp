@@ -4,9 +4,12 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/header.css' />">
 
 <div class="header">
-	<img src="<c:url value='/images/atos/logo.png'/>" style="height: 5vh;" alt="title logo" title="title logo">
+	<a href="<spring:message code="header.site.url" />" >
+		<img src="<c:url value='/images/atos/logo.png'/>" style="height: 5vh;" alt="title logo" title="title logo">
+	</a>
 	<div class="logo">
-		<spring:message code="header.logo.title" /></div>
+		<spring:message code="header.logo.title" />
+	</div>
 	<nav class="header-links">
 		<c:forEach var="menuItem" items="${menuItems}">
 	        <a href="${menuItem.value.url}" class="menu-link" data-menu="${menuItem.value.data}">
