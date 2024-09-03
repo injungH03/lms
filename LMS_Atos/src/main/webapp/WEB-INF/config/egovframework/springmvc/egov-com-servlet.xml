@@ -51,12 +51,16 @@
 
 	<!-- Auth Interceptor -->
 	<bean id="authInterceptor" class="atos.lms.commons.interceptor.AuthInterceptor" />
+	
+	<!-- Menu Interceptor -->
+	<bean id="menuInterceptor" class="atos.lms.commons.interceptor.MenuInterceptor" />
 
 	<!-- Request Mapping Handler Mapping -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="interceptors">
 			<list>
-				<ref bean="authInterceptor" /> <!-- Url 권한 Interceptor -->
+				<ref bean="authInterceptor" />
+				<ref bean="menuInterceptor" />
 				<ref bean="localeChangeInterceptor" />
 			</list>
 		</property>
