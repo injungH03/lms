@@ -1,284 +1,282 @@
 @charset "UTF-8";
 
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+}
+
+html {
+	overflow: hidden; /* 스크롤을 숨김 */
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 70px 1fr;
-    grid-template-areas:
-        "header header"
-        "sidebar content";
-    height: 100vh;
+	display: grid;
+	grid-template-columns: 15% 1fr;
+	grid-template-rows: 10% 1fr;
+	grid-template-areas: "header header" "sidebar content";
+	height: 100vh;
 }
 
 .dashboard-header {
-    grid-area: header;
-    background-color:#ecf0f1;;
-    color: #ecf0f1;
-    padding: 0 20px;
+	grid-area: header;
+	background-color: #ecf0f1;
+	color: #ecf0f1;
 }
 
 .dashboard-sidebar {
-    grid-area: sidebar;
-    background-color:#ecf0f1;;
-    color: #ffffff;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+	grid-area: sidebar;
+	background-color: #ecf0f1;
+	color: #ffffff;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 5px 0 10px;
 }
 
-
 .dashboard-content {
-    grid-area: content;
-    background-color: #ecf0f1;
-    padding: 20px;
+	grid-area: content;
+	background-color: #ecf0f1;
+	padding: 10px 10px 0 5px;
 }
 
 .board {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
 }
 
 .board h1 {
-    font-size: 1.8em;
-    color: #34495e;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
+	font-size: 1.8em;
+	color: #34495e;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #ecf0f1;
+	padding-bottom: 10px;
 }
 
 .search_box {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .search_box ul {
-    padding: 0;
-    list-style-type: none;
-    display: flex;
-    gap: 10px; /* 버튼 간격을 넓히기 위해 gap 추가 */
+	padding: 0;
+	list-style-type: none;
+	display: flex;
+	gap: 10px; /* 버튼 간격을 넓히기 위해 gap 추가 */
 }
 
 .search_box ul li {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
-.search_box select,
-.search_box .s_input {
-    padding: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 1em;
+.search_box select, .search_box .s_input {
+	padding: 10px;
+	border: 1px solid #bdc3c7;
+	border-radius: 4px;
+	font-size: 1em;
 }
 
-.search_box .s_btn,
-.search_box .btn_b a {
+.search_box .s_btn, .search_box .btn_b a {
 	margin-right: 10px;
-    background-color: #1abc9c;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px; /* 버튼 크기 조정을 위해 padding 수정 */
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    text-align: center;
-    line-height: 1.4;
+	background-color: #1abc9c;
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px; /* 버튼 크기 조정을 위해 padding 수정 */
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1em;
+	transition: background-color 0.3s ease;
+	display: inline-block;
+	text-align: center;
+	line-height: 1.4;
 }
 
 .search_box .btn_b a {
-    background-color: #3498db;
+	background-color: #3498db;
 }
 
-.search_box .s_btn:hover,
-.search_box .btn_b a:hover {
-    background-color: #16a085;
+.search_box .s_btn:hover, .search_box .btn_b a:hover {
+	background-color: #16a085;
 }
 
 .search_box .btn_b a:hover {
-    background-color: #2980b9;
+	background-color: #2980b9;
 }
 
 .board_list {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
 }
 
 .board_list caption {
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #34495e;
+	text-align: left;
+	font-weight: bold;
+	margin-bottom: 10px;
+	color: #34495e;
 }
 
-.board_list th,
-.board_list td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ecf0f1;
+.board_list th, .board_list td {
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid #ecf0f1;
 }
 
 .board_list th {
-    background-color: #34495e;
-    color: #ecf0f1;
+	background-color: #34495e;
+	color: #ecf0f1;
 }
 
 .board_list tr:hover td {
-    background-color: #f2f2f2;
+	background-color: #f2f2f2;
 }
 
 .board_list .board_th_link a {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s ease;
+	color: #3498db;
+	text-decoration: none;
+	transition: color 0.3s ease;
 }
 
 .board_list .board_th_link a:hover {
-    color: #2980b9;
+	color: #2980b9;
 }
 
 .pagination {
-    margin-top: 20px;
-    text-align: center;
+	margin-top: 20px;
+	text-align: center;
 }
 
 .pagination ul {
-    padding: 0;
-    list-style-type: none;
-    display: inline-flex;
-    gap: 5px;
+	padding: 0;
+	list-style-type: none;
+	display: inline-flex;
+	gap: 5px;
 }
 
 .pagination ul li {
-    display: inline;
+	display: inline;
 }
 
 .pagination ul li a {
-    display: block;
-    padding: 8px 12px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    text-decoration: none;
-    color: #34495e;
-    transition: background-color 0.3s ease;
+	display: block;
+	padding: 8px 12px;
+	border: 1px solid #bdc3c7;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #34495e;
+	transition: background-color 0.3s ease;
 }
 
 .pagination ul li a:hover {
-    background-color: #3498db;
-    color: #ffffff;
+	background-color: #3498db;
+	color: #ffffff;
 }
 
 .s_input {
 	margin-right: 10px;
 }
 
-
 .board h2 {
-    font-size: 1.8em;
-    color: #34495e;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
+	font-size: 1.8em;
+	color: #34495e;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #ecf0f1;
+	padding-bottom: 10px;
 }
 
 /* 테이블 스타일링 */
 .wTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
 }
 
 .wTable caption {
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #34495e;
+	text-align: left;
+	font-weight: bold;
+	margin-bottom: 10px;
+	color: #34495e;
 }
 
-.wTable th,
-.wTable td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ecf0f1;
+.wTable th, .wTable td {
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid #ecf0f1;
 }
 
 .wTable th {
-    background-color: #34495e;
-    color: #ecf0f1;
-    width: 20%;
+	background-color: #34495e;
+	color: #ecf0f1;
+	width: 20%;
 }
 
 .wTable td {
-    background-color: #ffffff;
+	background-color: #ffffff;
 }
 
-.wTable input[type="text"],
-.wTable textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
+.wTable input[type="text"], .wTable textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #bdc3c7;
+	border-radius: 4px;
+	font-size: 1em;
+	box-sizing: border-box;
 }
 
 .wTable textarea {
-    resize: vertical;
-    height: 200px;
+	resize: vertical;
+	height: 200px;
 }
 
 /* 버튼 스타일링 */
 .btn {
-    margin-top: 20px;
-    text-align: right;
+	margin-top: 20px;
+	text-align: right;
 }
 
 .btn .s_submit {
-    background-color: #1abc9c;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    display: inline-block;
-    text-align: center;
-    line-height: 1.4;
-    margin-right: 10px; /* 버튼 간격 추가 */
+	background-color: #1abc9c;
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1em;
+	transition: background-color 0.3s ease;
+	display: inline-block;
+	text-align: center;
+	line-height: 1.4;
+	margin-right: 10px; /* 버튼 간격 추가 */
 }
 
 .btn .s_submit:hover {
-    background-color: #16a085;
+	background-color: #16a085;
 }
 
 .btn .btn_s a {
-    background-color: #3498db;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    margin-left: 10px;
+	background-color: #3498db;
+	color: #ffffff;
+	padding: 10px 20px;
+	border-radius: 4px;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+	margin-left: 10px;
 }
 
 .btn .btn_s a:hover {
-    background-color: #2980b9;
+	background-color: #2980b9;
 }
 
 /* 추가적인 작은 스타일 조정 */
 .nopd textarea {
-    width: calc(100% - 20px);
-    margin: 10px;
+	width: calc(100% - 20px);
+	margin: 10px;
 }
 
 .pilsu {
-    color: red;
-    font-weight: bold;
+	color: red;
+	font-weight: bold;
 }

@@ -1,38 +1,20 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/sidebar.css' />">
+
 <div class="sidebar">
-    <div class="menu-group member-menu" data-url="/member">
-        <h3 id="memberManagement">회원관리</h3>
-        <ul>
-            <li><a href="<c:url value='/member/memberList.do'/>">회원목록</a></li>
-            <li><a href="#">강사목록</a></li>
-            <li><a href="#">회원속성관리</a></li>
-        </ul>
-        <h3 id="menu1">상위메뉴1</h3>
-        <ul>
-            <li><a href="#">하위메뉴1</a></li>
-            <li><a href="#">하위메뉴2</a></li>
-            <li><a href="#">하위메뉴3</a></li>
-        </ul>
-    </div>
-    <div class="menu-group company-menu" style="display:none;" data-url="/company">
-        <h3 id="companyManagement">업체관리</h3>
-        <ul>
-            <li><a href="<c:url value='/company/companyList.do'/>">업체목록</a></li>
-            <li><a href="#">메뉴2</a></li>
-            <li><a href="#">메뉴3</a></li>
-        </ul>
-    </div>
-    <div class="menu-group education-menu" style="display:none;" data-url="/education">
-        <h3 id="educationManagement">교육정보관리</h3>
-        <ul>
-            <li><a href="#">교육목록</a></li>
-            <li><a href="#">메뉴2</a></li>
-            <li><a href="#">메뉴3</a></li>
-        </ul>
-    </div>
+    <c:forEach var="menuItem" items="${menuItems}">
+        <div class="menu-group ${menuItem.value.data}-menu" data-url="${menuItem.value.url}">
+            <h3 id="${menuItem.value.data}Management">${menuItem.value.title}</h3>
+            <ul>
+                <c:forEach var="subMenuItem" items="${menuItem.value.subMenuItems}">
+                    <li><a href="<c:url value='${subMenuItem.url}'/>">${subMenuItem.title}</a></li>
+                </c:forEach>
+            </ul>
+        </div>
+    </c:forEach>
 </div>
+
 
 <script>
 $(document).ready(function() {
@@ -59,23 +41,9 @@ $(document).ready(function() {
             }
         }
     });
-
-    // 메뉴 클릭 시 active 클래스 관리 및 상태 저장
-    $('.menu-link').off('click').on('click', function(e) {
-        e.preventDefault(); // 기본 클릭 동작 방지
-
-        $('.menu-link').removeClass('active'); // 모든 메뉴에서 active 클래스 제거
-        $(this).addClass('active');
-
-        var menuType = $(this).data('menu');
-        localStorage.setItem('activeMenu', menuType); // 활성화된 메뉴 저장
-
-        $('.sidebar .menu-group').hide(); // 모든 메뉴를 숨기고
-        $('.sidebar .' + menuType + '-menu').show(); // 해당 메뉴를 표시
-    });
-
-    // 메뉴 상태 유지: 메뉴를 클릭할 때 로컬 스토리지에 저장
-    $('.sidebar .menu-group h3').off('click').on('click', function(event) {
+    
+ // 사이드바 메뉴 클릭 시 활성화 처리
+    $('.sidebar .menu-group h3').click(function(event) {
         event.preventDefault(); // 기본 클릭 동작 방지
         event.stopPropagation(); // 이벤트 전파 방지
 
@@ -97,6 +65,20 @@ $(document).ready(function() {
         }
 
         localStorage.setItem('openMenus', JSON.stringify(openMenus));
+    });
+
+    // 헤더 메뉴 클릭 시 사이드바 메뉴를 활성화 처리
+    $('.menu-link').off('click').on('click', function(e) {
+        e.preventDefault(); // 기본 클릭 동작 방지
+
+        $('.menu-link').removeClass('active'); // 모든 메뉴에서 active 클래스 제거
+        $(this).addClass('active');
+
+        var menuType = $(this).data('menu');
+        localStorage.setItem('activeMenu', menuType); // 활성화된 메뉴 저장
+
+        $('.sidebar .menu-group').hide(); // 모든 메뉴를 숨기고
+        $('.sidebar .' + menuType + '-menu').show(); // 해당 메뉴를 표시
     });
 });
 </script>
