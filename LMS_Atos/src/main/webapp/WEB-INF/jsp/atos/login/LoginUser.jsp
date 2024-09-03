@@ -18,9 +18,12 @@
 .header, .sidebar {
 	display: none;
 }
-/* body {
-	grid-template-columns: 0;
-} */
+
+body {
+	grid-template-areas:
+        "header header"
+        "content content";
+}
 </style>
 <!--  -->
 <script type="text/javaScript">
