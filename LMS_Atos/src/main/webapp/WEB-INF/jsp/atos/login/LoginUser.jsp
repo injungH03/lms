@@ -14,6 +14,18 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
 <!--  -->
+<style type="text/css">
+.header, .sidebar {
+	display: none;
+}
+
+body {
+	grid-template-areas:
+        "header header"
+        "content content";
+}
+</style>
+<!--  -->
 <script type="text/javaScript">
 	// ----------------------------------------------------------------------------------------------------
 	// 유틸리티 함수: 공통적으로 사용되는 작은 기능을 제공하는 함수
@@ -246,7 +258,7 @@
 								<spring:message code="login.loginForm.id" />
 							</c:set>
 							<label for="id">${title}</label>
-							<input type="text" name="id" id="id" maxlength="20" title="${title}" placeholder="${title}" autocomplete="username">
+							<input type="text" name="id" id="id" maxlength="20" title="${title}" placeholder="${title}" autocomplete="username" value="TESTER">
 						</li>
 
 						<!-- 비밀번호 -->
@@ -255,7 +267,7 @@
 								<spring:message code="login.loginForm.pw" />
 							</c:set>
 							<label for="password">${title}</label>
-							<input type="password" name="password" id="password" maxlength="20" title="${title}" placeholder="${title}" autocomplete="current-password">
+							<input type="password" name="password" id="password" maxlength="20" title="${title}" placeholder="${title}" autocomplete="current-password" value="kw9xi9pi">
 						</li>
 
 						<!-- 아이디 저장 -->

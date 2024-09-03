@@ -15,7 +15,6 @@ import atos.lms.login.service.LoginService;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -50,7 +49,6 @@ public class LoginController {
 	 * @return 로그인 페이지의 뷰 이름
 	 * @throws Exception
 	 */
-	@IncludedInfo(name = "로그인2", listUrl = "/login/LoginUser.do", order = 9, gid = 10)
 	@RequestMapping(value = "/login/LoginUser.do")
 	public String loginUserView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
@@ -98,6 +96,8 @@ public class LoginController {
 
 			// 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
+			// 로그인 유형 정보를 세션에 저장
+			request.getSession().setAttribute("userType", resultVO.getUserSe());
 			// 로그인 인증세션
 			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 
@@ -155,10 +155,11 @@ public class LoginController {
 
 		// 세션에서 사용자 정보를 제거하여 로그아웃 처리
 		request.getSession().setAttribute("loginVO", null);
+		request.getSession().setAttribute("userType", null);
 		request.getSession().setAttribute("accessUser", null);
 
 		// 로그아웃 후 메인 컨텐츠 페이지로 리다이렉트
-		return "redirect:/EgovContent.do";
+		return "redirect:/login/LoginUser.do";
 	}
 
 	/**
