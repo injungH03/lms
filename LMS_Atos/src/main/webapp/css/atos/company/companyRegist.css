@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+/* 기본 레이아웃 설정 */
+.registration-container {
+    padding: 20px;
+    background-color: #f0f4f7;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto; /* 가운데 정렬 */
+    font-family: Arial, sans-serif; /* 기본 폰트 설정 */
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.form-table th,
+.form-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    text-align: left;
+    width: 50%;
+}
+
+/* 제목 스타일 */
+h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* 폼 요소 스타일 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: calc(100% - 20px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* 읽기 전용 input 스타일 */
+.form-group input[readonly] {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+/* 버튼 스타일 */
+.form-group button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button[type="reset"] {
+    background-color: #ccc;
+    margin-left: 10px;
+}
+
+.form-group button:hover {
+    background-color: #45a049;
+}
+
+/* 주소 검색 버튼 스타일 */
+#addressSearchButton {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#addressSearchButton:hover {
+    background-color: #0056b3;
+}
+
+/* 에러 메시지 스타일 */
+label.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* 추가 스타일 설정 */
+.form-table {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.table-cell {
+    display: table-cell;
+    padding: 8px;
+    vertical-align: middle;
+}
+
+textarea {
+    resize: none; /* 세로 크기 조정 가능 */
+    width: calc(100% - 20px); /* 너비 조정 */
+}
+

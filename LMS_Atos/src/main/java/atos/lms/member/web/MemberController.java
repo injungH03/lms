@@ -1,5 +1,6 @@
 package atos.lms.member.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,17 +9,22 @@ import javax.annotation.Resource;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import atos.lms.common.ResponseVO;
+import atos.lms.member.service.CompanyVO;
 import atos.lms.member.service.MemberMasterVO;
 import atos.lms.member.service.MemberService;
 import atos.lms.member.service.MemberVO;
+import egovframework.com.utl.sim.service.EgovFileScrty;
 
 
 
@@ -71,6 +77,30 @@ public class MemberController {
     	return "member/memberRegist";
     }
     
+    @RequestMapping("/member/memberDetail.do")
+    public String memberDetail(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
+    	
+    	System.out.println("넘어온 데이터  = " + memberVO);
+    	System.out.println("페이징사이즈 = " + memberVO.getPageSize());
+    	
+    	model.addAttribute("member", memberService.selectMemberKey(memberVO));
+    	
+    	return "member/memberDetail";
+    }
+    
+    @RequestMapping("/member/memberUpdateView.do")
+    public String memberUpdateView(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
+    	
+    	System.out.println("넘어온 데이터  = " + memberVO);
+    	System.out.println("페이징사이즈 = " + memberVO.getPageSize());
+    	
+    	List<MemberMasterVO> company = memberService.selectCompany();
+    	model.addAttribute("company", company);
+    	
+    	return "member/memberUpdt";
+    }
+    
+    
     
     @RequestMapping("/member/updateStatus")
     @ResponseBody
@@ -85,12 +115,45 @@ public class MemberController {
     
     @RequestMapping("/member/companyDetail")
     @ResponseBody
-    public ResponseEntity<String> companyDetail(
-    		@RequestParam("corpBiz") String corpBiz) throws Exception {
+    public ResponseEntity<ResponseVO> companyDetail(
+    		@RequestBody Map<String, String> data) throws Exception {
+    	
+    	System.out.println("사업자번호 확인 = " + data.get("corpBiz"));
+    	String corpBiz = data.get("corpBiz");
+    	
+    	CompanyVO companyVO = memberService.selectCompanyKey(corpBiz);
+    	
+    	System.out.println("companyVO 값 = " + companyVO.toString());
+    	List<CompanyVO> companyList = new ArrayList<CompanyVO>();
+    	companyList.add(companyVO);
+    	
+    	ResponseVO responseVO = new ResponseVO();
+    	responseVO.setHttpStatus(HttpStatus.OK);
+    	responseVO.setResult(companyList);
+    	
+    	return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+    }
+    
+    @RequestMapping("/member/memberInsert")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> memberInsert(@RequestBody MemberVO memberVO) throws Exception {
+    	
+    	System.out.println(">>>>입력값  =  " + memberVO.toString());
+    	
+    	// 1. 입력한 비밀번호 암호화
+    	String enpassword = EgovFileScrty.encryptPassword(memberVO.getPassword(), memberVO.getId());
+    	
+    	// 2. 암호화한 비밀번호 재설정
+    	memberVO.setPassword(enpassword);
+    	
+    	memberService.insertMember(memberVO);
     	
     	
+    	ResponseVO responseVO = new ResponseVO();
+    	responseVO.setHttpStatus(HttpStatus.OK);
+    	responseVO.setMessage("등록 완료");
     	
-    	return ResponseEntity.ok("");
+    	return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
     }
     
 

@@ -25,6 +25,7 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	public Map<String, Object> selectCompanyList(CompanyVO companyVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		
 		map.put("resultList", companyDao.selectCompanyList(companyVO));
 		map.put("resultCnt", companyDao.selectCompanyListCnt(companyVO));
 		
@@ -42,5 +43,10 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 		return companyDao.selectCompany();
 	}
 
+    // 업체 등록 메서드 추가
+    @Override
+    public void insertCompany(CompanyVO companyVO) {
+        companyDao.insertCompany(companyVO);
+    }
 	
 }

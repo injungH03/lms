@@ -3,12 +3,10 @@ package atos.lms.member.service;
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
-public class MemberVO extends MemberMasterVO implements GeneralModel {
+public class MemberDTO implements GeneralModel {
 	
 	private String id;
-	private String password;
 	private String name;
-	private String gender;
 	private String birthdate;
 	private String phoneNo;
 	private String zipcode;
@@ -20,38 +18,28 @@ public class MemberVO extends MemberMasterVO implements GeneralModel {
 	private String position;
 	private String email;
 	
+	private String companybizRegNo; //사업자번호
+	private String corpName; //법인명(사업자명)
+	private String repName; //대표자명
+	private String bizType; //업태
+	private String bizItem; //종목
+	private String companyPhoneNo; //대표전화번호
+	private String companyZipcode; //회사우편번호
+	private String companyAddr1; //주소1
+	private String companyAddr2; //주소2
 	
 	
-	@Override
-	public String toString() {
-		return "MemberVO [id=" + id + ", password=" + password + ", name=" + name + ", gender=" + gender
-				+ ", birthdate=" + birthdate + ", phoneNo=" + phoneNo + ", zipcode=" + zipcode + ", addr1=" + addr1
-				+ ", addr2=" + addr2 + ", bizRegNo=" + bizRegNo + ", status=" + status + ", department=" + department
-				+ ", position=" + position + ", email=" + email + "]";
-	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 	public String getBirthdate() {
 		return birthdate;
@@ -95,23 +83,15 @@ public class MemberVO extends MemberMasterVO implements GeneralModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-
 	public String getDepartment() {
 		return department;
 	}
-
-
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-
-
 	public String getPosition() {
 		return position;
 	}
-
-
 	public void setPosition(String position) {
 		this.position = position;
 	}
@@ -121,8 +101,62 @@ public class MemberVO extends MemberMasterVO implements GeneralModel {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-	
+	public String getCompanybizRegNo() {
+		return companybizRegNo;
+	}
+	public void setCompanybizRegNo(String companybizRegNo) {
+		this.companybizRegNo = companybizRegNo;
+	}
+	public String getCorpName() {
+		return corpName;
+	}
+	public void setCorpName(String corpName) {
+		this.corpName = corpName;
+	}
+	public String getRepName() {
+		return repName;
+	}
+	public void setRepName(String repName) {
+		this.repName = repName;
+	}
+	public String getBizType() {
+		return bizType;
+	}
+	public void setBizType(String bizType) {
+		this.bizType = bizType;
+	}
+	public String getBizItem() {
+		return bizItem;
+	}
+	public void setBizItem(String bizItem) {
+		this.bizItem = bizItem;
+	}
+	public String getCompanyPhoneNo() {
+		return companyPhoneNo;
+	}
+	public void setCompanyPhoneNo(String companyPhoneNo) {
+		this.companyPhoneNo = companyPhoneNo;
+	}
+	public String getCompanyZipcode() {
+		return companyZipcode;
+	}
+	public void setCompanyZipcode(String companyZipcode) {
+		this.companyZipcode = companyZipcode;
+	}
+	public String getCompanyAddr1() {
+		return companyAddr1;
+	}
+	public void setCompanyAddr1(String companyAddr1) {
+		this.companyAddr1 = companyAddr1;
+	}
+	public String getCompanyAddr2() {
+		return companyAddr2;
+	}
+	public void setCompanyAddr2(String companyAddr2) {
+		this.companyAddr2 = companyAddr2;
+	}
 
+	
+	
+	
 }

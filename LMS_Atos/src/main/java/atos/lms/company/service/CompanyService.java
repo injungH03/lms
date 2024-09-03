@@ -11,5 +11,7 @@ public interface CompanyService {
 
 	List<CompanyMasterVO> selectCompany();
 	
+    // 업체 등록 메서드 추가
+    void insertCompany(CompanyVO companyVO);
 
 }

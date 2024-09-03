@@ -18,7 +18,9 @@
 			<if test="searchCnd == 1">
 				AND a.TRAIN_MANAGER LIKE CONCAT ('%', #{searchWrd},'%')
 			</if>
-
+			<if test="searchCnd == 2">
+				AND a.BIZ_REG_NO LIKE CONCAT ('%', #{searchWrd},'%')
+			</if>
 		</trim>
 	</sql>
 
@@ -45,13 +47,14 @@
 		parameterType="atos.lms.company.service.CompanyVO"
 		resultType="atos.lms.company.service.CompanyVO">
 		SELECT
-			a.BIZ_REG_NO AS bizRegNo,
-			a.CORP_NAME AS corpName,
-			a.REP_NAME AS repName,
-			a.EMP_COUNT AS empCount,
-			a.TRAIN_MANAGER AS trainManager,
-			a.STATUS AS status,
-			a.REG_DATE AS regDate
+			a.BIZ_REG_NO,
+			a.CORP_NAME,
+			a.REP_NAME,
+			a.EMP_COUNT,
+			a.TRAIN_MANAGER,
+			a.STATUS,
+			b.NAME AS statusName,
+			a.REG_DATE
 		FROM
 			ATOS_COMPANY a
 		LEFT JOIN
@@ -63,7 +66,6 @@
 	</select>
 
 
-
 	<select id="selectCompanyListCnt"
 		parameterType="atos.lms.company.service.CompanyVO"
 		resultType="java.lang.Integer">
@@ -73,5 +75,62 @@
 			ATOS_COMPANY a
 		<include refid="whereClause" />
 	</select>
+	
+<insert id="insertCompany" parameterType="atos.lms.company.service.CompanyVO">
+    INSERT INTO ATOS_COMPANY (
+        BIZ_REG_NO,
+        CORP_NAME,
+        REP_NAME,
+        BIZ_TYPE,
+        BIZ_ITEM,
+        PHONE_NO,
+        FAX_NO,
+        TAX_INVOICE,
+        EMP_COUNT,
+        TRAIN_COUNT, 
+        TRAIN_MANAGER,
+        TRAIN_EMAIL,
+        TRAIN_PHONE,
+        TAX_MANAGER,
+        TAX_EMAIL,
+        TAX_PHONE,
+        STATUS,
+        MEMO,
+        REG_DATE,
+        ZIPCODE,
+        ADDR1,
+        ADDR2
+    ) VALUES (
+        #{bizRegNo},
+        #{corpName},
+        #{repName},
+        #{bizType},
+        #{bizItem},
+        #{phoneNo},
+        #{faxNo},
+        #{taxInvoice},
+        #{empCount},
+        #{trainCount}, 
+        #{trainManager},
+        #{trainEmail},
+        #{trainPhone},
+        #{taxManager},
+        #{taxEmail},
+        #{taxPhone},
+        <choose>
+            <when test="status != null and status != ''">
+                #{status}
+            </when>
+            <otherwise>
+                '1001' <!-- 기본값 설정 -->
+            </otherwise>
+        </choose>,
+        #{memo},
+        #{regDate},
+        #{zipcode},
+        #{addr1},
+        #{addr2}
+    )
+</insert>
 
 </mapper>

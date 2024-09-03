@@ -9,10 +9,14 @@ import javax.annotation.Resource;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyService;
@@ -66,8 +70,34 @@ public class CompanyController {
     	model.addAttribute("status", status);
     	model.addAttribute("company", company);
     	
-		
+    	System.out.println("resultList: " + map.get("resultList"));
+    	
+    	
 		return "company/companyList";
 	}
 
+	
+	
+    // 등록 페이지로 이동하는 메서드
+    @RequestMapping("/company/CompanyRegistView.do")
+    public String companyRegistView(@ModelAttribute("companySearchVO") CompanyVO companyVO, ModelMap model) throws Exception {
+        List<CompanyMasterVO> company = companyService.selectCompany();
+        model.addAttribute("company", company);
+
+        return "company/companyRegist";  // 등록 페이지의 JSP 파일 경로에 맞게 수정 필요
+    }
+
+ // 등록 처리 메서드 추가
+    @RequestMapping(value = "/company/registerCompany.do", method = RequestMethod.POST)
+    public String registerCompany(@ModelAttribute("companyVO") CompanyVO companyVO, ModelMap model) throws Exception {
+       
+    	
+    	// 입력된 데이터를 DB에 저장
+        companyService.insertCompany(companyVO);
+
+        // 등록 후 리스트 페이지로 리다이렉트
+        return "redirect:/company/companyList.do";
+    }
+
+    
 }

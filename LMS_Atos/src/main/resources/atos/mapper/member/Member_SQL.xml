@@ -14,11 +14,12 @@
 			</if>
 			
 			<if test="searchCnd == 0">
-					AND a.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+				AND a.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 			<if test="searchCnd == 1">
-					AND a.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
-			</if>	
+				AND a.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			AND a.STATUS != '1005'	
 
 		</trim>
 	</sql>
@@ -62,6 +63,32 @@
 		<include refid="whereClause" />
 	</select>
 	
+	<select id="selectCompanyKey" parameterType="String" resultType="atos.lms.member.service.CompanyVO">
+		SELECT 
+			BIZ_REG_NO, CORP_NAME, REP_NAME, BIZ_TYPE, BIZ_ITEM, PHONE_NO, ADDR1, ADDR2
+		FROM
+			ATOS_COMPANY
+		WHERE BIZ_REG_NO = #{corpBiz}
+	</select>
+	
+	<select id="selectMemberKey" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberDTO">
+	SELECT 
+		  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
+		, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
+		, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
+		, B.BIZ_REG_NO AS companybizRegNo
+		, B.PHONE_NO AS companyPhoneNo
+		, B.ZIPCODE AS companyZipcode
+		, B.ADDR1 AS companyAddr1
+		, B.ADDR2 AS companyAddr2
+	FROM
+		ATOS_STUDENT A 
+	INNER JOIN 
+		ATOS_COMPANY B
+	ON A.BIZ_REG_NO = B.BIZ_REG_NO
+	WHERE A.ID = #{id}
+	</select>
+	
 	<update id="updateStatus">
 		UPDATE ATOS_STUDENT
 		SET STATUS = #{status}
@@ -70,5 +97,15 @@
 			#{id}
 		</foreach>
 	</update>
+	
+
+	<insert id="insertMember">
+		INSERT INTO ATOS_STUDENT
+			(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, ZIPCODE, ADDR1, ADDR2, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
+		VALUES
+			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, #{addr1}, #{addr2}, #{email}, #{bizRegNo}, '1002', #{department}, #{position})
+	
+	</insert>
+
 	
 </mapper>
