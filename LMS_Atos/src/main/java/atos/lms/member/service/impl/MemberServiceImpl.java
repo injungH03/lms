@@ -66,6 +66,11 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		return memberDao.selectMemberKey(memberVO);
 	}
 
+	@Override
+	public void deleteMember(MemberVO memberVO) {
+		memberDao.deleteMember(memberVO);
+	}
+
 
 	
 	

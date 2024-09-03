@@ -104,8 +104,13 @@
 			(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, ZIPCODE, ADDR1, ADDR2, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
 		VALUES
 			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, #{addr1}, #{addr2}, #{email}, #{bizRegNo}, '1002', #{department}, #{position})
-	
 	</insert>
+	
+	<update id="deleteMember">
+		UPDATE ATOS_STUDENT
+		SET STATUS = '1005'
+		WHERE ID = #{id}
+	</update>
 
 	
 </mapper>

@@ -19,5 +19,7 @@ public interface MemberService {
 	
 	void insertMember(MemberVO memberVO);
 	
+	void deleteMember(MemberVO memberVO);
+	
 
 }

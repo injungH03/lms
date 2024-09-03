@@ -45,5 +45,9 @@ public class MemberDAO extends EgovComAbstractDAO {
 	public void insertMember(MemberVO memberVO) {
 		insert("member.insertMember", memberVO);
 	}
+	
+	public void deleteMember(MemberVO memberVO) {
+		update("member.deleteMember", memberVO);
+	}
 
 }

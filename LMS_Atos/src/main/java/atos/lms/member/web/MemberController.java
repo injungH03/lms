@@ -81,7 +81,6 @@ public class MemberController {
     public String memberDetail(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
     	
     	System.out.println("넘어온 데이터  = " + memberVO);
-    	System.out.println("페이징사이즈 = " + memberVO.getPageSize());
     	
     	model.addAttribute("member", memberService.selectMemberKey(memberVO));
     	
@@ -92,7 +91,6 @@ public class MemberController {
     public String memberUpdateView(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
     	
     	System.out.println("넘어온 데이터  = " + memberVO);
-    	System.out.println("페이징사이즈 = " + memberVO.getPageSize());
     	
     	List<MemberMasterVO> company = memberService.selectCompany();
     	model.addAttribute("company", company);
@@ -100,7 +98,18 @@ public class MemberController {
     	return "member/memberUpdt";
     }
     
-    
+    @RequestMapping("/member/memberDelete")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> memberDelete(@RequestBody MemberVO memberVO) throws Exception {
+    	
+    	memberService.deleteMember(memberVO);
+    	
+    	ResponseVO responseVO = new ResponseVO();
+    	responseVO.setHttpStatus(HttpStatus.OK);
+    	responseVO.setMessage("삭제 완료");
+    	
+    	return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+    }
     
     @RequestMapping("/member/updateStatus")
     @ResponseBody
