@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
+import atos.lms.member.service.CompanyVO;
+import atos.lms.member.service.MemberDTO;
 import atos.lms.member.service.MemberMasterVO;
 import atos.lms.member.service.MemberService;
 import atos.lms.member.service.MemberVO;
@@ -47,6 +49,21 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		memberMasterVO.setStatus(status);
 		
 		memberDao.updateStatus(memberMasterVO);
+	}
+
+	@Override
+	public CompanyVO selectCompanyKey(String corpBiz) {
+		return memberDao.selectCompanyKey(corpBiz);
+	}
+
+	@Override
+	public void insertMember(MemberVO memberVO) {
+		memberDao.insertMember(memberVO);
+	}
+
+	@Override
+	public MemberDTO selectMemberKey(MemberVO memberVO) {
+		return memberDao.selectMemberKey(memberVO);
 	}
 
 

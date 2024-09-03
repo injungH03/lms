@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+.content {
+	grid-area: content;
+	padding: 20px;
+	background-color: #f9f9f9;
+}
+
+.content h1 {
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+.info-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.info-table th, .info-table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.info-table th {
+	background-color: #f2f2f2;
+	text-align: left;
+}
+
+.button-container {
+/* 	display: flex;
+	justify-content: flex-end; */
+	margin-top: 20px;
+}
+
+.deletebutton {
+	float:right;
+}
+
+.button-container button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.button-container .cancel-btn {
+	background-color: #f44336;
+}
+.membertable td {
+	width:30%;
+}
+.membertable th {
+	width:10%;
+}
+.companytable th {
+	width:10%;
+}
+.companytable td {
+	width:30%;
+}
