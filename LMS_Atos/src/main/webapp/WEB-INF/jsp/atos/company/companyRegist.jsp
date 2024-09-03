@@ -98,6 +98,27 @@ $(document).ready(function() {
         }
     });
 
+    // 사업자등록번호 중복 체크
+    $('#bizRegNo').on('change', function() {
+        var bizRegNo = $(this).val();
+        $.ajax({
+            url: '<c:url value="/company/checkDuplicateBizRegNo" />',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ bizRegNo: bizRegNo }),
+            success: function(response) {
+                if (response.duplicate) {
+                    alert("이미 존재하는 사업자등록번호입니다.");
+                    $('#bizRegNo').val('').focus(); // 사업자등록번호 필드를 비우고 포커스를 줌
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('중복 체크 중 오류 발생:', textStatus, errorThrown);
+            }
+        });
+    });
+    
+    
     // 주소 검색 버튼 클릭 시
     $('#addressSearchButton').on('click', function() {
         new daum.Postcode({
@@ -109,7 +130,8 @@ $(document).ready(function() {
         }).open();
     });
 
-    $('#submitBtn').click(function() {
+    // 등록 버튼 클릭 이벤트
+/*     $('#submitBtn').click(function() {
         if ($("#registForm").valid()) {
             var formData = $('#registForm').serializeArray();
             var jsonData = {};
@@ -125,7 +147,7 @@ $(document).ready(function() {
                 success: function(response) {
                     var message = response.message || "등록이 완료되었습니다.";
                     alert(message);
-                    window.location.href = "<c:url value='/company/companyList.do'/>";
+                    window.location.href = "<c:url value='/company/companyList.do'/>";  // 업체 목록 페이지로 이동
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('등록 중 오류 발생:', textStatus, errorThrown);
@@ -133,9 +155,53 @@ $(document).ready(function() {
                 }
             });
         } else {
-            alert("유효성 검사를 통과하지 못했습니다. 입력 값을 확인해주세요.");
+            alert("필수 입력란을 확인해주세요.");
+        }
+    }); */
+    
+    
+    $('#submitBtn').click(function() {
+        if ($("#registForm").valid()) {
+            var formData = $('#registForm').serializeArray();
+            var jsonData = {};
+            $(formData).each(function(index, obj){
+                jsonData[obj.name] = obj.value;
+            });
+
+            $.ajax({
+                url: '<c:url value="/company/companyInsert" />',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(jsonData),
+                success: function(response) {
+                    console.log('등록 성공:', response);  // 디버깅 로그 추가
+                    var message = response.message || "등록이 완료되었습니다.";
+                    alert(message);
+                    window.location.href = "<c:url value='/company/companyList.do'/>";  // 업체 목록 페이지로 이동
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('등록 중 오류 발생:', textStatus, errorThrown);
+                    alert('등록이 실패하였습니다.');
+                }
+            });
+        } else {
+            alert("필수 입력란을 확인해주세요.");
         }
     });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 });
 </script>
 

@@ -1,5 +1,6 @@
 package atos.lms.company.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +22,6 @@ import atos.lms.common.ResponseVO;
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyService;
 import atos.lms.company.service.CompanyVO;
-import atos.lms.member.service.MemberVO;
-import egovframework.com.utl.sim.service.EgovFileScrty;
 
 @Controller
 public class CompanyController {
@@ -84,7 +83,7 @@ public class CompanyController {
 	}
 
 	
-	
+	/*
 	@RequestMapping("/company/companyInsert")
 	@ResponseBody
 	public ResponseEntity<ResponseVO> companyInsert(@RequestBody CompanyVO companyVO) throws Exception {
@@ -99,6 +98,42 @@ public class CompanyController {
 
 		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
+	*/
+	
+	@RequestMapping("/company/companyInsert")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> companyInsert(@RequestBody CompanyVO companyVO) throws Exception {
 
+	    System.out.println("companyInsert companyVO: " + companyVO);
+
+	    // 사업자등록번호 중복 체크
+	    if (companyService.isBizRegNoDuplicate(companyVO.getBizRegNo())) {
+	        ResponseVO responseVO = new ResponseVO();
+	        responseVO.setHttpStatus(HttpStatus.CONFLICT);
+	        responseVO.setMessage("이미 존재하는 사업자등록번호입니다.");
+
+	        return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	    }
+
+	    companyService.insertCompany(companyVO);
+
+	    ResponseVO responseVO = new ResponseVO();
+	    responseVO.setHttpStatus(HttpStatus.OK);
+	    responseVO.setMessage("등록 완료");
+
+	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+
+	@RequestMapping("/company/checkDuplicateBizRegNo")
+	@ResponseBody
+	public ResponseEntity<Map<String, Boolean>> checkDuplicateBizRegNo(@RequestBody Map<String, String> request) throws Exception {
+	    String bizRegNo = request.get("bizRegNo");
+	    boolean isDuplicate = companyService.isBizRegNoDuplicate(bizRegNo);
+
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("duplicate", isDuplicate);
+
+	    return ResponseEntity.ok(response);
+	}
 
 }

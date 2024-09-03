@@ -125,5 +125,10 @@
 	        #{addr2}
 	    )
 	</insert>
+	
+	
+	<select id="company.checkDuplicateBizRegNo" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM ATOS_COMPANY WHERE BIZ_REG_NO = #{bizRegNo}
+	</select>
 
 </mapper>

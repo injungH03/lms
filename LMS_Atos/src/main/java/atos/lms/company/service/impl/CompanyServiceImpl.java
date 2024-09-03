@@ -48,5 +48,12 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
     public void insertCompany(CompanyVO companyVO) {
         companyDao.insertCompany(companyVO);
     }
+    
+    
+    @Override
+    public boolean isBizRegNoDuplicate(String bizRegNo) {
+        int count = companyDao.checkDuplicateBizRegNo(bizRegNo);
+        return count > 0;
+    }
 	
 }
