@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import atos.lms.member.service.CompanyVO;
+import atos.lms.member.service.MemberDTO;
 import atos.lms.member.service.MemberMasterVO;
 import atos.lms.member.service.MemberVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -27,8 +29,21 @@ public class MemberDAO extends EgovComAbstractDAO {
 		return selectList("member.selectCompany");
 	}
 	
+	public CompanyVO selectCompanyKey(String corpBiz) {
+		return selectOne("member.selectCompanyKey", corpBiz);
+	}
+	
+	public MemberDTO selectMemberKey(MemberVO memberVO) {
+		return selectOne("member.selectMemberKey", memberVO);
+	}
+	
+	
 	public void updateStatus(MemberMasterVO memberMasterVO) {
 		update("member.updateStatus", memberMasterVO);
+	}
+	
+	public void insertMember(MemberVO memberVO) {
+		insert("member.insertMember", memberVO);
 	}
 
 }

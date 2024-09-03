@@ -11,8 +11,13 @@ public interface MemberService {
 	
 	List<MemberMasterVO> selectCompany();
 	
+	CompanyVO selectCompanyKey(String corpBiz);
+	
+	MemberDTO selectMemberKey(MemberVO memberVO);
+	
 	void updateStatus(String ids, String status);
 	
+	void insertMember(MemberVO memberVO);
 	
 
 }

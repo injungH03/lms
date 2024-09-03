@@ -22,6 +22,17 @@ function fn_egov_select_linkPage(pageNo){
 
     <!-- 검색 필터 부분 -->
     <div class="search_box">
+        <div>
+        <span>업체</span>        
+                <select id="group" name="corpBiz">
+                    <option value="">선택</option>
+                    <c:forEach var="company" items="${company }">
+                    	<option value="${company.corpBiz }" <c:if test="${company.corpBiz == searchVO.corpBiz}">selected</c:if>>
+                    		${company.corpName }
+                    	</option>
+                    </c:forEach>
+                </select>
+        </div>
     	<div>
     	<span>상태</span>
                 <select id="status" name="statusCode">
@@ -33,17 +44,7 @@ function fn_egov_select_linkPage(pageNo){
                     </c:forEach>
                 </select>
         </div>
-        <div>
-        <span>소속</span>        
-                <select id="group" name="corpBiz">
-                    <option value="">선택</option>
-                    <c:forEach var="company" items="${company }">
-                    	<option value="${company.corpBiz }" <c:if test="${company.corpBiz == searchVO.corpBiz}">selected</c:if>>
-                    		${company.corpName }
-                    	</option>
-                    </c:forEach>
-                </select>
-        </div>
+
         <div>
         <span>검색</span>       
                 <select name="searchCnd" title="검색 조건 선택">
@@ -91,11 +92,11 @@ function fn_egov_select_linkPage(pageNo){
         <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
             <tr>
                 <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-                <td>${resultInfo.id }</td>
-                <td>${resultInfo.name }</td>
-                <td>${resultInfo.phoneNo }</td>
-                <td>${resultInfo.corpName }</td>
-                <td>${resultInfo.statusName }</td>
+                <td class="left"><a href="<c:url value='/member/memberDetail.do' />?id=${resultInfo.id }&pageIndex=${searchVO.pageIndex}"><c:out value="${resultInfo.id }" /></a></td>
+                <td><c:out value="${resultInfo.name }" /></td>
+                <td><c:out value="${resultInfo.phoneNo }" /></td>
+                <td><c:out value="${resultInfo.corpName }" /></td>
+                <td><c:out value="${resultInfo.statusName }" /></td>
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.id }"></td>
             </tr>
         </c:forEach>

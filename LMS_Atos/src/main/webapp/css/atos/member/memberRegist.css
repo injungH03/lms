@@ -45,7 +45,7 @@
 }
 
 .left-input-address {
-	width:28%;
+	width:56%;;
 }
 .left-input-address {
 	margin-bottom:10px;
@@ -87,4 +87,7 @@ label.error {
 }
 #addressSearchButton {
     margin-left: 10px;
+}
+.cancel-btn {
+    background-color: #f44336;
 }
