@@ -131,4 +131,40 @@
     SELECT COUNT(*) FROM ATOS_COMPANY WHERE BIZ_REG_NO = #{bizRegNo}
 	</select>
 
+
+	<!-- 상세조회 -->
+	<select id="selectCompanyDetail" parameterType="string" resultType="atos.lms.company.service.CompanyVO">
+    SELECT 
+        BIZ_REG_NO,
+        CORP_NAME,
+        REP_NAME,
+        BIZ_TYPE,
+        BIZ_ITEM,
+        PHONE_NO,
+        FAX_NO,
+        TAX_INVOICE,
+        EMP_COUNT,
+        TRAIN_COUNT,
+        TRAIN_MANAGER,
+        TRAIN_EMAIL,
+        TRAIN_PHONE,
+        TAX_MANAGER,
+        TAX_EMAIL,
+        TAX_PHONE,
+        STATUS,
+        MEMO,
+        REG_DATE,
+        ZIPCODE,
+        ADDR1,
+        ADDR2
+    FROM
+        ATOS_COMPANY
+    WHERE
+        BIZ_REG_NO = #{bizRegNo}
+	</select>
+
+
+
+
+
 </mapper>

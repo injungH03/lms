@@ -83,47 +83,41 @@ public class CompanyController {
 	}
 
 	
-	/*
 	@RequestMapping("/company/companyInsert")
 	@ResponseBody
-	public ResponseEntity<ResponseVO> companyInsert(@RequestBody CompanyVO companyVO) throws Exception {
-		
-		System.out.println("companyInsert companyVO: " + companyVO);
-		
-		companyService.insertCompany(companyVO);
+	public ResponseEntity<ResponseVO> companyInsert(@RequestBody CompanyVO companyVO) {
+	    LOGGER.info("Entering companyInsert method with data: {}", companyVO);
 
-		ResponseVO responseVO = new ResponseVO();
-		responseVO.setHttpStatus(HttpStatus.OK);
-		responseVO.setMessage("등록 완료");
+	    try {
+	        if (companyService.isBizRegNoDuplicate(companyVO.getBizRegNo())) {
+	            LOGGER.warn("Duplicate business registration number detected: {}", companyVO.getBizRegNo());
 
-		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
-	}
-	*/
-	
-	@RequestMapping("/company/companyInsert")
-	@ResponseBody
-	public ResponseEntity<ResponseVO> companyInsert(@RequestBody CompanyVO companyVO) throws Exception {
+	            ResponseVO responseVO = new ResponseVO();
+	            responseVO.setHttpStatus(HttpStatus.CONFLICT);
+	            responseVO.setMessage("이미 존재하는 사업자등록번호입니다.");
+	            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	        }
 
-	    System.out.println("companyInsert companyVO: " + companyVO);
+	        companyService.insertCompany(companyVO);
 
-	    // 사업자등록번호 중복 체크
-	    if (companyService.isBizRegNoDuplicate(companyVO.getBizRegNo())) {
+	        LOGGER.info("Company insertion successful for: {}", companyVO.getBizRegNo());
 	        ResponseVO responseVO = new ResponseVO();
-	        responseVO.setHttpStatus(HttpStatus.CONFLICT);
-	        responseVO.setMessage("이미 존재하는 사업자등록번호입니다.");
-
+	        responseVO.setHttpStatus(HttpStatus.OK);
+	        responseVO.setMessage("등록 완료");
 	        return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+
+	    } catch (Exception e) {
+	        LOGGER.error("Error occurred during company insertion", e);
+	        ResponseVO responseVO = new ResponseVO();
+	        responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+	        responseVO.setMessage("서버 오류가 발생했습니다.");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseVO);
 	    }
-
-	    companyService.insertCompany(companyVO);
-
-	    ResponseVO responseVO = new ResponseVO();
-	    responseVO.setHttpStatus(HttpStatus.OK);
-	    responseVO.setMessage("등록 완료");
-
-	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
 
+	
+	
+	
 	@RequestMapping("/company/checkDuplicateBizRegNo")
 	@ResponseBody
 	public ResponseEntity<Map<String, Boolean>> checkDuplicateBizRegNo(@RequestBody Map<String, String> request) throws Exception {
@@ -135,5 +129,20 @@ public class CompanyController {
 
 	    return ResponseEntity.ok(response);
 	}
+	
+	
+	
+	@RequestMapping("/company/companyDetail.do")
+	public String companyDetail(@ModelAttribute("companySearchVO") CompanyVO companyVO, ModelMap model) throws Exception {
+	    // bizRegNo를 통해 서비스에서 상세 정보 조회
+	    CompanyVO companyDetail = companyService.selectCompanyDetail(companyVO.getBizRegNo());
+
+	    // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
+	    model.addAttribute("company", companyDetail);
+
+	    // 상세 조회 페이지로 이동
+	    return "company/companyDetail"; // 상세 조회 JSP 경로에 맞게 수정 필요
+	}
+	
 
 }

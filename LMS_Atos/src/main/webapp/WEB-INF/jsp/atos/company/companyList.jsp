@@ -65,7 +65,6 @@ function fn_egov_select_linkPage(pageNo){
 	    <div class="right-group">
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
 	        <button class="s_submit">EXCEL</button>
-	        <button class="s_submit">일괄등록</button>
 	        <button class="s_submit" onclick="location.href='<c:url value='/company/CompanyRegistView.do' />'">등록</button>
 	    </div>
     </div>
@@ -75,8 +74,8 @@ function fn_egov_select_linkPage(pageNo){
         <thead>
             <tr>
                 <th>번호</th>
-                <th class="board_th_link">등록일</th>
-                <th>회사명</th>
+                <th>등록일</th>
+                <th class="board_th_link">회사명</th>
                 <th>사업자등록번호</th>
                 <th>회원수</th>
                 <th>담당자</th>
@@ -89,8 +88,9 @@ function fn_egov_select_linkPage(pageNo){
             <tr>
                 <td><c:out value="${(companySearchVO.pageIndex-1) * companySearchVO.pageSize + status.count}"/></td>
                 <td>${resultInfo.regDate }</td>
-                <td>${resultInfo.corpName }</td>
-                <td>${resultInfo.bizRegNo }</td>
+				<td><a href="<c:url value='/company/companyDetail.do?bizRegNo=${resultInfo.bizRegNo}'/>">
+				${resultInfo.corpName} </a></td>
+				<td>${resultInfo.bizRegNo }</td>
                 <td>${resultInfo.empCount }</td>
                 <td>${resultInfo.trainManager }</td>
                 <td>${resultInfo.statusName }</td>
