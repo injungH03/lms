@@ -3,10 +3,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/company/companyRegist.css' />">
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 
 <script>
 $(document).ready(function() {
@@ -98,7 +100,7 @@ $(document).ready(function() {
     });
 
     // 사업자등록번호 중복 체크
-    $('#bizRegNo').on('change', function() {
+/*     $('#bizRegNo').on('change', function() {
         var bizRegNo = $(this).val();
         $.ajax({
             url: '<c:url value="/company/checkDuplicateBizRegNo" />',
@@ -116,6 +118,29 @@ $(document).ready(function() {
             }
         });
     });
+    
+     */
+    
+     $('#bizRegNo').on('blur', function() {
+    	    var bizRegNo = $(this).val();
+    	    if (bizRegNo === "") return;  // 입력이 비어 있는 경우, 중복 체크하지 않음
+    	    $.ajax({
+    	        url: '<c:url value="/company/checkDuplicateBizRegNo" />',
+    	        type: 'POST',
+    	        contentType: 'application/json',
+    	        data: JSON.stringify({ bizRegNo: bizRegNo }),
+    	        success: function(response) {
+    	            if (response.duplicate) {
+    	                alert("이미 존재하는 사업자등록번호입니다.");
+    	                $('#bizRegNo').val('').removeClass('is-invalid').next('.invalid-feedback').remove(); // 에러 메시지 제거
+    	                $('#bizRegNo').focus();
+    	            }
+    	        },
+    	        error: function(jqXHR, textStatus, errorThrown) {
+    	            console.error('중복 체크 중 오류 발생:', textStatus, errorThrown);
+    	        }
+    	    });
+    	});
 
  // 주소 검색 버튼 클릭 시
     $('#addressSearchButton').on('click', function() {
@@ -280,7 +305,7 @@ $(document).ready(function() {
         </div>
         <div class="mb-3">
             <button type="button" id="submitBtn" class="btn btn-success">등록</button>
-            <button type="reset" class="btn btn-secondary">취소</button>
+           <button type="button" class="btn btn-secondary" onclick="window.location.href='<c:url value='/company/companyList.do' />';">취소</button>
         </div>
     </form>
 </div>

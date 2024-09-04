@@ -3,7 +3,7 @@
 /* 전체 컨테이너 스타일 */
 .container {
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: rgb(255, 255, 255);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 900px;
@@ -30,7 +30,7 @@
 .form-control[readonly][required],
 .form-control[disabled][required],
 .form-control[readonly][disabled] {
-    background-color: #6c757d;
+    background-color: #f8f9fa;
     color: #6c757d;
 }
 
@@ -67,13 +67,14 @@
 /* 에러 메시지 스타일 */
 .invalid-feedback {
     font-size: 12px;
-    display: block; /* 에러 메시지 항상 표시 */
+   /*  display: block; */ /* 에러 메시지 항상 표시 */
     margin-top: 0.25rem; /* 에러 메시지 위 간격 */
 }
 
-/* 메모 텍스트 영역 크기 조정 가능하게 */
-textarea {
+
+#memo {
     resize: vertical;
+    height: 150px;
 }
 
 /* 헤딩 스타일 */
