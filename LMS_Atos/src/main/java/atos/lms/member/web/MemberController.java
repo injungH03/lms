@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import atos.lms.commons.utl.ResponseVO;
+import atos.lms.common.utl.ResponseVO;
 import atos.lms.member.service.CompanyVO;
 import atos.lms.member.service.MemberAllDTO;
 import atos.lms.member.service.MemberMasterVO;

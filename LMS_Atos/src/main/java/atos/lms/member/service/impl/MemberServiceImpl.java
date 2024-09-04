@@ -17,7 +17,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import atos.lms.commons.utl.ExcelUtil;
+import atos.lms.common.utl.ExcelUtil;
 import atos.lms.member.service.CompanyVO;
 import atos.lms.member.service.MemberAllDTO;
 import atos.lms.member.service.MemberDTO;

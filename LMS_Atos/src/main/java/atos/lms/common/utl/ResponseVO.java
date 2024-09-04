@@ -1,4 +1,4 @@
-package atos.lms.commons.utl;
+package atos.lms.common.utl;
 
 import java.util.List;
 
