@@ -2,9 +2,6 @@ package atos.lms.login.service;
 
 import egovframework.com.cmm.LoginVO;
 
-/**
- * LoginService 인터페이스는 로그인, 아이디 찾기, 비밀번호 찾기 등과 관련된 비즈니스 로직을 정의합니다.
- */
 public interface LoginService {
 	/**
 	 * 사용자의 로그인 정보를 처리하고, 로그인 결과를 반환합니다.
