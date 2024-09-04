@@ -1,4 +1,4 @@
-package atos.lms.commons.menu;
+package atos.lms.common.menu;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package atos.lms.commons.interceptor;
+package atos.lms.common.interceptor;
 
 import java.util.Map;
 
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import atos.lms.commons.menu.MenuItem;
-import atos.lms.commons.menu.MenuItemVO;
+import atos.lms.common.menu.MenuItem;
+import atos.lms.common.menu.MenuItemVO;
 
 public class MenuInterceptor implements HandlerInterceptor {
 
