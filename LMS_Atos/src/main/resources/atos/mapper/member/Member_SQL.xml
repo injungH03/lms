@@ -7,19 +7,19 @@
 	<sql id="whereClause">
 		<trim prefix="WHERE" prefixOverrides="AND">
 			<if test="statusCode != null and statusCode != ''">
-				AND a.STATUS = #{statusCode}
+				AND A.STATUS = #{statusCode}
 			</if>
 			<if test="corpBiz != null and corpBiz != ''">
-				AND a.BIZ_REG_NO = #{corpBiz}
+				AND A.BIZ_REG_NO = #{corpBiz}
 			</if>
 			
 			<if test="searchCnd == 0">
-				AND a.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+				AND A.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 			<if test="searchCnd == 1">
-				AND a.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+				AND A.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
-			AND a.STATUS != '1005'	
+			AND A.STATUS != '1005'	
 
 		</trim>
 	</sql>
@@ -43,14 +43,14 @@
 
 	<select id="selectMemberList" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberVO">
 		SELECT
-			a.ID, a.NAME, a.PHONE_NO, a.BIZ_REG_NO, a.STATUS, c.CORP_NAME, b.NAME as statusName
+			A.ID, A.NAME, A.PHONE_NO, A.BIZ_REG_NO, A.STATUS, C.CORP_NAME, B.NAME AS STATUSNAME
 		FROM
-			ATOS_STUDENT a
-		LEFT JOIN ATOS_STATUS b
-			ON a.STATUS = b.CODE
+			ATOS_STUDENT A
+		LEFT JOIN ATOS_STATUS B
+			ON A.STATUS = B.CODE
 		LEFT JOIN
-			ATOS_COMPANY c
-		ON a.BIZ_REG_NO = c.BIZ_REG_NO	
+			ATOS_COMPANY C
+		ON A.BIZ_REG_NO = C.BIZ_REG_NO	
 		<include refid="whereClause" />				
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>	
@@ -72,22 +72,41 @@
 	</select>
 	
 	<select id="selectMemberKey" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberDTO">
-	SELECT 
-		  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
-		, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
-		, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
-		, B.BIZ_REG_NO AS companybizRegNo
-		, B.PHONE_NO AS companyPhoneNo
-		, B.ZIPCODE AS companyZipcode
-		, B.ADDR1 AS companyAddr1
-		, B.ADDR2 AS companyAddr2
-	FROM
-		ATOS_STUDENT A 
-	INNER JOIN 
-		ATOS_COMPANY B
-	ON A.BIZ_REG_NO = B.BIZ_REG_NO
-	WHERE A.ID = #{id}
+		SELECT 
+			  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
+			, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
+			, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
+			, B.BIZ_REG_NO AS companybizRegNo
+			, B.PHONE_NO AS companyPhoneNo
+			, B.ZIPCODE AS companyZipcode
+			, B.ADDR1 AS companyAddr1
+			, B.ADDR2 AS companyAddr2
+		FROM
+			ATOS_STUDENT A 
+		INNER JOIN 
+			ATOS_COMPANY B
+		ON A.BIZ_REG_NO = B.BIZ_REG_NO
+		WHERE A.ID = #{id}
 	</select>
+	
+	<select id="selectMemberListExcel" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberExcelVO">
+		SELECT 
+			  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
+			, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
+			, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
+			, B.BIZ_REG_NO AS companybizRegNo
+			, B.PHONE_NO AS companyPhoneNo
+			, B.ZIPCODE AS companyZipcode
+			, B.ADDR1 AS companyAddr1
+			, B.ADDR2 AS companyAddr2
+		FROM
+			ATOS_STUDENT A 
+		left JOIN 
+			ATOS_COMPANY B
+		ON A.BIZ_REG_NO = B.BIZ_REG_NO
+		<include refid="whereClause" />
+	</select>
+	
 	
 	<update id="updateStatus">
 		UPDATE ATOS_STUDENT
@@ -105,6 +124,22 @@
 		VALUES
 			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, #{addr1}, #{addr2}, #{email}, #{bizRegNo}, '1002', #{department}, #{position})
 	</insert>
+	
+	<update id="updateMember">
+		UPDATE ATOS_STUDENT
+		SET 
+			  NAME = #{name}
+			, BIRTHDATE = #{birthdate}
+			, PHONE_NO = #{phoneNo}
+			, ZIPCODE = #{zipcode}
+			, ADDR1 = #{addr1}
+			, ADDR2 = #{addr2}
+			, EMAIL = #{email}
+			, BIZ_REG_NO = #{bizRegNo}
+			, DEPARTMENT = #{department}
+			, POSITION = #{position}
+		WHERE ID = #{id}
+	</update>
 	
 	<update id="deleteMember">
 		UPDATE ATOS_STUDENT

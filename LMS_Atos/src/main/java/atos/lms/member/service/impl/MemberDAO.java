@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import atos.lms.member.service.CompanyVO;
 import atos.lms.member.service.MemberDTO;
+import atos.lms.member.service.MemberExcelVO;
 import atos.lms.member.service.MemberMasterVO;
 import atos.lms.member.service.MemberVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -37,6 +38,9 @@ public class MemberDAO extends EgovComAbstractDAO {
 		return selectOne("member.selectMemberKey", memberVO);
 	}
 	
+	public List<MemberExcelVO> selectMemberListExcel(MemberVO memberVO) {
+		return selectList("member.selectMemberListExcel", memberVO);
+	}
 	
 	public void updateStatus(MemberMasterVO memberMasterVO) {
 		update("member.updateStatus", memberMasterVO);
@@ -48,6 +52,10 @@ public class MemberDAO extends EgovComAbstractDAO {
 	
 	public void deleteMember(MemberVO memberVO) {
 		update("member.deleteMember", memberVO);
+	}
+	
+	public void updateMember(MemberVO memberVO) {
+		update("member.updateMember", memberVO);
 	}
 
 }

@@ -81,9 +81,6 @@
     transition: background-color 0.3s ease;
 }
 
-.member-management .btn-group .s_submit:hover {
-    background-color: #4cae4c;
-}
 
 /* 테이블 스타일 조정 */
 .member-management .board_list {

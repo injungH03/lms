@@ -51,7 +51,6 @@
 #addressSearchButton {
     padding: 10px 20px;
     margin-left: 10px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 6px;
@@ -72,7 +71,6 @@
 }
 
 .button-container button {
-    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 10px 20px;
