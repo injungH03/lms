@@ -42,8 +42,8 @@ $(document).ready(function() {
         }
     });
     
- // 사이드바 메뉴 클릭 시 활성화 처리
-    $('.sidebar .menu-group h3').click(function(event) {
+ 	// 사이드바 메뉴 클릭 시 활성화 처리
+    $('.sidebar .menu-group h3').off('click').click(function(event) {
         event.preventDefault(); // 기본 클릭 동작 방지
         event.stopPropagation(); // 이벤트 전파 방지
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
         var menuId = $(this).attr('id');
 
         // 현재 열려 있는 메뉴 토글
-        $submenu.stop(true, true).slideToggle();
+        // $submenu.stop(true, true).slideToggle();
 
         // 로컬 스토리지에 열린 메뉴 상태 저장
         if ($submenu.is(':visible')) {
@@ -66,6 +66,7 @@ $(document).ready(function() {
 
         localStorage.setItem('openMenus', JSON.stringify(openMenus));
     });
+ 
 
     // 헤더 메뉴 클릭 시 사이드바 메뉴를 활성화 처리
     $('.menu-link').off('click').on('click', function(e) {
