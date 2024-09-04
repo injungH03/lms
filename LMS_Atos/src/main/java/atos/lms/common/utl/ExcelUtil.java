@@ -1,4 +1,4 @@
-package atos.lms.commons.utl;
+package atos.lms.common.utl;
 
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
