@@ -209,7 +209,7 @@ $(document).ready(function() {
         <div class="form-row">
             <div class="form-group">
 				<label for="zipcode">우편번호*</label> <input type="text" id="zipcode" name="zipcode" class="left-input-address" placeholder="우편번호"
-					readonly /><button type="button" id="addressSearchButton">주소 검색</button><br /> 
+					readonly /><button type="button" class="btn btn-primary" id="addressSearchButton">주소 검색</button><br /> 
 				<label for="address">주소*</label> 
 					<input type="text" id="address" name="addr1" class="left-input-address" placeholder="주소를 검색해주세요" readonly />
 				<br /> 
@@ -268,7 +268,7 @@ $(document).ready(function() {
         </div>
 
         <div class="form-group">
-            <button type="button" id="submitBtn">등록</button>
+            <button type="button" class="btn btn-primary" id="submitBtn">등록</button>
             <button type="reset" class="cancel-btn" onclick="history.back();" style="background-color:#f44336;">취소</button>
         </div>
     </form>

@@ -9,22 +9,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="login.title" /></title>
 <!--  -->
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/uat/uia/login.css' />">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
-<!--  -->
-<style type="text/css">
-.header, .sidebar {
-	display: none;
-}
-
-body {
-	grid-template-areas:
-        "header header"
-        "content content";
-}
-</style>
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/login/login.css' />">
 <!--  -->
 <script type="text/javaScript">
 	// ----------------------------------------------------------------------------------------------------
@@ -137,6 +122,7 @@ body {
 		// 세가지 유형 클래스 비우기
 		document.getElementById("typeStu").className = "";
 		document.getElementById("typeIns").className = "";
+		document.getElementById("typeCom").className = "";
 		document.getElementById("typeAdm").className = "";
 		// 선택된 유형 적용
 		document.getElementById(objName).className = "on";
@@ -145,6 +131,8 @@ body {
 			document.loginForm.userSe.value = "STU";
 		} else if (objName == "typeIns") { // 강사
 			document.loginForm.userSe.value = "INS";
+		} else if (objName == "typeCom") { // 업체
+			document.loginForm.userSe.value = "COM";
 		} else if (objName == "typeAdm") { // 관리자
 			document.loginForm.userSe.value = "ADM";
 		}
@@ -196,6 +184,9 @@ body {
 		} else if (userSe == "INS") {
 			// 강사 회원가입 불필요 메시지 표시
 			alert("<spring:message code='login.validate.instructorCheck' />");
+		} else if (userSe == "COM") {
+			// 업체 회원가입 불필요 메시지 표시
+			alert("<spring:message code='login.validate.companyCheck' />");
 		} else if (userSe == "ADM") {
 			// 관리자 회원가입 불필요 메시지 표시
 			alert("<spring:message code='login.validate.administratorCheck' />");
@@ -223,12 +214,12 @@ body {
 		<form name="loginForm" id="loginForm" action="<c:url value='/login/actionLogin.do'/>" method="post" onsubmit="return actionLogin();">
 			<!-- 숨겨진 입력 필드 -->
 			<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>">
-			<input name="userSe" type="hidden" value="GNR" />
+			<input name="userSe" type="hidden" value="STU" />
 			<input name="j_username" type="hidden" />
 			<!--  -->
 			<fieldset>
 				<!-- 로고 -->
-				<img src="<c:url value='/images/atos/logo.png'/>" style="margin: 30px 0 0px 60px" alt="login title image" title="login title image">
+				<img class="logoImg" src="<c:url value='/images/atos/logo.png'/>" alt="login title image" title="login title image">
 				<!-- 사용자 유형 탭 -->
 				<div class="login_type">
 					<ul id="ulLoginType">
@@ -240,6 +231,11 @@ body {
 						<li>
 							<a href="#" onclick="fnLoginTypeSelect('typeIns'); return false;" id="typeIns" title="강사">
 								<spring:message code="login.loginForm.INS" />
+							</a>
+						</li>
+						<li>
+							<a href="#" onclick="fnLoginTypeSelect('typeCom'); return false;" id="typeCom" title="업체">
+								<spring:message code="login.loginForm.COM" />
 							</a>
 						</li>
 						<li>

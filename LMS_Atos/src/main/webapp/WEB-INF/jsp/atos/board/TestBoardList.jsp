@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/test/boardtest.css' />">
 <script>
 function fn_egov_select_linkPage(pageNo){
 	document.boardForm.pageIndex.value = pageNo;
