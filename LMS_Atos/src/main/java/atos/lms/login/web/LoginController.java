@@ -54,7 +54,7 @@ public class LoginController {
 			model.addAttribute("loginMessage", message);
 
 		// 로그인 페이지로 이동 - tiles 적용 안되도록 /atos 경로 추가
-		return "/atos/login/LoginUser";
+		return "atos/login/LoginUser";
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/login/IdPasswordSearch.do")
 	public String idPasswordSearchView(ModelMap model) throws Exception {
-		return "/atos/login/IdPasswordSearch";
+		return "atos/login/IdPasswordSearch";
 	}
 
 	/**
