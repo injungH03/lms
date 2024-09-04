@@ -11,7 +11,13 @@ public interface CompanyService {
 
 	List<CompanyMasterVO> selectCompany();
 	
-    // 업체 등록 메서드 추가
+    // 업체 등록
     void insertCompany(CompanyVO companyVO);
+    
+    // 사업자등록번호 중복검사
+    boolean isBizRegNoDuplicate(String bizRegNo);
+    
+    // 업체 상세 정보 조회 메서드 추가
+    CompanyVO selectCompanyDetail(String bizRegNo);
 
 }

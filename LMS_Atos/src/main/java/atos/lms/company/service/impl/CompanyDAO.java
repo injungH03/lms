@@ -32,5 +32,15 @@ public class CompanyDAO extends EgovComAbstractDAO {
     public void insertCompany(CompanyVO companyVO) {
         insert("company.insertCompany", companyVO);
     }
+    
+    public int checkDuplicateBizRegNo(String bizRegNo) {
+        return (Integer) selectOne("company.checkDuplicateBizRegNo", bizRegNo);
+    }
+    
+    public CompanyVO selectCompanyDetail(String bizRegNo) {
+        return selectOne("company.selectCompanyDetail", bizRegNo);
+    }
+    
+    
 
 }

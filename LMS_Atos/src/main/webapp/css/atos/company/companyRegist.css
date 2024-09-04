@@ -1,128 +1,89 @@
 @charset "UTF-8";
 
-/* 기본 레이아웃 설정 */
-.registration-container {
+/* 전체 컨테이너 스타일 */
+.container {
     padding: 20px;
-    background-color: #f0f4f7;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 0 auto; /* 가운데 정렬 */
-    font-family: Arial, sans-serif; /* 기본 폰트 설정 */
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 20px auto;
 }
 
-.form-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.form-table th,
-.form-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    vertical-align: middle;
-    text-align: left;
-    width: 50%;
-}
-
-/* 제목 스타일 */
-h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* 폼 요소 스타일 */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
+/* 폼 레이블과 입력 필드 정렬 */
+.col-form-label {
     font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
+    color: #495057;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: calc(100% - 20px);
-    padding: 8px;
-    border: 1px solid #ccc;
+.form-control {
     border-radius: 4px;
     font-size: 14px;
-    box-sizing: border-box;
+    height: 38px; /* 입력 필드와 버튼 높이 일치 */
+    padding: 5px 10px; /* 입력 필드 패딩 */
+    width: 100%; /* 입력 필드의 너비 조정 */
 }
 
-/* 읽기 전용 input 스타일 */
-.form-group input[readonly] {
-    background-color: #e9ecef;
+/* 읽기 전용, 비활성화된 필드 스타일, 필수 필드 스타일 */
+.form-control[readonly],
+.form-control:disabled,
+.form-control[readonly][required],
+.form-control[disabled][required],
+.form-control[readonly][disabled] {
+    background-color: #6c757d;
     color: #6c757d;
 }
 
+.mb-3.row.align-items-center {
+    align-items: start; /* 기존 align-items-center를 align-items-start로 변경 */
+}
+
+
 /* 버튼 스타일 */
-.form-group button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.form-group button[type="reset"] {
-    background-color: #ccc;
-    margin-left: 10px;
-}
-
-.form-group button:hover {
-    background-color: #45a049;
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+    height: 38px; /* 버튼 높이 입력 필드와 일치 */
+    display: inline-block; /* 인라인 블록으로 설정 */
 }
 
 /* 주소 검색 버튼 스타일 */
 #addressSearchButton {
-    margin-left: 10px;
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    height: 38px; /* 입력 필드와 버튼 높이 일치 */
+    font-size: 0.875rem; /* 글자 크기 설정 */
+    padding: 0 12px; /* 버튼 안쪽 여백 조정 */
+    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+    display: inline-block; /* 인라인 블록으로 설정하여 입력란과 같은 라인에 위치 */
+    vertical-align: top; /* 버튼을 상단 정렬 */
+    box-sizing: border-box; /* 패딩과 보더를 높이에 포함 */
 }
 
+/* 버튼 호버 시 스타일 */
 #addressSearchButton:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* 호버 시 색상 */
+    opacity: 0.9; /* 호버 시 약간 어둡게 */
 }
 
 /* 에러 메시지 스타일 */
-label.error {
-    color: red;
+.invalid-feedback {
     font-size: 12px;
-    margin-top: 5px;
-    display: block;
+    display: block; /* 에러 메시지 항상 표시 */
+    margin-top: 0.25rem; /* 에러 메시지 위 간격 */
 }
 
-/* 추가 스타일 설정 */
-.form-table {
-    display: table;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.table-row {
-    display: table-row;
-}
-
-.table-cell {
-    display: table-cell;
-    padding: 8px;
-    vertical-align: middle;
-}
-
+/* 메모 텍스트 영역 크기 조정 가능하게 */
 textarea {
-    resize: none; /* 세로 크기 조정 가능 */
-    width: calc(100% - 20px); /* 너비 조정 */
+    resize: vertical;
 }
 
+/* 헤딩 스타일 */
+h3 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* 버튼 그룹 정렬 */
+button[type="button"], button[type="reset"] {
+    margin-right: 10px;
+}

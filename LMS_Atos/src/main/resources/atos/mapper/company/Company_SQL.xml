@@ -76,8 +76,65 @@
 		<include refid="whereClause" />
 	</select>
 	
-<insert id="insertCompany" parameterType="atos.lms.company.service.CompanyVO">
-    INSERT INTO ATOS_COMPANY (
+	<insert id="insertCompany" parameterType="atos.lms.company.service.CompanyVO">
+	    INSERT INTO ATOS_COMPANY (
+	        BIZ_REG_NO,
+	        CORP_NAME,
+	        REP_NAME,
+	        BIZ_TYPE,
+	        BIZ_ITEM,
+	        PHONE_NO,
+	        FAX_NO,
+	        TAX_INVOICE,
+	        EMP_COUNT,
+	        TRAIN_COUNT, 
+	        TRAIN_MANAGER,
+	        TRAIN_EMAIL,
+	        TRAIN_PHONE,
+	        TAX_MANAGER,
+	        TAX_EMAIL,
+	        TAX_PHONE,
+	        STATUS,
+	        MEMO,
+	        REG_DATE,
+	        ZIPCODE,
+	        ADDR1,
+	        ADDR2
+	    ) VALUES (
+	        #{bizRegNo},
+	        #{corpName},
+	        #{repName},
+	        #{bizType},
+	        #{bizItem},
+	        #{phoneNo},
+	        #{faxNo},
+	        #{taxInvoice},
+	        #{empCount},
+	        #{trainCount}, 
+	        #{trainManager},
+	        #{trainEmail},
+	        #{trainPhone},
+	        #{taxManager},
+	        #{taxEmail},
+	        #{taxPhone},
+	        '1002',
+	        #{memo},
+	        NOW(), <!-- 현재 날짜와 시간으로 설정 -->
+	        #{zipcode},
+	        #{addr1},
+	        #{addr2}
+	    )
+	</insert>
+	
+	
+	<select id="company.checkDuplicateBizRegNo" parameterType="string" resultType="int">
+    SELECT COUNT(*) FROM ATOS_COMPANY WHERE BIZ_REG_NO = #{bizRegNo}
+	</select>
+
+
+	<!-- 상세조회 -->
+	<select id="selectCompanyDetail" parameterType="string" resultType="atos.lms.company.service.CompanyVO">
+    SELECT 
         BIZ_REG_NO,
         CORP_NAME,
         REP_NAME,
@@ -87,7 +144,7 @@
         FAX_NO,
         TAX_INVOICE,
         EMP_COUNT,
-        TRAIN_COUNT, 
+        TRAIN_COUNT,
         TRAIN_MANAGER,
         TRAIN_EMAIL,
         TRAIN_PHONE,
@@ -100,37 +157,14 @@
         ZIPCODE,
         ADDR1,
         ADDR2
-    ) VALUES (
-        #{bizRegNo},
-        #{corpName},
-        #{repName},
-        #{bizType},
-        #{bizItem},
-        #{phoneNo},
-        #{faxNo},
-        #{taxInvoice},
-        #{empCount},
-        #{trainCount}, 
-        #{trainManager},
-        #{trainEmail},
-        #{trainPhone},
-        #{taxManager},
-        #{taxEmail},
-        #{taxPhone},
-        <choose>
-            <when test="status != null and status != ''">
-                #{status}
-            </when>
-            <otherwise>
-                '1001' <!-- 기본값 설정 -->
-            </otherwise>
-        </choose>,
-        #{memo},
-        #{regDate},
-        #{zipcode},
-        #{addr1},
-        #{addr2}
-    )
-</insert>
+    FROM
+        ATOS_COMPANY
+    WHERE
+        BIZ_REG_NO = #{bizRegNo}
+	</select>
+
+
+
+
 
 </mapper>
