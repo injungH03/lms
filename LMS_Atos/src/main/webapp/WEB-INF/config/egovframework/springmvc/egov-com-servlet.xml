@@ -50,10 +50,10 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 
 	<!-- Auth Interceptor -->
-	<bean id="authInterceptor" class="atos.lms.commons.interceptor.AuthInterceptor" />
+	<bean id="authInterceptor" class="atos.lms.common.interceptor.AuthInterceptor" />
 	
 	<!-- Menu Interceptor -->
-	<bean id="menuInterceptor" class="atos.lms.commons.interceptor.MenuInterceptor" />
+	<bean id="menuInterceptor" class="atos.lms.common.interceptor.MenuInterceptor" />
 
 	<!-- Request Mapping Handler Mapping -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">

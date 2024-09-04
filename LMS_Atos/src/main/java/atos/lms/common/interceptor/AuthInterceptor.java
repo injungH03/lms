@@ -1,4 +1,4 @@
-package atos.lms.commons.interceptor;
+package atos.lms.common.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
