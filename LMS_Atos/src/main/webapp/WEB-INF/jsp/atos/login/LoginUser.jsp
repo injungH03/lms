@@ -9,10 +9,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="login.title" /></title>
 <!--  -->
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/login/login.css' />">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
 <!--  -->
 <script type="text/javaScript">
 	// ----------------------------------------------------------------------------------------------------

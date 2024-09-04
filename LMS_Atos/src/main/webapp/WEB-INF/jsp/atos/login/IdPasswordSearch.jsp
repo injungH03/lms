@@ -8,9 +8,31 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="login.idPw.title" /></title>
 <!--  -->
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/uat/uia/idpw.css' />">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/login/login.css' />">
 <!--  -->
 <script type="text/javascript">
+	//----------------------------------------------------------------------------------------------------
+	// 페이지 초기화 함수: 페이지 로드 시 실행되는 초기화 작업을 수행하는 함수
+	// ----------------------------------------------------------------------------------------------------
+
+	/* fnInit()
+	 *
+	 * 이 함수는 페이지가 로드될 때 실행됩니다. 
+	 * 사용자 유형 중 업체, 관리자 버튼 비활성화
+	 */
+	function fnInit() {
+		// 해당 요소들을 비활성화
+		document.getElementById('idCom').style.pointerEvents = 'none';
+		document.getElementById('idAdm').style.pointerEvents = 'none';
+		document.getElementById('pwCom').style.pointerEvents = 'none';
+		document.getElementById('pwAdm').style.pointerEvents = 'none';
+
+		// 비활성화된 요소의 스타일 변경 (비활성화된 것처럼 보이도록)
+		document.getElementById('idCom').style.color = 'darkgray';
+		document.getElementById('idAdm').style.color = 'darkgray';
+		document.getElementById('pwCom').style.color = 'darkgray';
+		document.getElementById('pwAdm').style.color = 'darkgray';
+	}
 	// ----------------------------------------------------------------------------------------------------
 	//사용자 유형 선택 함수: 아이디 및 비밀번호 찾기 페이지에서 사용자 유형을 선택하는 함수
 	// ----------------------------------------------------------------------------------------------------
@@ -25,14 +47,10 @@
 		if (userSe == "STU") { // 수강생
 			document.getElementById("idStu").className = "on";
 			document.getElementById("idIns").className = "";
-			document.getElementById("idCom").className = "";
-			document.getElementById("idAdm").className = "";
 			document.idForm.userSe.value = "STU";
 		} else if (userSe == "INS") { // 강사
 			document.getElementById("idStu").className = "";
 			document.getElementById("idIns").className = "on";
-			document.getElementById("idCom").className = "";
-			document.getElementById("idAdm").className = "";
 			document.idForm.userSe.value = "INS";
 		} else if (userSe == "COM") { // 업체
 			document.getElementById("idStu").className = "";
@@ -122,7 +140,7 @@
 	}
 </script>
 </head>
-<body>
+<body onLoad="fnInit();">
 	<!-- 자바스크립트 비활성화 경고  -->
 	<noscript class="noScriptTitle">
 		<spring:message code="common.noScriptTitle.msg" />
@@ -132,9 +150,6 @@
 		<!-- 아이디 찾기 -->
 		<fieldset class="id_search">
 			<form name="idForm" action="<c:url value='/login/searchId.do'/>" method="post">
-				<legend>
-					<spring:message code="login.idPw.searchId" />
-				</legend>
 				<h2>
 					<spring:message code="login.idPw.searchId" />
 				</h2>
@@ -187,9 +202,6 @@
 		<!-- 비밀번호 찾기 -->
 		<fieldset class="pw_search">
 			<form name="passwordForm" action="<c:url value='/login/searchPassword.do'/>" method="post">
-				<legend>
-					<spring:message code="login.idPw.searchPassword" />
-				</legend>
 				<h2>
 					<spring:message code="login.idPw.searchPassword" />
 				</h2>
