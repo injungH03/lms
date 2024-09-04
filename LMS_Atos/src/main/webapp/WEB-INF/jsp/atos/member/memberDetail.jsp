@@ -41,7 +41,7 @@
 		</tr>
 	</table>
 
-	<h2>회사정보</h2>
+	<h1>회사정보</h1>
 	<table class="info-table companytable">
 		<tr>
 			<th>사업자등록번호</th>
@@ -69,15 +69,21 @@
 	</table>
 
 	<div class="button-container">
-		<button type="button" id="updateButton">수정</button>
-		<button type="reset" class="cancel-btn" onclick="history.back();">취소</button>
-		<button type="reset" class="cancel-btn deletebutton" id="deleteButton">삭제</button>
+		<button type="button" class="btn btn-primary" id="updateButton">수정</button>
+		<button type="button" class="cancel-btn btn btn-danger" id="listButton">목록</button>
+		<button type="button" class="cancel-btn deletebutton btn btn-danger" id="deleteButton">삭제</button>
 	</div>
 </div>
 <script>
     $(document).ready(function() {
         $('#updateButton').click(function() {
-            window.location.href = "<c:url value='/member/memberUpdateView.do' />";
+        	const memId = '<c:out value="${member.id }" />';
+            window.location.href = "<c:url value='/member/memberUpdateView.do' />?id=" + memId;
+        });
+        
+        $('#listButton').click(function() {
+        	const pageIndex = '<c:out value="${searchVO.pageIndex }" />';
+        	window.location.href = "<c:url value='/member/memberList.do'/>?pageIndex=" + pageIndex;
         });
         
         $('#deleteButton').click(function() {

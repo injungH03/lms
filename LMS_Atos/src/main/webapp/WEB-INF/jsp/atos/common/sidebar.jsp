@@ -43,7 +43,7 @@ $(document).ready(function() {
     });
     
  // 사이드바 메뉴 클릭 시 활성화 처리
-    $('.sidebar .menu-group h3').click(function(event) {
+/*     $('.sidebar .menu-group h3').click(function(event) {
         event.preventDefault(); // 기본 클릭 동작 방지
         event.stopPropagation(); // 이벤트 전파 방지
 
@@ -65,7 +65,7 @@ $(document).ready(function() {
         }
 
         localStorage.setItem('openMenus', JSON.stringify(openMenus));
-    });
+    }); */
 
     // 헤더 메뉴 클릭 시 사이드바 메뉴를 활성화 처리
     $('.menu-link').off('click').on('click', function(e) {

@@ -10,6 +10,7 @@
 <head>
 <title>게시글 상세조회</title><!-- 게시글 상세조회 -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/test/boardtest.css' />">
 <script type="text/javascript">
 /* ********************************************************
  * 삭제처리

@@ -16,9 +16,9 @@ function fn_egov_select_linkPage(pageNo){
 }
 </script>
 <div class="board member-management">
-<form name="memberForm" action="<c:url value='/member/memberList.do'/>" method="post">
+<form name="memberForm" id="memberForm" action="<c:url value='/member/memberList.do'/>" method="post">
 
-    <h2>회원 관리</h2>
+    <h3>회원 목록</h3>
 
     <!-- 검색 필터 부분 -->
     <div class="search_box">
@@ -52,7 +52,7 @@ function fn_egov_select_linkPage(pageNo){
                     <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if>>이름</option>
                 </select>
                 <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" placeholder="텍스트를 입력해 주세요." value='<c:out value="${searchVO.searchWrd}"/>' maxlength="155">
-                <button type="submit" class="s_btn">검색</button>
+                <button type="submit" class="btn btn-primary">검색</button>
         </div> 
     </div>
 </form>
@@ -68,10 +68,10 @@ function fn_egov_select_linkPage(pageNo){
             </select> -->
         </div>
 	    <div class="right-group">
-	        <button class="s_submit" id="statusUpdate">상태변경</button>
-	        <button class="s_submit">EXCEL</button>
-	        <button class="s_submit">일괄등록</button>
-	        <button class="s_submit" id="regist">등록</button>
+	        <button class="btn btn-primary" id="statusUpdate">상태변경</button>
+	        <button class="btn btn-primary" id="excelDown">EXCEL</button>
+	        <button class="btn btn-primary" id="AllRegist">일괄등록</button>
+	        <button class="btn btn-primary" id="regist">등록</button>
 	    </div>
     </div>
 
@@ -155,6 +155,13 @@ $(document).ready(function() {
 		window.location.href = "<c:url value='/member/memberRegistView.do'/>";
 	});
 	
+	//일괄 등록 이동
+	$('#AllRegist').on('click', function() {
+		window.location.href = "<c:url value='/member/memberAllRegistView.do'/>";
+	});
+	
+	
+	
     // 전체 선택/해제 기능
     $('#checkAll').on('click', function() {
         $('tbody input[name="rowCheck"]').prop('checked', this.checked);
@@ -183,22 +190,22 @@ $(document).ready(function() {
         var selectedIds = [];
 
         $('tbody input[name="rowCheck"]:checked').each(function() {
-            var id = $(this).closest('tr').find('td:nth-child(2)').text(); // ID 값을 정확하게 가져오기
+            var id = $(this).closest('tr').find('td:nth-child(2)').text(); 
             selectedIds.push(id);
         });
 
         if (selectedIds.length > 0) {
-            // AJAX 요청으로 서버에 상태 변경 요청
+            
             $.ajax({
-                url: '/member/updateStatus', // 서버에서 상태를 업데이트하는 엔드포인트
+                url: '/member/updateStatus', 
                 method: 'POST',
                 data: {
-                    ids: selectedIds.join(','), // 배열을 문자열로 변환하여 전송
+                    ids: selectedIds.join(','), 
                     status: selectedStatus
                 },
                 success: function(response) {
                 	alert(response);
-                    location.reload(); // 페이지 새로고침하여 업데이트된 상태를 반영
+                    location.reload(); 
                 },
                 error: function() {
                     alert('서버와의 통신에 실패했습니다.');
@@ -211,5 +218,18 @@ $(document).ready(function() {
             alert("선택된 항목이 없습니다.");
         }
     });
+    
+    $('#excelDown').on('click', function(){
+        const memberForm = $('#memberForm');
+        const originalAction = memberForm.attr('action');
+
+        memberForm.attr('action', '/member/memberListExcelDown');
+
+        memberForm.submit();
+
+        memberForm.attr('action', originalAction);
+    });
+    
+    
 });
 </script>
