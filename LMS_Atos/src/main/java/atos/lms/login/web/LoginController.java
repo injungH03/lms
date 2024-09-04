@@ -20,7 +20,6 @@ import egovframework.com.utl.sim.service.EgovClntInfo;
 
 @Controller
 public class LoginController {
-
 	/** EgovMessageSource: 메시지 리소스를 관리하는 객체 */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
