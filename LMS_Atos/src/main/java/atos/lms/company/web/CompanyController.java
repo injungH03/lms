@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import atos.lms.common.ResponseVO;
+import atos.lms.commons.utl.ResponseVO;
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyService;
 import atos.lms.company.service.CompanyVO;
