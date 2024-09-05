@@ -17,7 +17,7 @@ $(document).ready(function() {
         rules: {
             corpName: {
                 required: true,
-                maxlength: 300
+                maxlength: 60
             },
             bizRegNo: {
                 required: true,
@@ -78,6 +78,7 @@ $(document).ready(function() {
             },
             taxInvoice: {
                 required: "이메일을 입력하세요.",
+                email: "유효한 이메일 주소를 입력하세요." 
             },
             zipcode: {
                 required: "우편번호를 검색하세요.",
@@ -91,6 +92,11 @@ $(document).ready(function() {
         },
         errorElement: 'div',
         errorClass: 'invalid-feedback',
+        errorPlacement: function(error, element) {
+            // 에러 메시지를 제거하고 한 번만 추가
+            $(element).next('div.invalid-feedback').remove(); 
+            error.insertAfter(element); // 에러 메시지를 입력 요소 다음에 추가
+        },
         highlight: function(element) {
             $(element).addClass('is-invalid');
         },
@@ -99,49 +105,58 @@ $(document).ready(function() {
         }
     });
 
-    // 사업자등록번호 중복 체크
-/*     $('#bizRegNo').on('change', function() {
-        var bizRegNo = $(this).val();
-        $.ajax({
-            url: '<c:url value="/company/checkDuplicateBizRegNo" />',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ bizRegNo: bizRegNo }),
-            success: function(response) {
-                if (response.duplicate) {
-                    alert("이미 존재하는 사업자등록번호입니다.");
-                    $('#bizRegNo').val('').focus();
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('중복 체크 중 오류 발생:', textStatus, errorThrown);
-            }
-        });
+    // 메모란의 글자 수 제한 기능 추가
+    $('#memo').on('input', function() {
+        var text = $(this).val();
+        var koreanCharCount = text.match(/[\u3131-\uD79D]/g)?.length || 0; // 한글 글자 수
+        var otherCharCount = text.length - koreanCharCount; // 한글 외 글자 수
+
+        // 한글은 1000자, 영문은 1500자 제한
+        var totalCharCount = koreanCharCount + otherCharCount;
+
+        if (koreanCharCount > 1000 || otherCharCount > 1500) {
+            alert('메모란은 한글 1000자, 영문 1500자로 제한됩니다.');
+            $(this).val(text.substring(0, totalCharCount - 1)); // 초과한 글자 수는 제거
+        }
     });
     
-     */
-    
-     $('#bizRegNo').on('blur', function() {
-    	    var bizRegNo = $(this).val();
-    	    if (bizRegNo === "") return;  // 입력이 비어 있는 경우, 중복 체크하지 않음
-    	    $.ajax({
-    	        url: '<c:url value="/company/checkDuplicateBizRegNo" />',
-    	        type: 'POST',
-    	        contentType: 'application/json',
-    	        data: JSON.stringify({ bizRegNo: bizRegNo }),
-    	        success: function(response) {
-    	            if (response.duplicate) {
-    	                alert("이미 존재하는 사업자등록번호입니다.");
-    	                $('#bizRegNo').val('').removeClass('is-invalid').next('.invalid-feedback').remove(); // 에러 메시지 제거
-    	                $('#bizRegNo').focus();
-    	            }
-    	        },
-    	        error: function(jqXHR, textStatus, errorThrown) {
-    	            console.error('중복 체크 중 오류 발생:', textStatus, errorThrown);
-    	        }
-    	    });
-    	});
 
+     // 사업자등록번호 중복 체크와 유효성 검사 통합
+     $('#bizRegNo').on('blur', function() {
+         var bizRegNo = $(this).val().trim(); // 공백 제거
+         $(this).val(bizRegNo); // 공백 제거 후 다시 설정
+
+         // 입력이 비어 있는 경우 유효성 검사와 AJAX 호출을 하지 않음
+         if (bizRegNo === "") {
+             $(this).removeClass('is-invalid').next('.invalid-feedback').remove();
+             return; // 유효성 검사 및 AJAX 호출 중지
+         }
+
+         // 유효성 검사 수동으로 초기화
+         if (!$("#registForm").validate().element('#bizRegNo')) {
+             return; // 유효하지 않으면 중복 체크를 하지 않음
+         }
+
+         // 중복 체크 AJAX 호출
+         $.ajax({
+             url: '<c:url value="/company/checkDuplicateBizRegNo" />',
+             type: 'POST',
+             contentType: 'application/json',
+             data: JSON.stringify({ bizRegNo: bizRegNo }),
+             success: function(response) {
+                 if (response.duplicate) {
+                     alert("이미 존재하는 사업자등록번호입니다.");
+                     $('#bizRegNo').val('').removeClass('is-invalid').next('.invalid-feedback').remove();
+                     $('#bizRegNo').focus();
+                 }
+             },
+             error: function(jqXHR, textStatus, errorThrown) {
+                 console.error('중복 체크 중 오류 발생:', textStatus, errorThrown);
+             }
+         });
+     });
+    	
+    	
  // 주소 검색 버튼 클릭 시
     $('#addressSearchButton').on('click', function() {
         new daum.Postcode({
@@ -187,6 +202,7 @@ $(document).ready(function() {
 </script>
 
 <div class="container mt-5">
+	<h2 class="mt-1" style="margin-bottom: 20px; border-bottom: 2px solid black;">업체 등록</h2>
     <form id="registForm" class="needs-validation" novalidate>
         <div class="mb-3">
             <label for="corpName" class="form-label">사업장명*</label>
@@ -277,7 +293,7 @@ $(document).ready(function() {
             <label for="memo" class="form-label">메모</label>
             <textarea id="memo" name="memo" class="form-control" rows="4" placeholder="메모를 입력하세요"></textarea>
         </div>
-        <h3 class="mt-4">교육 담당자</h3>
+        <h3 class="mt-4 mb-3">교육 담당자</h3>
         <div class="mb-3">
             <label for="trainManager" class="form-label">담당자명</label>
             <input type="text" id="trainManager" name="trainManager" class="form-control" placeholder="담당자명을 입력하세요">
@@ -290,7 +306,7 @@ $(document).ready(function() {
             <label for="trainPhone" class="form-label">휴대폰</label>
             <input type="tel" id="trainPhone" name="trainPhone" class="form-control" placeholder="휴대폰 번호를 입력하세요">
         </div>
-        <h3 class="mt-4">계산서 담당자</h3>
+        <h3 class="mt-4 mb-3">계산서 담당자</h3>
         <div class="mb-3">
             <label for="taxManager" class="form-label">담당자명</label>
             <input type="text" id="taxManager" name="taxManager" class="form-control" placeholder="담당자명을 입력하세요">

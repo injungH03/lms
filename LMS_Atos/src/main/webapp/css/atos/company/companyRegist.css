@@ -67,14 +67,13 @@
 /* 에러 메시지 스타일 */
 .invalid-feedback {
     font-size: 12px;
-   /*  display: block; */ /* 에러 메시지 항상 표시 */
     margin-top: 0.25rem; /* 에러 메시지 위 간격 */
 }
 
 
 #memo {
     resize: vertical;
-    height: 150px;
+    height: 200px;
 }
 
 /* 헤딩 스타일 */
@@ -87,4 +86,10 @@ h3 {
 /* 버튼 그룹 정렬 */
 button[type="button"], button[type="reset"] {
     margin-right: 10px;
+}
+
+h2.mt-1 {
+    margin-bottom: 20px; /* 제목과 아래 요소 사이의 여백 */
+    border-bottom: 2px solid black; /* 아래에 선 추가 */
+    padding-bottom: 10px; /* 텍스트와 선 사이의 여백 */
 }
