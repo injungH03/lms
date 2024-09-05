@@ -22,5 +22,6 @@ public interface CompanyService {
     
     void updateCompany(CompanyVO companyVO);
 
+    void deleteCompanyAndMembers(String bizRegNo);
 
 }

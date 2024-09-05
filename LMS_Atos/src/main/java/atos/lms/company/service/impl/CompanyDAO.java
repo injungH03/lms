@@ -45,5 +45,13 @@ public class CompanyDAO extends EgovComAbstractDAO {
         update("company.updateCompany", companyVO);
     }
 
+    public void deleteCompany(String bizRegNo) {
+        update("company.deleteCompany", bizRegNo);
+    }
+
+    public void deleteMembersByCompany(String bizRegNo) {
+        update("company.deleteMembersByCompany", bizRegNo);
+    }
+
 
 }

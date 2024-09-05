@@ -12,16 +12,16 @@
     <div class="company-details-grid">
         <!-- 각 항목에 대한 그리드 항목 -->
         <div class="company-detail-item">
-            <span class="label">사업자등록번호</span>
-            <span class="value"><c:out value="${company.bizRegNo}" /></span>
+            <span class="label">업체명</span>
+            <span class="value"><c:out value="${company.corpName}" /></span>
         </div>
         <div class="company-detail-item">
             <span class="label">대표자명</span>
             <span class="value"><c:out value="${company.repName}" /></span>
         </div>
         <div class="company-detail-item">
-            <span class="label">업체명</span>
-            <span class="value"><c:out value="${company.corpName}" /></span>
+            <span class="label">사업자등록번호</span>
+            <span class="value"><c:out value="${company.bizRegNo}" /></span>
         </div>
         <div class="company-detail-item">
             <span class="label">전화번호</span>
@@ -73,6 +73,40 @@
         </div>
     </div>
 
+    <!-- 교육 담당자 섹션 -->
+    <h5 class="mb-4 mt-4">교육 담당자</h5>
+    <div class="company-details-grid">
+        <div class="company-detail-item">
+            <span class="label">교육 담당자명</span>
+            <span class="value"><c:out value="${company.trainManager}" /></span>
+        </div>
+        <div class="company-detail-item">
+            <span class="label">교육 담당자 이메일</span>
+            <span class="value"><c:out value="${company.trainEmail}" /></span>
+        </div>
+        <div class="company-detail-item">
+            <span class="label">교육 담당자 휴대폰</span>
+            <span class="value"><c:out value="${company.trainPhone}" /></span>
+        </div>
+    </div>
+
+    <!-- 계산서 담당자 섹션 -->
+    <h5 class="mb-4 mt-4">계산서 담당자</h5>
+    <div class="company-details-grid">
+        <div class="company-detail-item">
+            <span class="label">계산서 담당자명</span>
+            <span class="value"><c:out value="${company.taxManager}" /></span>
+        </div>
+        <div class="company-detail-item">
+            <span class="label">계산서 담당자 이메일</span>
+            <span class="value"><c:out value="${company.taxEmail}" /></span>
+        </div>
+        <div class="company-detail-item">
+            <span class="label">계산서 담당자 휴대폰</span>
+            <span class="value"><c:out value="${company.taxPhone}" /></span>
+        </div>
+    </div>
+
     <!-- 버튼 영역 -->
     <div class="d-flex justify-content-end mt-3">
         <button type="button" class="btn btn-success me-2" id="updateButton">수정</button>
@@ -84,7 +118,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('updateButton').addEventListener('click', function() {
-            window.location.href = "<c:url value='/company/companyUpdateView.do' />";
+            var bizRegNo = '<c:out value="${company.bizRegNo}" />';
+            window.location.href = "<c:url value='/company/companyUpdateView.do' />?bizRegNo=" + bizRegNo;
         });
 
         document.getElementById('deleteButton').addEventListener('click', function() {
@@ -93,11 +128,16 @@
                 fetch('<c:url value="/company/deleteCompany" />', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                        'Content-Type': 'application/json'  // JSON 형식으로 수정
                     },
-                    body: new URLSearchParams({ bizRegNo: bizRegNo })
+                    body: JSON.stringify({ bizRegNo: bizRegNo })  // JSON 데이터로 변환하여 보냄
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();  // JSON 응답 파싱
+                })
                 .then(data => {
                     alert(data.message);
                     window.location.href = "<c:url value='/company/companyList.do' />";
@@ -109,12 +149,4 @@
             }
         });
     });
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('updateButton').addEventListener('click', function() {
-            var bizRegNo = '<c:out value="${company.bizRegNo}" />';
-            window.location.href = "<c:url value='/company/companyUpdateView.do' />?bizRegNo=" + bizRegNo;
-        });
-    });
-    
 </script>

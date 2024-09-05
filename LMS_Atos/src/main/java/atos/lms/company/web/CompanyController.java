@@ -171,5 +171,22 @@ public class CompanyController {
 	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
 	
+	
+	@RequestMapping("/company/deleteCompany")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> deleteCompany(@RequestBody CompanyVO companyVO) throws Exception {
+	    
+	    String bizRegNo = companyVO.getBizRegNo();  // 회사 정보에서 사업자등록번호 추출
+	    
+	    // 회사와 관련된 회원 모두 삭제 상태로 변경
+	    companyService.deleteCompanyAndMembers(bizRegNo);
+	    
+	    ResponseVO responseVO = new ResponseVO();
+	    responseVO.setHttpStatus(HttpStatus.OK);
+	    responseVO.setMessage("삭제 완료");
+	    
+	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+
 
 }

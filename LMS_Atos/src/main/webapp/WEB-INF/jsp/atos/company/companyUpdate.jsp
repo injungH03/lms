@@ -119,7 +119,18 @@ $(document).ready(function() {
         }
     });
 
-    // 등록 버튼 클릭 이벤트
+    // 주소 검색 버튼 클릭 시
+    $('#addressSearchButton').on('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                $('#zipcode').val(data.zonecode);
+                $('#addr1').val(data.address);
+                $('#addr2').prop('disabled', false).focus(); // 상세 주소 필드를 활성화하고 포커스를 줌
+            }
+        }).open();
+    });
+
+    // 수정 버튼 클릭 이벤트
     $('#submitBtn').click(function() {
         if ($("#registForm").valid()) {
             var formData = $('#registForm').serializeArray();
@@ -152,7 +163,7 @@ $(document).ready(function() {
 </script>
 
 <div class="container mt-5">
-	<h2 class="mt-1" style="margin-bottom: 20px; border-bottom: 2px solid black;">업체 수정</h2>
+    <h2 class="mt-1" style="margin-bottom: 20px; border-bottom: 2px solid black;">업체 수정</h2>
     <form id="registForm" class="needs-validation" novalidate>
         <div class="mb-3">
             <label for="corpName" class="form-label">사업장명*</label>
@@ -163,22 +174,22 @@ $(document).ready(function() {
         </div>
         <div class="mb-3">
             <label for="bizRegNo" class="form-label">사업자등록번호*</label>
-            <input type="text" id="bizRegNo" name="bizRegNo" class="form-control" value="<c:out value='${company.bizRegNo}' />" placeholder="사업자등록번호를 입력하세요" maxlength="10" required readonly>
+            <input type="text" id="bizRegNo" name="bizRegNo" class="form-control" value="<c:out value='${company.bizRegNo}' />" placeholder="사업자등록번호를 입력하세요" maxlength="10" readonly required>
             <div class="invalid-feedback">
                 사업자등록번호를 입력하세요.
             </div>
         </div>
         <!-- 우편번호 및 주소 검색 -->
-		<div class="mb-3 row align-items-start">
-		    <label for="zipcode" class="col-sm-2 col-form-label">우편번호*</label>
-		    <div class="col-sm-4">
-		        <input type="text" id="zipcode" name="zipcode" class="form-control" value="<c:out value='${company.zipcode}' />" placeholder="우편번호" readonly required>
-		    </div>
-		    <div class="col-sm-2 row align-items-center">
-		        <button type="button" id="addressSearchButton" class="btn btn-primary btn-sm w-85">주소 검색</button>
-		    </div>
-		</div>
-		<div class="mb-3 row">
+        <div class="mb-3 row align-items-start">
+            <label for="zipcode" class="col-sm-2 col-form-label">우편번호*</label>
+            <div class="col-sm-4">
+                <input type="text" id="zipcode" name="zipcode" class="form-control" value="<c:out value='${company.zipcode}' />" placeholder="우편번호" readonly required>
+            </div>
+            <div class="col-sm-2 row align-items-center">
+                <button type="button" id="addressSearchButton" class="btn btn-primary btn-sm w-85">주소 검색</button>
+            </div>
+        </div>
+        <div class="mb-3 row">
             <label for="addr1" class="col-sm-2 col-form-label">주소*</label>
             <div class="col-sm-8">
                 <input type="text" id="addr1" name="addr1" class="form-control" value="<c:out value='${company.addr1}' />" placeholder="주소를 검색해주세요" readonly required>

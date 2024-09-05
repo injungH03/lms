@@ -87,5 +87,23 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	    }
 	}
 
+	
+	@Override
+	public void deleteCompanyAndMembers(String bizRegNo) {
+	    LOGGER.info("Deleting company and related members for bizRegNo: {}", bizRegNo);
+	    try {
+	        // 회사의 상태를 '삭제'로 변경
+	        companyDao.deleteCompany(bizRegNo);
+	        
+	        // 해당 회사와 관련된 모든 회원의 상태를 '삭제'로 변경
+	        companyDao.deleteMembersByCompany(bizRegNo);
+	        
+	        LOGGER.info("Company and related members deleted successfully for bizRegNo: {}", bizRegNo);
+	    } catch (Exception e) {
+	        LOGGER.error("Error deleting company and members", e);
+	        throw e; // 예외를 다시 던져서 상위 레이어에 알림
+	    }
+	}
+
 
 }
