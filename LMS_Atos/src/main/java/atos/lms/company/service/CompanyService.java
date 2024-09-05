@@ -19,5 +19,8 @@ public interface CompanyService {
     
     // 업체 상세 정보 조회 메서드 추가
     CompanyVO selectCompanyDetail(String bizRegNo);
+    
+    void updateCompany(CompanyVO companyVO);
+
 
 }

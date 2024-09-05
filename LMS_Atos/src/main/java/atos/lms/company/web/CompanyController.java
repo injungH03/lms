@@ -131,7 +131,6 @@ public class CompanyController {
 	}
 	
 	
-	
 	@RequestMapping("/company/companyDetail.do")
 	public String companyDetail(@ModelAttribute("companySearchVO") CompanyVO companyVO, ModelMap model) throws Exception {
 	    // bizRegNo를 통해 서비스에서 상세 정보 조회
@@ -142,6 +141,34 @@ public class CompanyController {
 
 	    // 상세 조회 페이지로 이동
 	    return "company/companyDetail"; // 상세 조회 JSP 경로에 맞게 수정 필요
+	}
+	
+	
+	@RequestMapping("/company/companyUpdateView.do")
+	public String companyUpdateView(@ModelAttribute("companySearchVO") CompanyVO companyVO, ModelMap model) throws Exception {
+	    // 회사 정보를 조회하여 모델에 추가
+	    CompanyVO companyDetail = companyService.selectCompanyDetail(companyVO.getBizRegNo());
+	    model.addAttribute("company", companyDetail);
+	    return "company/companyUpdate"; // 수정 페이지의 JSP 파일 경로
+	}
+	
+	
+	@RequestMapping("/company/companyUpdate")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> companyUpdate(@RequestBody CompanyVO companyVO) throws Exception {
+	    
+	    LOGGER.info("Received company update request for: {}", companyVO);
+
+	    // 회사 정보 업데이트 수행
+	    companyService.updateCompany(companyVO);
+
+	    ResponseVO responseVO = new ResponseVO();
+	    responseVO.setHttpStatus(HttpStatus.OK);
+	    responseVO.setMessage("수정 완료");
+
+	    LOGGER.info("Company update successful for: {}", companyVO.getBizRegNo());
+	    
+	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
 	
 

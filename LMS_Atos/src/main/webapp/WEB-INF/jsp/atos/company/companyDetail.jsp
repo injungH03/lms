@@ -109,4 +109,12 @@
             }
         });
     });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('updateButton').addEventListener('click', function() {
+            var bizRegNo = '<c:out value="${company.bizRegNo}" />';
+            window.location.href = "<c:url value='/company/companyUpdateView.do' />?bizRegNo=" + bizRegNo;
+        });
+    });
+    
 </script>

@@ -41,6 +41,9 @@ public class CompanyDAO extends EgovComAbstractDAO {
         return selectOne("company.selectCompanyDetail", bizRegNo);
     }
     
-    
+    public void updateCompany(CompanyVO companyVO) {
+        update("company.updateCompany", companyVO);
+    }
+
 
 }

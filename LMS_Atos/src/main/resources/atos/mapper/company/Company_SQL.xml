@@ -164,7 +164,29 @@
 	</select>
 
 
-
+	<update id="updateCompany" parameterType="atos.lms.company.service.CompanyVO">
+	    UPDATE ATOS_COMPANY SET
+	        CORP_NAME = #{corpName},
+	        REP_NAME = #{repName},
+	        BIZ_TYPE = #{bizType},
+	        BIZ_ITEM = #{bizItem},
+	        PHONE_NO = #{phoneNo},
+	        FAX_NO = #{faxNo},
+	        TAX_INVOICE = #{taxInvoice},
+	        EMP_COUNT = #{empCount},
+	        TRAIN_COUNT = #{trainCount},
+	        TRAIN_MANAGER = #{trainManager},
+	        TRAIN_EMAIL = #{trainEmail},
+	        TRAIN_PHONE = #{trainPhone},
+	        TAX_MANAGER = #{taxManager},
+	        TAX_EMAIL = #{taxEmail},
+	        TAX_PHONE = #{taxPhone},
+	        MEMO = #{memo},
+	        ZIPCODE = #{zipcode},
+	        ADDR1 = #{addr1},
+	        ADDR2 = #{addr2}
+	    WHERE BIZ_REG_NO = #{bizRegNo}
+	</update>
 
 
 </mapper>

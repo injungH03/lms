@@ -74,5 +74,18 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	    // DAO를 통해 업체 상세 정보 가져오기
 	    return companyDao.selectCompanyDetail(bizRegNo);
 	}
+	
+	@Override
+	public void updateCompany(CompanyVO companyVO) {
+	    LOGGER.info("Updating company: {}", companyVO);
+	    try {
+	        companyDao.updateCompany(companyVO);
+	        LOGGER.info("Company updated successfully: {}", companyVO.getBizRegNo());
+	    } catch (Exception e) {
+	        LOGGER.error("Error updating company", e);
+	        throw e;
+	    }
+	}
+
 
 }
