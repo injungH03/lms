@@ -5,6 +5,9 @@
 
 	<sql id="whereClause">
 		<trim prefix="WHERE" prefixOverrides="AND">
+		     <!-- 삭제된 상태를 제외 -->
+        	AND a.STATUS != '1005'
+        	
 			<if test="statusCode != null and statusCode != ''">
 				AND a.STATUS = #{statusCode}
 			</if>

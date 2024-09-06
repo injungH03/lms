@@ -51,7 +51,7 @@ public class CompanyController {
 		System.out.println("companyList resultCnt: " + map.get("resultCnt"));
 
 		int totalcount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
-
+		
 		paginationInfo.setTotalRecordCount(totalcount);
 
 		List<CompanyMasterVO> status = companyService.selectStatusCode();

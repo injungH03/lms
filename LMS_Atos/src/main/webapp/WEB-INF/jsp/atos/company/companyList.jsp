@@ -9,19 +9,39 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-function fn_egov_select_linkPage(pageNo){
-	document.companyForm.pageIndex.value = pageNo;
-	document.companyForm.action = "<c:url value='/company/companyList.do'/>";
-   	document.companyForm.submit();
+/* 
+function fn_egov_select_linkPage(pageNo) {
+    // 페이지 인덱스 설정
+    document.companyForm.pageIndex.value = pageNo;
+    // 요청 전송
+    document.companyForm.action = "<c:url value='/company/companyList.do' />";
+    document.companyForm.submit();
+  
 }
+
+
 </script>
 <div class="board company-management">
 	<form name="companyForm" action="<c:url value='/company/companyList.do'/>" method="post">
 
-		<h2>업체 관리</h2>
+		<input type="hidden" name="pageIndex" value="${companySearchVO.pageIndex}">
+
+ 		<h3>업체 관리</h3>
 
 		<!-- 검색 필터 부분 -->
 		<div class="search_box">
+<%-- 		
+			<div>
+				<span>업체</span> <select id="group" name="corpBiz">
+					<option value="">선택</option>
+					<c:forEach var="company" items="${company }">
+						<option value="${company.corpBiz }"
+							<c:if test="${company.corpBiz == companySearchVO.corpBiz}">selected</c:if>>
+							${company.corpName }</option>
+					</c:forEach>
+				</select>
+			</div>	
+--%>
 			<div>
 				<span>상태</span> <select id="status" name="statusCode">
 					<option value="">선택</option>
@@ -29,16 +49,6 @@ function fn_egov_select_linkPage(pageNo){
 						<option value="${status.statusCode }"
 							<c:if test="${status.statusCode == companySearchVO.statusCode}">selected</c:if>>
 							${status.statusName }</option>
-					</c:forEach>
-				</select>
-			</div>
-			<div>
-				<span>소속</span> <select id="group" name="corpBiz">
-					<option value="">선택</option>
-					<c:forEach var="company" items="${company }">
-						<option value="${company.corpBiz }"
-							<c:if test="${company.corpBiz == companySearchVO.corpBiz}">selected</c:if>>
-							${company.corpName }</option>
 					</c:forEach>
 				</select>
 			</div>
