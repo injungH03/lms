@@ -5,6 +5,9 @@
 
 	<sql id="whereClause">
 		<trim prefix="WHERE" prefixOverrides="AND">
+		     <!-- 삭제된 상태를 제외 -->
+        	AND a.STATUS != '1005'
+        	
 			<if test="statusCode != null and statusCode != ''">
 				AND a.STATUS = #{statusCode}
 			</if>
@@ -164,7 +167,115 @@
 	</select>
 
 
+	<update id="updateCompany" parameterType="atos.lms.company.service.CompanyVO">
+	    UPDATE ATOS_COMPANY SET
+	        CORP_NAME = #{corpName},
+	        REP_NAME = #{repName},
+	        BIZ_TYPE = #{bizType},
+	        BIZ_ITEM = #{bizItem},
+	        PHONE_NO = #{phoneNo},
+	        FAX_NO = #{faxNo},
+	        TAX_INVOICE = #{taxInvoice},
+	        EMP_COUNT = #{empCount},
+	        TRAIN_COUNT = #{trainCount},
+	        TRAIN_MANAGER = #{trainManager},
+	        TRAIN_EMAIL = #{trainEmail},
+	        TRAIN_PHONE = #{trainPhone},
+	        TAX_MANAGER = #{taxManager},
+	        TAX_EMAIL = #{taxEmail},
+	        TAX_PHONE = #{taxPhone},
+	        MEMO = #{memo},
+	        ZIPCODE = #{zipcode},
+	        ADDR1 = #{addr1},
+	        ADDR2 = #{addr2}
+	    WHERE BIZ_REG_NO = #{bizRegNo}
+	</update>
+	
+	
+	<update id="deleteCompany" parameterType="string">
+	    UPDATE ATOS_COMPANY
+	    SET STATUS = '1005'
+	    WHERE BIZ_REG_NO = #{bizRegNo}
+	</update>
+	
+	<update id="deleteMembersByCompany" parameterType="string">
+	    UPDATE ATOS_STUDENT
+	    SET STATUS = '1005'
+	    WHERE BIZ_REG_NO = #{bizRegNo}
+	</update>
+	
+	<!-- 업체 상태 변경 -->
+<!-- 	
+	<update id="updateStatus" >
+	    UPDATE ATOS_COMPANY
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO = #{corpBiz}
+	</update>
+	 -->
+	<update id="updateStatus" parameterType="atos.lms.company.service.CompanyMasterVO">
+	    UPDATE ATOS_COMPANY
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO IN 
+	    <foreach item="bizRegNo" index="index" collection="corpBizList" open="(" separator="," close=")">
+	        #{bizRegNo}
+	    </foreach>
+	</update>
+	 
+	
+	<!-- 해당 업체에 소속된 회원 상태 변경 -->
+<!-- 	
+	<update id="updateMembersByCompany" >
+	    UPDATE ATOS_STUDENT
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO = #{corpBiz}
+	</update>
 
+ -->
 
+	<update id="updateMembersByCompany" parameterType="atos.lms.company.service.CompanyMasterVO">
+	    UPDATE ATOS_STUDENT
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO IN 
+	    <foreach item="bizRegNo" index="index" collection="corpBizList" open="(" separator="," close=")">
+	        #{bizRegNo}
+	    </foreach>
+	</update>
+	
+	<select id="selectCompanyListForExcel" parameterType="atos.lms.company.service.CompanyVO" resultType="atos.lms.company.service.CompanyExcelVO">
+	    SELECT
+	        BIZ_REG_NO AS bizRegNo,
+	        CORP_NAME AS corpName,
+	        REP_NAME AS repName,
+	        BIZ_TYPE AS bizType,
+	        BIZ_ITEM AS bizItem,
+	        PHONE_NO AS phoneNo,
+	        FAX_NO AS faxNo,
+	        TAX_INVOICE AS taxInvoice,
+	        EMP_COUNT AS empCount,
+	        TRAIN_COUNT AS trainCount,
+	        TRAIN_MANAGER AS trainManager,
+	        TRAIN_EMAIL AS trainEmail,
+	        TRAIN_PHONE AS trainPhone,
+	        TAX_MANAGER AS taxManager,
+	        TAX_EMAIL AS taxEmail,
+	        TAX_PHONE AS taxPhone,
+	        REG_DATE AS regDate,
+	        ZIPCODE AS zipcode,
+	        ADDR1 AS addr1,
+	        ADDR2 AS addr2
+	    FROM
+	        ATOS_COMPANY
+	    WHERE STATUS != '1005'
+	    <if test="statusCode != null and statusCode != ''">
+	        AND STATUS = #{statusCode}
+	    </if>
+	    <if test="searchWrd != null and searchWrd != ''">
+	        <if test="searchCnd == 0">AND CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')</if>
+	        <if test="searchCnd == 1">AND TRAIN_MANAGER LIKE CONCAT('%', #{searchWrd}, '%')</if>
+	        <if test="searchCnd == 2">AND BIZ_REG_NO LIKE CONCAT('%', #{searchWrd}, '%')</if>
+	    </if>
+	    ORDER BY REG_DATE DESC
+	</select>
+	
 
 </mapper>

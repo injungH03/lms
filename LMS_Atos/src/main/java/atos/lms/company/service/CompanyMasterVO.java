@@ -1,5 +1,7 @@
 package atos.lms.company.service;
 
+import java.util.List;
+
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
@@ -50,8 +52,12 @@ public class CompanyMasterVO implements GeneralModel {
 	/** 첨부가능파일사이즈 */
 	private String atchPosblFileSize = "";
 
+	private List<String> corpBizList;  // 여러 사업자등록번호를 처리할 리스트
+	
+	private String companyStatus;
 	
 	
+
 	public int getPageIndex() {
 		return pageIndex;
 	}
@@ -172,6 +178,21 @@ public class CompanyMasterVO implements GeneralModel {
 		this.atchPosblFileSize = atchPosblFileSize;
 	}
 
+	public List<String> getCorpBizList() {
+		return corpBizList;
+	}
+
+	public void setCorpBizList(List<String> corpBizList) {
+		this.corpBizList = corpBizList;
+	}
+
+	public String getCompanyStatus() {
+		return companyStatus;
+	}
+
+	public void setCompanyStatus(String companyStatus) {
+		this.companyStatus = companyStatus;
+	}
 
 	
 	
