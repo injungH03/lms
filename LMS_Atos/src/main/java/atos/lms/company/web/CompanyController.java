@@ -187,6 +187,25 @@ public class CompanyController {
 	    
 	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
+	
+	@RequestMapping("/company/updateStatus")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> updateCompanyStatus(@RequestBody CompanyVO companyVO) throws Exception {
+	    
+	    String bizRegNo = companyVO.getBizRegNo();  // 회사 정보에서 사업자등록번호 추출
+	    String status = companyVO.getStatus();  // 변경할 상태 값 추출
+	    
+	    // 회사와 관련된 회원 상태를 포함하여 상태 변경
+	    companyService.updateStatus(bizRegNo, status);
+	    
+	    ResponseVO responseVO = new ResponseVO();
+	    responseVO.setHttpStatus(HttpStatus.OK);
+	    responseVO.setMessage("상태 변경 완료");
+	    
+	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
 
+
+	
 
 }

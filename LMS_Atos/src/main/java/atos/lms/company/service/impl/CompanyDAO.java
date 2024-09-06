@@ -1,6 +1,7 @@
 package atos.lms.company.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +52,16 @@ public class CompanyDAO extends EgovComAbstractDAO {
 
     public void deleteMembersByCompany(String bizRegNo) {
         update("company.deleteMembersByCompany", bizRegNo);
+    }
+    
+    // 업체 상태 변경
+    public void updateStatus(CompanyMasterVO companyMasterVO) {
+        update("company.updateStatus", companyMasterVO);
+    }
+
+    // 회원 상태 변경
+    public void updateMembersByCompany(CompanyMasterVO companyMasterVO) {
+        update("company.updateMembersByCompany", companyMasterVO);
     }
 
 

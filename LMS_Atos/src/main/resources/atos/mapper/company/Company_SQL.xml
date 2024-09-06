@@ -203,5 +203,43 @@
 	    SET STATUS = '1005'
 	    WHERE BIZ_REG_NO = #{bizRegNo}
 	</update>
+	
+	<!-- 업체 상태 변경 -->
+<!-- 	
+	<update id="updateStatus" >
+	    UPDATE ATOS_COMPANY
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO = #{corpBiz}
+	</update>
+	 -->
+	 <update id="updateStatus" parameterType="atos.lms.company.service.CompanyMasterVO">
+    UPDATE ATOS_COMPANY
+    SET STATUS = #{statusCode}
+    WHERE BIZ_REG_NO IN 
+    <foreach item="bizRegNo" index="index" collection="corpBizList" open="(" separator="," close=")">
+        #{bizRegNo}
+    </foreach>
+	</update>
+	 
+	
+	<!-- 해당 업체에 소속된 회원 상태 변경 -->
+<!-- 	
+	<update id="updateMembersByCompany" >
+	    UPDATE ATOS_STUDENT
+	    SET STATUS = #{statusCode}
+	    WHERE BIZ_REG_NO = #{corpBiz}
+	</update>
+
+ -->
+
+	<update id="updateMembersByCompany" parameterType="atos.lms.company.service.CompanyMasterVO">
+    UPDATE ATOS_STUDENT
+    SET STATUS = #{statusCode}
+    WHERE BIZ_REG_NO IN 
+    <foreach item="bizRegNo" index="index" collection="corpBizList" open="(" separator="," close=")">
+        #{bizRegNo}
+    </foreach>
+	</update>
+	
 
 </mapper>

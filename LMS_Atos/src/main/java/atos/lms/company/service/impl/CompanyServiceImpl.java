@@ -1,5 +1,6 @@
 package atos.lms.company.service.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,14 +8,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyService;
 import atos.lms.company.service.CompanyVO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service("CompanyService")
 public class CompanyServiceImpl extends EgovAbstractServiceImpl implements CompanyService {
@@ -104,6 +104,31 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	        throw e; // 예외를 다시 던져서 상위 레이어에 알림
 	    }
 	}
+	
+	@Override
+	public void updateStatus(String bizRegNo, String status) {
+	    LOGGER.info("Updating company and related members status for bizRegNo: {}", bizRegNo);
+	    
+	    try {
+	        // bizRegNo를 리스트로 분리
+	        List<String> bizRegNoList = Arrays.asList(bizRegNo.split(","));
+
+	        // 업체 상태 변경
+	        CompanyMasterVO companyMasterVO = new CompanyMasterVO();
+	        companyMasterVO.setCorpBizList(bizRegNoList);  // 리스트로 설정
+	        companyMasterVO.setStatusCode(status);
+	        companyDao.updateStatus(companyMasterVO);
+
+	        // 해당 업체에 소속된 회원들의 상태도 함께 변경
+	        companyDao.updateMembersByCompany(companyMasterVO);
+
+	        LOGGER.info("Company and related members status updated successfully for bizRegNo: {}", bizRegNo);
+	    } catch (Exception e) {
+	        LOGGER.error("Error updating company and members status", e);
+	        throw e;  // 예외를 던져서 상위 레이어에 알림
+	    }
+	}
+
 
 
 }

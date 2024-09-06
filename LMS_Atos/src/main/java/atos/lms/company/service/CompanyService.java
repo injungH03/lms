@@ -24,4 +24,5 @@ public interface CompanyService {
 
     void deleteCompanyAndMembers(String bizRegNo);
 
+    void updateStatus(String bizRegNo, String status);
 }
