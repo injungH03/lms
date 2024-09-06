@@ -149,12 +149,16 @@ function fn_egov_select_linkPage(pageNo) {
             <label class="form-check-label" for="status1">정상</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="statusRadio" id="status2" value="1004">
-            <label class="form-check-label" for="status2">정지</label>
+            <input class="form-check-input" type="radio" name="statusRadio" id="status2" value="1001">
+            <label class="form-check-label" for="status2">대기</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="statusRadio" id="status3" value="1003">
-            <label class="form-check-label" for="status3">휴면</label>
+            <input class="form-check-input" type="radio" name="statusRadio" id="status3" value="1004">
+            <label class="form-check-label" for="status3">정지</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="statusRadio" id="status4" value="1003">
+            <label class="form-check-label" for="status4">휴면</label>
         </div>
       </div>
       <div class="modal-footer">
