@@ -33,7 +33,7 @@ function fn_egov_select_linkPage(pageNo) {
 </script>
 <div class="board company-management">
 	<form name="companyForm" action="<c:url value='/company/companyList.do'/>" method="post">
- 		<h3>업체 관리</h3>
+ 		<h3>업체 목록</h3>
 
 		<!-- 검색 필터 부분 -->
 		<div class="search_box">
@@ -81,7 +81,7 @@ function fn_egov_select_linkPage(pageNo) {
         </div>
 	    <div class="right-group">
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
-	        <button class="s_submit">EXCEL</button>
+	        <button class="s_submit" id="excelDown">EXCEL</button>
 	        <button class="s_submit" onclick="location.href='<c:url value='/company/CompanyRegistView.do' />'">등록</button>
 	    </div>
     </div>
@@ -229,4 +229,19 @@ $(document).ready(function() {
         }
     });
 });
+
+
+$(document).ready(function() {
+    $('#excelDown').on('click', function() {
+        const companyForm = $('form[name="companyForm"]');
+        const originalAction = companyForm.attr('action');
+
+        companyForm.attr('action', '/company/companyListExcelDown');
+        companyForm.submit();
+
+        companyForm.attr('action', originalAction);
+    });
+});
+
+
 </script>

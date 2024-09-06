@@ -2,16 +2,20 @@ package atos.lms.company.service.impl;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import atos.lms.common.utl.ExcelUtil;
+import atos.lms.company.service.CompanyExcelVO;
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyService;
 import atos.lms.company.service.CompanyVO;
@@ -128,7 +132,38 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	        throw e;  // 예외를 던져서 상위 레이어에 알림
 	    }
 	}
-
+	
+	  // 업체 목록 엑셀 다운로드 처리
+    @Override
+    public void companyListExcelDown(HttpServletResponse response, CompanyVO companyVO) throws Exception {
+        List<CompanyExcelVO> companyList = companyDao.companyListExcelDown(companyVO);
+        
+        // 필드와 헤더 매핑 설정
+        Map<String, String> fieldToHeaderMap = new LinkedHashMap<>();
+        fieldToHeaderMap.put("bizRegNo", "사업자등록번호");
+        fieldToHeaderMap.put("corpName", "업체명");
+        fieldToHeaderMap.put("repName", "대표자명");
+        fieldToHeaderMap.put("bizType", "업태");
+        fieldToHeaderMap.put("bizItem", "종목");
+        fieldToHeaderMap.put("phoneNo", "전화번호");
+        fieldToHeaderMap.put("faxNo", "팩스번호");
+        fieldToHeaderMap.put("taxInvoice", "세금계산서(이메일)");
+        fieldToHeaderMap.put("empCount", "직원수");
+        fieldToHeaderMap.put("trainCount", "교육인원수");
+        fieldToHeaderMap.put("trainManager", "교육담당자명");
+        fieldToHeaderMap.put("trainEmail", "교육담당자(이메일)");
+        fieldToHeaderMap.put("trainPhone", "교육담당자 전화번호");
+        fieldToHeaderMap.put("taxManager", "세금계산서담당자명");
+        fieldToHeaderMap.put("taxEmail", "세금계산서담당자(이메일)");
+        fieldToHeaderMap.put("taxPhone", "세금계산서담당자(전화번호)");
+        fieldToHeaderMap.put("regDate", "등록일");
+        fieldToHeaderMap.put("zipcode", "우편번호");
+        fieldToHeaderMap.put("addr1", "주소");
+        fieldToHeaderMap.put("addr2", "상세주소");
+        
+        // 엑셀 파일로 출력
+        ExcelUtil.exportToExcel(response, companyList, "업체목록", "업체목록엑셀파일", fieldToHeaderMap);
+    }
 
 
 }

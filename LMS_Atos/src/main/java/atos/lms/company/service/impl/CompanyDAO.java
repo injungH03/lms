@@ -1,10 +1,10 @@
 package atos.lms.company.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import atos.lms.company.service.CompanyExcelVO;
 import atos.lms.company.service.CompanyMasterVO;
 import atos.lms.company.service.CompanyVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -63,6 +63,10 @@ public class CompanyDAO extends EgovComAbstractDAO {
     public void updateMembersByCompany(CompanyMasterVO companyMasterVO) {
         update("company.updateMembersByCompany", companyMasterVO);
     }
-
+    
+    // 엑셀 다운로드용 업체 목록 조회 메서드 추가
+    public List<CompanyExcelVO> companyListExcelDown(CompanyVO companyVO) {
+        return selectList("company.selectCompanyListForExcel", companyVO);
+    }
 
 }

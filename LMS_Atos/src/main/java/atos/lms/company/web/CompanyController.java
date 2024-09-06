@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -205,7 +206,11 @@ public class CompanyController {
 	    return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
 	}
 
-
+    // 엑셀 다운로드 요청 처리
+    @RequestMapping("/company/companyListExcelDown")
+    public void companyListExcelDown(HttpServletResponse response, CompanyVO companyVO) throws Exception {
+        companyService.companyListExcelDown(response, companyVO);
+    }
 	
 
 }
