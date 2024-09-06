@@ -10,18 +10,11 @@
 
 <script>
 $(document).ready(function() {
-	
-    $("#userId").on('input', function() {
-        var input = $(this).val();
-        // 정규식을 이용해 영문자, 숫자만 허용
-        $(this).val(input.replace(/[^a-zA-Z0-9]/g, ''));
-    });
-	
-	$.validator.addMethod("passwordComplexity", function(value, element) {
+	  $.validator.addMethod("passwordComplexity", function(value, element) {
 	        return this.optional(element) || /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/.test(value);
 	    }, "비밀번호는 영문, 숫자, 특수문자를 포함하며 최소 5자 이상이어야 합니다.");
 	  
-	$.validator.addMethod("phoneFormat", function(value, element) {
+	  $.validator.addMethod("phoneFormat", function(value, element) {
 		    return this.optional(element) || /^010-\d{4}-\d{4}$/.test(value);
 		}, "전화번호는 010-XXXX-XXXX 형식이어야 합니다.");
 	
@@ -30,29 +23,7 @@ $(document).ready(function() {
             id: {
                 required: true,
                 minlength: 5,
-                maxlength: 15,
-                remote: {
-                    url: "/member/checkDuplicateId",
-                    type: "post",
-                    data: {
-                        id: function() {
-                            return $("#userId").val();
-                        }
-                    },
-                    dataType: "json",
-                    success: function(response) {
-                        var responseObj = JSON.parse(response);
-                        if (responseObj.isDuplicate) {
-                            return JSON.stringify(false); // 중복일 때 false 반환
-                        } else {
-                            return JSON.stringify(true); // 중복 아닐 때 true 반환
-                        }
-                    },
-                    error: function(error) {
-                        console.error('중복 확인 중 오류 발생:', error);
-                        alert('중복 확인이 실패하였습니다.');
-                    }
-                }
+                maxlength: 15
             },
             name: {
                 required: true,
@@ -80,17 +51,13 @@ $(document).ready(function() {
             email: {
                 required: true,
                 email: true
-            },        
-            bizRegNo: {
-                required: true
-            }
+            }        
         },
         messages: {
             id: {
                 required: "아이디를 입력하세요.",
                 minlength: "아이디는 최소 5자 이상이어야 합니다.",
-                maxlength: "아이디는 최대 15자 이하여야 합니다.",
-                remote: "사용 할 수 없는 아이디입니다."
+                maxlength: "아이디는 최대 15자 이하여야 합니다."
             },
             name: {
                 required: "이름을 입력하세요.",
@@ -119,10 +86,7 @@ $(document).ready(function() {
                 required: "이메일을 입력하세요.",
                 email: "올바른 이메일 형식을 입력하세요."
             },
-            bizRegNo: {
-                required: "소속기업을 선택해주세요."
-            }
-        },
+        }
         
     });
     
@@ -133,70 +97,16 @@ $(document).ready(function() {
         }
     });
     
-    $('#group').change(function() {
-        var selectedCorpBiz = $(this).val();
-
-        if (selectedCorpBiz) {
-        	
-            myFetch({
-                url: '/member/companyDetail', 
-                data: { corpBiz: selectedCorpBiz }, 
-                success: function(response) {
-                	const resultData = response.result[0];
-                	
-                    $('#businessRegistrationNumber').val(resultData.bizRegNo);
-                    $('#businessName').val(resultData.corpName);
-                    $('#representativeName').val(resultData.repName);
-                    $('#phoneNo').val(resultData.phoneNo);
-                    $('#industryType').val(resultData.bizType);
-                    $('#businessCategory').val(resultData.bizItem);
-                    $('#businessAddress').val(resultData.addr1 + " " + resultData.addr2);
-                },
-                error: function(error) {
-                    console.error('AJAX 오류:', error);
-                }
-            });
-        } else {
-            $('#businessRegistrationNumber, #phoneNo, #businessName, #representativeName, #industryType, #businessCategory, #businessAddress').val('');
-        }
-    });
-    
-
-   	
-	$('#idcheck').click(function() {
-        const id = $('#userId').val();
-        if (!userId) {
-            alert("아이디를 입력하세요.");
-            return;
-        }
-        
-        myFetch({
-            url: '/member/checkDuplicateId', 
-            data: { id: id }, 
-            success: function(response) {
-                if (response.isDuplicate) {
-                    $("#userId").val("");
-                    $("#userId").focus();
-                } else {
-                }
-            },
-            error: function(error) {
-                console.error('중복 확인 중 오류 발생:', error);
-                alert('중복 확인이 실패하였습니다.');
-            }
-        });
-    });
-    
     
     //폼 데이터 전송 (회원등록)
     $('#submitBtn').click(function() {
         // myFetch 함수 호출
         myFetch({
-            url: '/member/memberInsert', // 서버의 엔드포인트
+            url: '/member/instructorInsert', // 서버의 엔드포인트
             data: 'registForm', // 폼 ID를 전달
             success: function(response) {
                 alert(response.message);
-                window.location.href = "<c:url value='/member/memberList.do'/>";
+                window.location.href = "<c:url value='/member/instructorList.do'/>";
             },
             error: function(error) {
                 console.error('등록 중 오류 발생:', error);
@@ -215,8 +125,8 @@ $(document).ready(function() {
         <div class="form-row">
             <div class="form-group">
                 <label for="userId">아이디*</label>
-                <input type="text" id="userId" name="id" class="left-input " placeholder="아이디를 입력하세요" required />
-                <!-- <button type="button" class="btn btn-primary idcheck" id="idcheck">중복확인</button> -->
+                <input type="text" id="userId" name="id" class="left-input id-input" placeholder="아이디를 입력하세요" required />
+                <button type="button" class="btn btn-primary idcheck" id="idcheck">중복확인</button>
             </div>
             <div class="form-group">
                 <label for="birthDate">생년월일</label>
@@ -242,7 +152,7 @@ $(document).ready(function() {
             </div>
             <div class="form-group">
                 <label for="email">이메일*</label>
-                <input type="email" id="email" name="email" class="right-input" required />
+                <input type="email" id="email" name="email" class="right-input" placeholder="이메일을 입력하세요" required />
             </div>
         </div>
 
@@ -252,22 +162,15 @@ $(document).ready(function() {
                 <input type="password" id="confirmPassword" name="confirmPassword" class="left-input" placeholder="영문/숫자/특수문자 조합 5~15자리" required />
             </div>
             <div class="form-group">
-                <label for="company">소속기업*</label>
-                <select id="group" name="bizRegNo" class="right-input" required>
-                    <option value="">선택</option>
-                    <c:forEach var="company" items="${company }">
-                    	<option value="${company.corpBiz }" <c:if test="${company.corpBiz == searchVO.corpBiz}">selected</c:if>>
-                    		${company.corpName }
-                    	</option>
-                    </c:forEach>
-                </select>
+                <label for="company">소속기관</label>
+				<input type="text" id="affiliation" name="affiliation" class="right-input" placeholder="소속 기관을 입력하세요" required />
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
 				<label for="zipcode">우편번호*</label> <input type="text" id="zipcode" name="zipcode" class="left-input-address" placeholder="우편번호"
-					readonly /><button type="button" class="btn btn-primary" id="addressSearchButton">주소검색</button><br /> 
+					readonly /><button type="button" class="btn btn-primary" id="addressSearchButton">주소 검색</button><br /> 
 				<label for="address">주소*</label> 
 					<input type="text" id="address" name="addr1" class="left-input-address" placeholder="주소를 검색해주세요" readonly />
 				<br /> 
@@ -275,11 +178,12 @@ $(document).ready(function() {
 					<input type="text"id="detailedAddress" name="addr2" class="left-input-address detail-addr" placeholder="상세주소를 입력하세요" />
 			</div>
 			<div class="form-group">
-			    <label for="department">소속부서</label>
-                <input type="text" id="department" name="department" class="right-input"  />
+			    <label for="department">소속</label>
+                <input type="text" id="department" name="department" class="right-input" placeholder="소속을 입력하세요" />
                 <label for="position">직책</label>
-                <input type="text" id="position" name="position" class="right-input"  />
-            
+                <input type="text" id="position" name="position" class="right-input" placeholder="직책을 입력하세요" />
+                <label for="position">직업</label>
+                <input type="text" id="job" name="job" class="right-input" placeholder="" />
 			</div>
         </div>
 
@@ -287,42 +191,14 @@ $(document).ready(function() {
 
         <div class="form-row">
             <div class="form-group">
-                <label for="businessRegistrationNumber">사업자등록번호</label>
-                <input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber" class="left-input" readonly />
+                	<label for="bios" class="label-area">강사소개(최대 300자)</label>
+	                <textarea id="bios" name="bios" class="area" maxlength="300" ></textarea><br/>
+	                <span id="bios-count" class="char-count">0/300</span>
+	                <label for="career" class="label-area">경력사항(최대 500자)</label>
+	                <textarea id="career" name="career" class="area"  maxlength="500" ></textarea><br/>
+	                <span id="career-count" class="char-count">0/500</span>
             </div>
-            <div class="form-group">
-                <label for="businessName">사업장명</label>
-                <input type="text" id="businessName" name="businessName" class="right-input" readonly />
-            </div>
-        </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="representativeName">대표자명</label>
-                <input type="text" id="representativeName" name="representativeName" class="left-input" readonly />
-            </div>
-            <div class="form-group">
-                <label for="phoneNo">대표전화번호</label>
-                <input type="text" id="phoneNo" name="phoneNo" class="right-input" readonly />
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="industryType">업태</label>
-                <input type="text" id="industryType" name="industryType" class="left-input" readonly />
-            </div>
-            <div class="form-group">
-                <label for="businessCategory">종목</label>
-                <input type="text" id="businessCategory" name="businessCategory" class="right-input" readonly />
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="businessAddress">사업장주소</label>
-                <input type="text" id="businessAddress" name="businessAddress" class="left-input" readonly />
-            </div>
         </div>
 
         <div class="form-group">
@@ -332,14 +208,35 @@ $(document).ready(function() {
     </form>
 </div>
 <script>
-$('#addressSearchButton').on('click', function() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            $('#zipcode').val(data.zonecode); // 우편번호
-            $('#address').val(data.address); // 기본 주소
-            $('#detailedAddress').focus();
-        }
-    }).open();
+function updateCharCount(textareaId, maxLength) {
+    const textarea = $('#' + textareaId);
+    const countSpan = $('#' + textareaId + '-count');
+    countSpan.text(textarea.val().length + '/' + maxLength);
+    
+}
+
+
+$(document).ready(function() {
+    // 강사소개 textarea
+    $('#bios').on('input', function() {
+        updateCharCount('bios', 300);
+    });
+
+    // 경력사항 textarea
+    $('#career').on('input', function() {
+        updateCharCount('career', 500);
+    });
+    
+    $('#addressSearchButton').on('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                $('#zipcode').val(data.zonecode); // 우편번호
+                $('#address').val(data.address); // 기본 주소
+                $('#detailedAddress').focus();
+            }
+        }).open();
+    });
+
 });
 </script>
 

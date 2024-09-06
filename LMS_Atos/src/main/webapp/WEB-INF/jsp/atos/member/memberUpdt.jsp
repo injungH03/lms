@@ -28,7 +28,7 @@
                     </div>
                     <input type="text" id="address" name="addr1" class="left-input-address" value="${member.addr1 }" placeholder="주소를 검색해주세요" readonly />
                     <br /> 
-                    <input type="text" id="detailedAddress" name="addr2" class="left-input-address" value="${member.addr2 }" placeholder="상세주소를 입력하세요" />
+                    <input type="text" id="detailedAddress" name="addr2" class="left-input-address detail-addr" value="${member.addr2 }" placeholder="상세주소를 입력하세요" />
                 </td>
             </tr>
             <tr>
@@ -64,7 +64,7 @@
                 <th>사업자등록번호</th>
                 <td><input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber" value="${member.companybizRegNo }" class="input-field" readonly /></td>
                 <th>대표전화번호</th>
-                <td><input type="text" id="phoneNo" name="phoneNo" value="${member.companyPhoneNo }" class="input-field" readonly /></td>
+                <td><input type="text" id="phoneNo" name="companyPhoneNo" value="${member.companyPhoneNo }" class="input-field" readonly /></td>
             </tr>
             <tr>
                 <th>사업장명</th>
@@ -80,7 +80,7 @@
             </tr>
             <tr>
             	<th>사업장주소</th>
-            	<td colspan="2"><input type="text" id="businessAddress" name="businessAddress" value="${member.companyAddr1 } ${member.companyAddr2}" class="input-field" style="width:73%;" readonly /></td>
+            	<td colspan="4"><input type="text" id="businessAddress" name="businessAddress" value="${member.companyAddr1 } ${member.companyAddr2}" class="input-field"  readonly /></td>
             </tr>
         </table>
 

@@ -157,11 +157,48 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 
 	@Override
 	public void memberAllSave(MemberAllDTO memberAllDTO) {
-		List<MemberVO> memberList = memberAllDTO.getPreviewData();
-		String corpBiz = memberAllDTO.getCorpBiz();
-    	
+		try {
+			List<MemberVO> memberList = memberAllDTO.getPreviewData();
+			String corpBiz = memberAllDTO.getCorpBiz();
+	    	
+			//엑셀 데이터를 가져와서 아이디와 비밀번호 사업자번호를 세팅
+			memberList.forEach(member -> {
+				String email = member.getEmail();
+				
+				// 중복 이메일 체크
+	            if (memberDao.checkEmailDuplicate(email) > 0) {
+	                throw new IllegalArgumentException("중복된 이메일이 있습니다: " + email);
+	            }
+				
+				member.setId(email);
+				member.setBizRegNo(corpBiz);
+				member.setStatus("1002");
+				//임시 비밀번호 "아토스"(한글영문타자)
+				String enpassword;
+				try {
+					enpassword = EgovFileScrty.encryptPassword("dkxhtm", member.getId());
+					member.setPassword(enpassword);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			
+			//데이터 베이스에 저장
+			memberDao.insertMemberList(memberList);
+			
+		} catch (IllegalArgumentException e) {
+	        System.out.println("중복된 이메일 오류 = " + e.getMessage());
+	        throw e;
+	    } catch (Exception e) {
+			System.out.println("저장중 오류 = " + e.getMessage());
+			e.printStackTrace();
+			throw new RuntimeException("회원 정보 저장 중 오류가 발생했습니다.");
+		}
+
 		
 	}
+
+
 
 
 

@@ -45,10 +45,14 @@
 }
 
 .left-input-address {
-	width:56%;;
+	width:55%;;
 }
 .left-input-address {
 	margin-bottom:10px;
+}
+
+.detail-addr {
+	width:70%;
 }
 
 /* readonly인 inputbox를 회색 배경으로 표시 */
@@ -84,6 +88,34 @@ label.error {
 #addressSearchButton {
     margin-left: 10px;
 }
+.idcheck {
+	margin-left: 5px;
+}
+.id-input {
+	width: 55%;
+}
 .cancel-btn {
     background-color: #f44336;
+}
+
+.char-count {
+	font-size: 17px;
+	color: #555;
+	text-align: right;
+}
+
+/* 텍스트박스 스타일 */
+.area {
+	width: 85%;
+	height: 130px;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: none; /* 사용자가 크기 변경하지 못하게 */
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 음영 */
+}
+
+.label-area {
+	margin-top:20px;
 }

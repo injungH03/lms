@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="instructor">
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="statusCode != null and statusCode != ''">
+				AND A.STATUS = #{statusCode}
+			</if>
+			<if test="searchCnd != null and searchCnd != ''">
+				<if test="searchCnd == 0">
+					AND A.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
+				<if test="searchCnd == 1">
+					AND A.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
+			</if>
+			AND A.STATUS != '1005'	
+
+		</trim>
+	</sql>
+	
+	<select id="selectStatusCode" resultType="atos.lms.instructor.service.InstructorMasterVO">
+		SELECT
+			CODE AS statusCode, 
+			NAME AS statusName
+		FROM
+			ATOS_STATUS
+		WHERE CODE IN ('1001', '1002', '1003', '1004')
+	</select>
+	
+
+
+	<select id="selectInstructorList" parameterType="atos.lms.instructor.service.InstructorVO" resultType="atos.lms.instructor.service.InstructorVO">
+		SELECT
+			A.ID, A.NAME, A.PHONE_NO, A.STATUS, A.DEPARTMENT, A.AFFILIATION, A.POSITION, A.JOB,
+			B.NAME AS listStatusName
+		FROM
+			ATOS_INSTRUCTOR A
+		LEFT JOIN ATOS_STATUS B
+			ON A.STATUS = B.CODE
+		<include refid="whereClause" />
+		ORDER BY A.ID DESC				
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>	
+	
+	<select id="selectInstructorListCnt" parameterType="atos.lms.instructor.service.InstructorVO" resultType="java.lang.Integer">
+		SELECT
+			COUNT(ID)
+		FROM
+			ATOS_INSTRUCTOR A
+		<include refid="whereClause" />
+	</select>
+	
+	<select id="selectInstructorListExcel" parameterType="atos.lms.instructor.service.InstructorVO" resultType="atos.lms.instructor.service.InstructorVO">
+		SELECT 
+			  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
+			, A.ADDR1, A.ADDR2, A.JOB, A.AFFILIATION, A.DEPARTMENT, A.POSITION, A.BIOS, A.CAREER
+		FROM
+			ATOS_INSTRUCTOR A 
+		<include refid="whereClause" />
+	</select>
+	
+	<select id="selectInstructorKey" parameterType="atos.lms.instructor.service.InstructorVO" resultType="atos.lms.instructor.service.InstructorVO">
+		SELECT
+			  ID, NAME, BIRTHDATE, PHONE_NO, EMAIL, ZIPCODE
+			, ADDR1, ADDR2, JOB, AFFILIATION, DEPARTMENT, POSITION, BIOS, CAREER
+		FROM
+			ATOS_INSTRUCTOR
+		WHERE ID = #{id}
+	</select>
+	
+	
+	<update id="updateInstructorStatus">
+		UPDATE ATOS_INSTRUCTOR
+		SET STATUS = #{status}
+		WHERE ID IN
+		<foreach item="id" collection="idlist" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>	
+	
+	<insert id="insertInstructor">
+		INSERT INTO ATOS_INSTRUCTOR
+			(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, ZIPCODE, 
+				ADDR1, ADDR2, EMAIL, STATUS, DEPARTMENT, POSITION, 
+				JOB, AFFILIATION, BIOS, CAREER)
+		VALUES
+			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, 
+				#{addr1}, #{addr2}, #{email}, '1002', #{department}, #{position},
+				#{job}, #{affiliation}, #{bios}, #{career})
+	</insert>
+
+	<update id="deleteInstructor">
+		UPDATE ATOS_INSTRUCTOR
+		SET STATUS = '1005'
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateInstructor">
+		UPDATE ATOS_INSTRUCTOR
+		SET 
+			  NAME = #{name}
+			, BIRTHDATE = #{birthdate}
+			, PHONE_NO = #{phoneNo}
+			, ZIPCODE = #{zipcode}
+			, ADDR1 = #{addr1}
+			, ADDR2 = #{addr2}
+			, EMAIL = #{email}
+			, DEPARTMENT = #{department}
+			, POSITION = #{position}
+			, JOB = #{job}
+			, AFFILIATION = #{affiliation}
+			, BIOS = #{bios}
+			, CAREER = #{career}
+		WHERE ID = #{id}
+	</update>
+
+
+	
+</mapper>

@@ -12,12 +12,13 @@
 			<if test="corpBiz != null and corpBiz != ''">
 				AND A.BIZ_REG_NO = #{corpBiz}
 			</if>
-			
-			<if test="searchCnd == 0">
-				AND A.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
-			</if>
-			<if test="searchCnd == 1">
-				AND A.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+			<if test="searchCnd != null and searchCnd != ''">
+				<if test="searchCnd == 0">
+					AND A.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
+				<if test="searchCnd == 1">
+					AND A.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
 			</if>
 			AND A.STATUS != '1005'	
 
@@ -43,15 +44,16 @@
 
 	<select id="selectMemberList" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberVO">
 		SELECT
-			A.ID, A.NAME, A.PHONE_NO, A.BIZ_REG_NO, A.STATUS, C.CORP_NAME, B.NAME AS STATUSNAME
+			A.ID, A.NAME, A.PHONE_NO, A.BIZ_REG_NO, A.STATUS, C.CORP_NAME, B.NAME AS listStatusName
 		FROM
 			ATOS_STUDENT A
 		LEFT JOIN ATOS_STATUS B
 			ON A.STATUS = B.CODE
 		LEFT JOIN
 			ATOS_COMPANY C
-		ON A.BIZ_REG_NO = C.BIZ_REG_NO	
-		<include refid="whereClause" />				
+		ON A.BIZ_REG_NO = C.BIZ_REG_NO
+		<include refid="whereClause" />
+		ORDER BY A.ID DESC		
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>	
 	
@@ -107,6 +109,12 @@
 		<include refid="whereClause" />
 	</select>
 	
+	<select id="checkEmailDuplicate" resultType="int">
+	    SELECT COUNT(1)
+	    FROM ATOS_STUDENT
+	    WHERE ID = #{email}
+	</select>
+	
 	
 	<update id="updateStatus">
 		UPDATE ATOS_STUDENT
@@ -123,6 +131,15 @@
 			(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, ZIPCODE, ADDR1, ADDR2, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
 		VALUES
 			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, #{addr1}, #{addr2}, #{email}, #{bizRegNo}, '1002', #{department}, #{position})
+	</insert>
+	
+	<insert id="insertMemberList">
+	    INSERT INTO ATOS_STUDENT 
+	    	(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
+	    VALUES
+	    <foreach collection="memberList" item="member" separator=",">
+	        (#{member.id}, #{member.password}, #{member.name}, #{member.birthdate}, #{member.phoneNo}, #{member.email}, #{member.bizRegNo}, #{member.status}, #{member.department}, #{member.position})
+	    </foreach>
 	</insert>
 	
 	<update id="updateMember">

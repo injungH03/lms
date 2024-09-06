@@ -22,6 +22,28 @@
 	    <Logger name="org.springframework" level="INFO" additivity="false">
 	        <AppenderRef ref="console" />
 	    </Logger>
+
+
+		<Logger name="org.apache.ibatis.executor" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+	
+		<Logger name="org.apache.ibatis.executor.statement" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+	
+		<Logger name="org.apache.ibatis.executor.parameter" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		
+		<Logger name="org.apache.ibatis" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.mybatis" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+		</Logger>
+	    
         <Root level="INFO">
             <AppenderRef ref="console" />
         </Root>

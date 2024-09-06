@@ -1,11 +1,12 @@
-package atos.lms.member.service;
+package atos.lms.instructor.service;
+
 
 import java.util.List;
 
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
-public class MemberMasterVO implements GeneralModel {
+public class InstructorMasterVO implements GeneralModel {
 	
     /** 현재페이지 */
     private int pageIndex = 1;
@@ -37,14 +38,8 @@ public class MemberMasterVO implements GeneralModel {
     /** 상태 코드*/
     private String statusCode = "";
     
-    /** 목록 상태 코드 이름 **/
+    /** 목록 상태 코드 이름**/
     private String listStatusName = "";
-    
-    /** 회사 이름*/
-    private String corpName = "";
-    
-    /** 회사 사업자번호*/
-    private String corpBiz = "";
     
 	/** 검색단어 */
     private String searchWrd = "";
@@ -60,6 +55,7 @@ public class MemberMasterVO implements GeneralModel {
     
     /** 상태변경 */
     private String status;
+    
 	
     public int getAtchPosblFileNumber() {
 		return atchPosblFileNumber;
@@ -140,18 +136,6 @@ public class MemberMasterVO implements GeneralModel {
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
 	}
-	public String getCorpName() {
-		return corpName;
-	}
-	public void setCorpName(String corpName) {
-		this.corpName = corpName;
-	}
-	public String getCorpBiz() {
-		return corpBiz;
-	}
-	public void setCorpBiz(String corpBiz) {
-		this.corpBiz = corpBiz;
-	}
 	public List<String> getIdlist() {
 		return idlist;
 	}
@@ -164,22 +148,12 @@ public class MemberMasterVO implements GeneralModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "MemberMasterVO [pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize
-				+ ", firstIndex=" + firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage="
-				+ recordCountPerPage + ", rowNo=" + rowNo + ", searchCnd=" + searchCnd + ", statusName=" + statusName
-				+ ", statusCode=" + statusCode + ", corpName=" + corpName + ", corpBiz=" + corpBiz + ", searchWrd="
-				+ searchWrd + ", atchPosblFileNumber=" + atchPosblFileNumber + ", atchPosblFileSize="
-				+ atchPosblFileSize + ", idlist=" + idlist + ", status=" + status + "]";
-	}
 	public String getListStatusName() {
 		return listStatusName;
 	}
 	public void setListStatusName(String listStatusName) {
 		this.listStatusName = listStatusName;
 	}
-	
 	
 
 }

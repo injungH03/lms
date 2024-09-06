@@ -34,5 +34,6 @@ public interface MemberService {
 	void sampleExcelDown(HttpServletResponse response) throws Exception;
 	
 	List<MemberVO> uploadExcel(MultipartFile file) throws Exception;
+	
 
 }

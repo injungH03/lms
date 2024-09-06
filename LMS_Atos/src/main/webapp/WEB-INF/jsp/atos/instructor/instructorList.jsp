@@ -5,34 +5,21 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/member/member.css' />">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 function fn_egov_select_linkPage(pageNo){
 	document.memberForm.pageIndex.value = pageNo;
-	document.memberForm.action = "<c:url value='/member/memberList.do'/>";
+	document.memberForm.action = "<c:url value='/member/instructorList.do'/>";
    	document.memberForm.submit();
 }
 </script>
 <div class="board member-management">
-<form name="memberForm" id="memberForm" action="<c:url value='/member/memberList.do'/>" method="post">
+<form name="memberForm" id="memberForm" action="<c:url value='/member/instructorList.do'/>" method="post">
 
-    <h3>회원 목록</h3>
+    <h3>강사 목록</h3>
 
     <!-- 검색 필터 부분 -->
     <div class="search_box">
-        <div>
-        <span>업체</span>        
-                <select id="group" name="corpBiz">
-                    <option value="">선택</option>
-                    <c:forEach var="company" items="${company }">
-                    	<option value="${company.corpBiz }" <c:if test="${company.corpBiz == searchVO.corpBiz}">selected</c:if>>
-                    		${company.corpName }
-                    	</option>
-                    </c:forEach>
-                </select>
-        </div>
     	<div>
     	<span>상태</span>
                 <select id="status" name="statusCode">
@@ -73,7 +60,6 @@ function fn_egov_select_linkPage(pageNo){
 	    <div class="right-group">
 	        <button class="btn btn-primary" id="statusUpdate">상태변경</button>
 	        <button class="btn btn-primary" id="excelDown">EXCEL</button>
-	        <button class="btn btn-primary" id="AllRegist">일괄등록</button>
 	        <button class="btn btn-primary" id="regist">등록</button>
 	    </div>
     </div>
@@ -82,9 +68,12 @@ function fn_egov_select_linkPage(pageNo){
     <table class="board_list">
         <colgroup>
 	        <col style="width: 5%;">
-	        <col style="width: 20%;">
+	        <col style="width: 15%;">
 	        <col style="width: 10%;">
 	        <col style="width: 15%;">
+	        <col style="width: 10%;">
+	        <col style="width: 10%;">
+	        <col style="width: 10%;">
 	        <col style="width: 10%;">
 	        <col style="width: 10%;">
 	        <col style="width: 5%;">
@@ -95,7 +84,10 @@ function fn_egov_select_linkPage(pageNo){
                 <th class="board_th_link">아이디</th>
                 <th>이름</th>
                 <th>전화번호</th>
+                <th>소속기관</th>
                 <th>소속</th>
+                <th>직책</th>
+                <th>직업</th>
                 <th>상태</th>
                 <th><input type="checkbox" id="checkAll"></th>
             </tr>
@@ -104,10 +96,13 @@ function fn_egov_select_linkPage(pageNo){
         <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
             <tr>
                 <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-                <td class="left"><a href="<c:url value='/member/memberDetail.do' />?id=${resultInfo.id }&pageIndex=${searchVO.pageIndex}"><c:out value="${resultInfo.id }" /></a></td>
+                <td class="left"><a href="<c:url value='/member/instructorDetail.do' />?id=${resultInfo.id }&pageIndex=${searchVO.pageIndex}"><c:out value="${resultInfo.id }" /></a></td>
                 <td><c:out value="${resultInfo.name }" /></td>
                 <td><c:out value="${resultInfo.phoneNo }" /></td>
-                <td><c:out value="${resultInfo.corpName }" /></td>
+                <td><c:out value="${resultInfo.affiliation }" /></td>
+                <td><c:out value="${resultInfo.department }" /></td>
+                <td><c:out value="${resultInfo.position }" /></td>
+                <td><c:out value="${resultInfo.job }" /></td>
                 <td><c:out value="${resultInfo.listStatusName }" /></td>
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.id }"></td>
             </tr>
@@ -164,14 +159,8 @@ $(document).ready(function() {
 	
 	//등록 이동
 	$('#regist').on('click', function() {
-		window.location.href = "<c:url value='/member/memberRegistView.do'/>";
+		window.location.href = "<c:url value='/member/instructorRegistView.do'/>";
 	});
-	
-	//일괄 등록 이동
-	$('#AllRegist').on('click', function() {
-		window.location.href = "<c:url value='/member/memberAllRegistView.do'/>";
-	});
-	
 	
 	
     // 전체 선택/해제 기능
@@ -209,7 +198,7 @@ $(document).ready(function() {
         if (selectedIds.length > 0) {
             
             $.ajax({
-                url: '/member/updateStatus', 
+                url: '/member/updateInstructorStatus', 
                 method: 'POST',
                 data: {
                     ids: selectedIds.join(','), 
@@ -235,7 +224,7 @@ $(document).ready(function() {
         const memberForm = $('#memberForm');
         const originalAction = memberForm.attr('action');
 
-        memberForm.attr('action', '/member/memberListExcelDown');
+        memberForm.attr('action', '/member/instructorListExcelDown');
 
         memberForm.submit();
 

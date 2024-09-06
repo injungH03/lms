@@ -44,7 +44,7 @@
     </div>
 
     <div class="btn-section">
-        <button class="btn btn-danger">목록</button>
+        <button class="btn btn-danger" id="member-List">목록</button>
         <div>
             <button class="btn btn-secondary" id="preview">미리보기</button>
             <button class="btn btn-primary" id="save">등록하기</button>
@@ -122,7 +122,17 @@ $(document).ready(function(){
 		window.location.href = "<c:url value='/member/sampleExcelDown'/>";
 	});
 	
+	$('#member-List').on('click', function(){
+		window.location.href = "<c:url value='/member/memberList.do'/>";
+	});
+	
 	$('#preview').on('click', function(){
+	    var fileInput = $('#uploadFile').get(0); 
+	    if (!fileInput.files || fileInput.files.length === 0) {
+	        alert("업로드할 파일을 선택해주세요."); // 파일 미선택 시 경고 메시지
+	        return; // 파일이 없으면 업로드 중단
+	    }
+		
 	    myFetch({
 	        url: '/member/uploadExcel',  
 	        isFormData: true,     
@@ -146,6 +156,11 @@ $(document).ready(function(){
 	
 	$('#save').on('click', function(){
 		const selectedCorpBiz = $('#group').val();
+		
+	 	if (!selectedCorpBiz) { 
+	        alert("회원 소속을 선택해주세요.");
+	        return; // 선택되지 않았을 경우 작업 중단
+	    }
 		
 		const sendData = {
 			previewData: previewData,

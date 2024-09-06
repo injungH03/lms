@@ -2,6 +2,7 @@ package atos.lms.member.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import atos.lms.member.service.CompanyVO;
@@ -42,6 +43,10 @@ public class MemberDAO extends EgovComAbstractDAO {
 		return selectList("member.selectMemberListExcel", memberVO);
 	}
 	
+	public int checkEmailDuplicate(String email) {
+	    return selectOne("member.checkEmailDuplicate", email);
+	}
+	
 	public void updateStatus(MemberMasterVO memberMasterVO) {
 		update("member.updateStatus", memberMasterVO);
 	}
@@ -56,6 +61,10 @@ public class MemberDAO extends EgovComAbstractDAO {
 	
 	public void updateMember(MemberVO memberVO) {
 		update("member.updateMember", memberVO);
+	}
+	
+	public void insertMemberList(@Param("memberList") List<MemberVO> memberList) {
+		insert("member.insertMemberList", memberList);
 	}
 
 }

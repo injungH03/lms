@@ -43,6 +43,8 @@ public class MemberController {
     @RequestMapping("/member/memberList.do")
     public String memberList(@ModelAttribute("searchVO") MemberVO memberVO,  ModelMap model) throws Exception {
     	
+    	System.out.println("넘어온 스태이터스 코드값 = " + memberVO.getStatusCode());
+    	
     	PaginationInfo paginationInfo = new PaginationInfo();
 		
     	paginationInfo.setCurrentPageNo(memberVO.getPageIndex());
@@ -59,6 +61,15 @@ public class MemberController {
     	int totalcount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
     	
     	paginationInfo.setTotalRecordCount(totalcount);
+    	
+    	
+//    	List<MemberVO> list = (List<MemberVO>) map.get("resultList");
+//    	
+//    	list.forEach(mem -> {
+//    		System.out.println(">>" + mem);
+//    		System.out.println("상태이름 = " + mem.getListStatusName());
+//    	});
+//    	
 
     	List<MemberMasterVO> status = memberService.selectStatusCode();
     	List<MemberMasterVO> company = memberService.selectCompany();
@@ -193,14 +204,28 @@ public class MemberController {
     }
     @RequestMapping("/member/memberAllSave")
     @ResponseBody
-    public ResponseEntity<ResponseVO> memberAllSave(@RequestBody MemberAllDTO memberAllDTO) throws Exception {
+    public ResponseEntity<ResponseVO> memberAllSave(@RequestBody MemberAllDTO memberAllDTO) {
     	
-    	
-    	
+    	System.out.println(">>>>넘어온데이터 = " + memberAllDTO.getCorpBiz());
+    	System.out.println(">>>>리스트사이즈 = " + memberAllDTO.getPreviewData().size());
     	ResponseVO responseVO = new ResponseVO();
-    	responseVO.setHttpStatus(HttpStatus.OK);
     	
-    	return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        try {
+            memberService.memberAllSave(memberAllDTO);
+            responseVO.setHttpStatus(HttpStatus.OK);
+            responseVO.setMessage("회원 정보가 성공적으로 등록되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(responseVO);
+            
+        } catch (IllegalArgumentException e) {
+            responseVO.setHttpStatus(HttpStatus.CONFLICT); // 중복된 이메일인 경우 409 Conflict 상태 반환
+            responseVO.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseVO);
+            
+        } catch (Exception e) {
+            responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseVO.setMessage("회원 정보 저장 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseVO);
+        }
     }
     
     
