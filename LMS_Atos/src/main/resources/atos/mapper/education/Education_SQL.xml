@@ -1,3 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="atos.mapper.education.Education_SQL"></mapper>
+<mapper namespace="education">
+
+    <sql id="whereClause">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            AND a.STATUS != '1005'
+            <if test="status != null and status != ''">
+                AND a.STATUS = #{status}
+            </if>
+            <if test="searchCnd == 0">
+                AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')
+            </if>
+            <if test="searchCnd == 1">
+                AND a.CATEGORY LIKE CONCAT('%', #{searchWrd}, '%')
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectEducationList" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationVO">
+        SELECT
+            a.EDU_CODE,
+            a.CATEGORY,
+            a.TITLE,
+            a.TRAINING_TIME,
+            a.STATUS
+        FROM
+            ATOS_EDUCATION a
+        <include refid="whereClause" />
+        ORDER BY a.EDU_CODE DESC
+        LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+
+    <select id="selectEducationListCnt" parameterType="atos.lms.education.service.EducationVO" resultType="int">
+        SELECT
+            COUNT(a.EDU_CODE)
+        FROM
+            ATOS_EDUCATION a
+        <include refid="whereClause" />
+    </select>
+
+    <select id="selectStatusCode" resultType="atos.lms.education.service.EducationMasterVO">
+        SELECT
+            CODE AS statusCode,
+            NAME AS statusName
+        FROM
+            ATOS_STATUS
+        WHERE CODE IN ('1001', '1002', '1003', '1004')
+    </select>
+
+    <select id="selectCompany" resultType="atos.lms.education.service.EducationMasterVO">
+        SELECT
+            BIZ_REG_NO AS corpBiz,
+            CORP_NAME AS corpName
+        FROM
+            ATOS_COMPANY
+    </select>
+
+
+</mapper>

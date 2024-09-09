@@ -1,12 +1,12 @@
-package atos.lms.company.service;
+package atos.lms.education.service;
 
 import java.util.List;
 
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
-public class CompanyMasterVO implements GeneralModel {
-
+public class EducationMasterVO implements GeneralModel {
+	
 	/** 현재페이지 */
 	private int pageIndex = 1;
 
@@ -55,6 +55,8 @@ public class CompanyMasterVO implements GeneralModel {
 	private List<String> corpBizList;  // 여러 사업자등록번호를 처리할 리스트
 	
 	private String companyStatus;
+	
+	
 	
 
 	public int getPageIndex() {
@@ -192,7 +194,9 @@ public class CompanyMasterVO implements GeneralModel {
 	public void setCompanyStatus(String companyStatus) {
 		this.companyStatus = companyStatus;
 	}
+	
 
+	
 	
 	
 }
