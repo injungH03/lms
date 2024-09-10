@@ -47,6 +47,10 @@ public class MemberDAO extends EgovComAbstractDAO {
 	    return selectOne("member.checkEmailDuplicate", email);
 	}
 	
+	public int checkDuplicateId(String id) {
+		return selectOne("member.checkDuplicateId", id);
+	}
+	
 	public void updateStatus(MemberMasterVO memberMasterVO) {
 		update("member.updateStatus", memberMasterVO);
 	}

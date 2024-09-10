@@ -1,6 +1,7 @@
 package atos.lms.member.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,6 +122,22 @@ public class MemberController {
     	
     	return "member/memberAllRegist";
     }
+    
+    @RequestMapping("/member/checkDuplicateId")
+    @ResponseBody
+    public Map<String, Object> checkDuplicateId(@RequestParam("id") String id) throws Exception {
+    	Map<String, Object> response = new HashMap<>();
+      	
+      	System.out.println("아이디 = " + id);
+      	
+    	int result = memberService.checkDuplicateId(id);
+    	System.out.println("결과값 = " + result);
+    	
+    	response.put("status", result <= 0);
+    	
+    	return response;
+    }
+    
     
     @RequestMapping("/member/memberDelete")
     @ResponseBody

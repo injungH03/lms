@@ -125,8 +125,7 @@ $(document).ready(function() {
         <div class="form-row">
             <div class="form-group">
                 <label for="userId">아이디*</label>
-                <input type="text" id="userId" name="id" class="left-input id-input" placeholder="아이디를 입력하세요" required />
-                <button type="button" class="btn btn-primary idcheck" id="idcheck">중복확인</button>
+                <input type="text" id="userId" name="id" class="left-input" placeholder="아이디를 입력하세요" required />
             </div>
             <div class="form-group">
                 <label for="birthDate">생년월일</label>

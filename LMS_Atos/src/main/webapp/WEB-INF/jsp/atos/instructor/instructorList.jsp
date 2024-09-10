@@ -162,6 +162,11 @@ $(document).ready(function() {
 		window.location.href = "<c:url value='/member/instructorRegistView.do'/>";
 	});
 	
+    // 상태 셀렉트 박스 변경 시
+    $('#status').change(function() {
+        $('#memberForm').submit();
+    });
+	
 	
     // 전체 선택/해제 기능
     $('#checkAll').on('click', function() {

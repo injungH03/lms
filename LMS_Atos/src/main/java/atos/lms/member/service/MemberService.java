@@ -19,6 +19,8 @@ public interface MemberService {
 	
 	MemberDTO selectMemberKey(MemberVO memberVO);
 	
+	int checkDuplicateId(String id);
+	
 	void updateStatus(String ids, String status);
 	
 	void insertMember(MemberVO memberVO);

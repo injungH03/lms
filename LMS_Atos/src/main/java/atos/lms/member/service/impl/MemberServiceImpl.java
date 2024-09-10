@@ -194,8 +194,11 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 			e.printStackTrace();
 			throw new RuntimeException("회원 정보 저장 중 오류가 발생했습니다.");
 		}
+	}
 
-		
+	@Override
+	public int checkDuplicateId(String id) {
+		return memberDao.checkDuplicateId(id);
 	}
 
 
