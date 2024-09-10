@@ -8,7 +8,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-/* 
+
+/*
 function fn_egov_select_linkPage(pageNo) {
     // 페이지 인덱스 설정
     document.companyForm.pageIndex.value = pageNo;
@@ -17,11 +18,11 @@ function fn_egov_select_linkPage(pageNo) {
     document.companyForm.submit();
   
 }
+*/
 
- */
  
- 
- function fn_egov_select_linkPage(pageNo) {
+
+	function fn_egov_select_linkPage(pageNo) {
 	    document.companyForm.pageIndex.value = pageNo;
 	    document.companyForm.statusCode.value = "${companySearchVO.statusCode}";
 	    document.companyForm.searchCnd.value = "${companySearchVO.searchCnd}";
@@ -37,18 +38,7 @@ function fn_egov_select_linkPage(pageNo) {
 
 		<!-- 검색 필터 부분 -->
 		<div class="search_box">
-<%-- 		
-			<div>
-				<span>업체</span> <select id="group" name="corpBiz">
-					<option value="">선택</option>
-					<c:forEach var="company" items="${company }">
-						<option value="${company.corpBiz }"
-							<c:if test="${company.corpBiz == companySearchVO.corpBiz}">selected</c:if>>
-							${company.corpName }</option>
-					</c:forEach>
-				</select>
-			</div>	
---%>
+
 			<div>
 				<span>상태</span> <select id="status" name="statusCode">
 					<option value="">선택</option>
@@ -60,20 +50,21 @@ function fn_egov_select_linkPage(pageNo) {
 				</select>
 			</div>
 			<div>
-				<span>검색</span> <select name="searchCnd" title="검색 조건 선택">
-					<option value="0"
-						<c:if test="${companySearchVO.searchCnd == '0'}">selected="selected"</c:if>>회사명</option>
-					<option value="1"
-						<c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>담당자명</option>
-					<option value="2"
-						<c:if test="${companySearchVO.searchCnd == '2'}">selected="selected"</c:if>>사업자등록번호</option>
-				</select> <input type="text" id="searchText" name="searchWrd"
-					title="검색 조건 입력" placeholder="텍스트를 입력해 주세요."
-					value='<c:out value="${companySearchVO.searchWrd}"/>' maxlength="155">
+				<span>검색</span> 
+				<select name="searchCnd" title="검색 조건 선택">
+					<option value="">선택</option>
+					<option value="0" <c:if test="${companySearchVO.searchCnd == '0'}">selected="selected"</c:if>>회사명</option>
+					<option value="1" <c:if test="${companySearchVO.searchCnd == '1'}">selected="selected"</c:if>>담당자명</option>
+					<option value="2" <c:if test="${companySearchVO.searchCnd == '2'}">selected="selected"</c:if>>사업자등록번호</option>
+				</select> <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" placeholder="텍스트를 입력해 주세요." value='<c:out value="${companySearchVO.searchWrd}"/>' maxlength="155">
 				<button type="submit" class="s_btn">검색</button>
 			</div>
 		</div>
+		
+		 <input type="hidden" name="pageIndex" value="${companySearchVO.pageIndex}">
+		 
 	</form>
+
 
 	<!-- 버튼 그룹 -->
    <div class="btn-group">
@@ -123,10 +114,6 @@ function fn_egov_select_linkPage(pageNo) {
     </table>
 
 	
-	<input type="hidden" name="pageIndex" value="${companySearchVO.pageIndex}">
-	<input type="hidden" name="statusCode" value="${companySearchVO.statusCode}">
-	<input type="hidden" name="searchCnd" value="${companySearchVO.searchCnd}">
-	<input type="hidden" name="searchWrd" value="${companySearchVO.searchWrd}">
 	
     <!-- 페이지네이션 -->
     <div class="pagination justify-content-center">
