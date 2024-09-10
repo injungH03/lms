@@ -34,10 +34,9 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
     }
 
     @Override
-    public void updateStatus(int eduCode, String status) {
-        // EducationMasterVO에 상태값과 교육 코드를 세팅
+    public void updateStatus(List<Integer> eduCodes, String status) {
         EducationMasterVO educationMasterVO = new EducationMasterVO();
-        educationMasterVO.setEduCode(eduCode);  // 교육 코드 설정
+        educationMasterVO.setEduCodeList(eduCodes);  // 여러 교육 코드를 리스트로 설정
         educationMasterVO.setStatusCode(status);  // 상태 코드 설정
 
         // DAO 메서드를 호출하여 상태를 업데이트

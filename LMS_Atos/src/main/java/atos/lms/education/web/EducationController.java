@@ -34,6 +34,7 @@ public class EducationController {
     @RequestMapping("/education/educationList.do")
     public String educationList(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
 
+    	
         // 페이지네이션 설정
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setCurrentPageNo(educationVO.getPageIndex());
@@ -44,6 +45,12 @@ public class EducationController {
         educationVO.setLastIndex(paginationInfo.getLastRecordIndex());
         educationVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
+        
+        System.out.println("검색 조건: " + educationVO.getSearchCnd());
+        System.out.println("검색어: " + educationVO.getSearchWrd());
+        System.out.println("상태 코드: " + educationVO.getStatusCode());
+        System.out.println("페이지 인덱스: " + educationVO.getPageIndex());
+        
         // 교육 목록 조회
         Map<String, Object> map = educationService.selectEducationList(educationVO);
         
@@ -67,13 +74,12 @@ public class EducationController {
     // 상태 업데이트 요청을 처리하는 메서드
     @RequestMapping("/education/updateStatus")
     @ResponseBody
-    public ResponseEntity<ResponseVO> updateStatus(@RequestBody EducationVO educationVO) throws Exception {
-
-        int eduCode = educationVO.getEduCode();  // 교육 코드 가져오기
-        String status = educationVO.getStatus();  // 변경할 상태 값 가져오기
+    public ResponseEntity<ResponseVO> updateStatus(@RequestBody Map<String, Object> requestData) throws Exception {
+        List<Integer> eduCodes = (List<Integer>) requestData.get("eduCodes");  // 여러 개의 교육 코드 가져오기
+        String status = (String) requestData.get("status");  // 변경할 상태 값 가져오기
 
         // 상태 업데이트 서비스 호출
-        educationService.updateStatus(eduCode, status);
+        educationService.updateStatus(eduCodes, status);
 
         // 상태 업데이트 성공 메시지 반환
         ResponseVO responseVO = new ResponseVO();
@@ -82,5 +88,4 @@ public class EducationController {
 
         return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
     }
-    
 }

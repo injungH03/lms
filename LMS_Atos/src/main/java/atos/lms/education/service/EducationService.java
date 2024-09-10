@@ -9,6 +9,6 @@ public interface EducationService {
 
     List<EducationMasterVO> selectStatusCode();
 
-    void updateStatus(int eduCode, String status);
+    void updateStatus(List<Integer> eduCodes, String status);
 
 }

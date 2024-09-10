@@ -11,9 +11,6 @@
 
 	function fn_egov_select_linkPage(pageNo) {
 	    document.educationForm.pageIndex.value = pageNo;
-	    document.educationForm.statusCode.value = "${educationSearchVO.statusCode}";
-	    document.educationForm.searchCnd.value = "${educationSearchVO.searchCnd}";
-	    document.educationForm.searchWrd.value = "${educationSearchVO.searchWrd}";
 	    document.educationForm.action = "<c:url value='/education/educationList.do' />";
 	    document.educationForm.submit();
 	}

@@ -12,8 +12,10 @@
                 AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')
             </if>
             <if test="searchCnd == 1">
-                AND a.CATEGORY LIKE CONCAT('%', #{searchWrd}, '%')
-            </if>
+			    AND (c.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%')
+			    OR c.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%')
+			    OR c.DETAIL_NAME LIKE CONCAT('%', #{searchWrd}, '%'))
+			</if>
         </trim>
     </sql>
 
@@ -26,10 +28,10 @@
 	        t.NAME AS trainingTimeName,  <!-- 교육 시간 명칭 -->
 	        a.STATUS AS statusCode,
 	        s.NAME AS statusName,  <!-- 상태 명칭 -->
-	        c.MAIN_NAME AS mainName,  <!-- 대분류 명칭 -->
-	        c.SUB_NAME AS subName,    <!-- 중분류 명칭 -->
-	        c.DETAIL_NAME AS detailName,  <!-- 소분류 명칭 -->
-	        c.CODE AS categoryCode    <!-- 분류 코드 -->
+	        c.MAIN_NAME,  <!-- 대분류 명칭 -->
+	        c.SUB_NAME,    <!-- 중분류 명칭 -->
+	        c.DETAIL_NAME,  <!-- 소분류 명칭 -->
+	        c.CODE <!-- 분류 코드 -->
 	    FROM
 	        ATOS_EDUCATION a
 	    JOIN
@@ -76,11 +78,14 @@
 	
 	
 	    <!-- 상태 업데이트 쿼리 -->
-    <update id="updateStatus">
-        UPDATE ATOS_EDUCATION
-        SET STATUS = #{statusCode}
-        WHERE EDU_CODE = #{eduCode}
-    </update>
+	 <update id="updateStatus">
+	    UPDATE ATOS_EDUCATION
+	    SET STATUS = #{statusCode}
+	    WHERE EDU_CODE IN
+	    <foreach item="eduCode" collection="eduCodeList" open="(" separator="," close=")">
+	        #{eduCode}
+	    </foreach>
+	 </update>
 	
 
 </mapper>

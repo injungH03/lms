@@ -60,7 +60,17 @@ public class EducationMasterVO implements GeneralModel {
 
     private String trainingTimeName; // 교육 시간 명칭
 
+    private List<Integer> eduCodeList;  // 여러 개의 교육 코드 처리
+
     
+    
+    public List<Integer> getEduCodeList() {
+        return eduCodeList;
+    }
+
+    public void setEduCodeList(List<Integer> eduCodeList) {
+        this.eduCodeList = eduCodeList;
+    }
     
     
     public String getTrainingTimeName() {
