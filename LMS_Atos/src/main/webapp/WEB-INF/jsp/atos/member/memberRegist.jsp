@@ -34,23 +34,16 @@ $(document).ready(function() {
                 remote: {
                     url: "/member/checkDuplicateId",
                     type: "post",
+                    cache: false,  // 캐시 방지
                     data: {
                         id: function() {
-                            return $("#userId").val();
+                            return $("#userId").val();  
                         }
                     },
                     dataType: "json",
-                    success: function(response) {
-                        var responseObj = JSON.parse(response);
-                        if (responseObj.isDuplicate) {
-                            return JSON.stringify(false); // 중복일 때 false 반환
-                        } else {
-                            return JSON.stringify(true); // 중복 아닐 때 true 반환
-                        }
-                    },
-                    error: function(error) {
-                        console.error('중복 확인 중 오류 발생:', error);
-                        alert('중복 확인이 실패하였습니다.');
+                    dataFilter: function(response) {
+                    	var parsedResponse = typeof response === "string" ? JSON.parse(response) : response;
+                        return parsedResponse.status ? "true" : "false";
                     }
                 }
             },

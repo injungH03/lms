@@ -8,7 +8,7 @@
             <h3 id="${menuItem.value.data}Management">${menuItem.value.title}</h3>
             <ul>
                 <c:forEach var="subMenuItem" items="${menuItem.value.subMenuItems}">
-                    <li><a href="<c:url value='${subMenuItem.url}'/>">${subMenuItem.title}</a></li>
+                    <li><a href="<c:url value='${subMenuItem.url}'/>" class="">${subMenuItem.title}</a></li>
                 </c:forEach>
             </ul>
         </div>
@@ -39,6 +39,29 @@ $(document).ready(function() {
                 openMenus.push(menuId);
                 localStorage.setItem('openMenus', JSON.stringify(openMenus));
             }
+        }
+    });
+    
+    
+    // 메뉴 클릭 시 active 클래스 추가 및 다른 메뉴에서 제거
+    $('.sidebar .menu-group ul li a').on('click', function(e) {
+        e.preventDefault();  // 기본 링크 이동 막기 (필요 시 제거)
+        // 모든 메뉴에서 active 클래스 제거
+        $('.sidebar .menu-group ul li a').removeClass('active');
+        
+        // 클릭한 메뉴에 active 클래스 추가
+        $(this).addClass('active');
+
+        // 링크로 이동
+        var href = $(this).attr('href');
+        window.location.href = href;
+    });
+
+    // 현재 페이지 URL과 일치하는 메뉴 항목에 active 클래스 적용
+    $('.sidebar .menu-group ul li a').each(function() {
+        var linkUrl = $(this).attr('href');
+        if (currentUrl === linkUrl) {
+            $(this).addClass('active');
         }
     });
     

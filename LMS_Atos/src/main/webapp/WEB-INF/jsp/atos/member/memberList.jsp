@@ -171,6 +171,15 @@ $(document).ready(function() {
 	$('#AllRegist').on('click', function() {
 		window.location.href = "<c:url value='/member/memberAllRegistView.do'/>";
 	});
+    // 업체 셀렉트 박스 변경 시
+    $('#group').change(function() {
+        $('#memberForm').submit();
+    });
+
+    // 상태 셀렉트 박스 변경 시
+    $('#status').change(function() {
+        $('#memberForm').submit();
+    });
 	
 	
 	

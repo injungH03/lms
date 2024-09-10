@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-public class ResponseVO {
+import atos.lms.exam.service.GeneralModel;
+
+@SuppressWarnings("serial")
+public class ResponseVO implements GeneralModel {
 	
     private HttpStatus httpStatus;
     private String message;
