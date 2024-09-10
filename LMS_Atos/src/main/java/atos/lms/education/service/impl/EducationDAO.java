@@ -23,9 +23,9 @@ public class EducationDAO extends EgovComAbstractDAO {
         return selectList("education.selectStatusCode");
     }
 
-    public List<EducationMasterVO> selectCompany() {
-        return selectList("education.selectCompany");
-    }
 	
+    public void updateStatus(EducationMasterVO educationMasterVO) {
+        update("education.updateStatus", educationMasterVO);  
+    }
 
 }

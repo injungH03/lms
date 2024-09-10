@@ -9,6 +9,6 @@ public interface EducationService {
 
     List<EducationMasterVO> selectStatusCode();
 
-    List<EducationMasterVO> selectCompany();
+    void updateStatus(int eduCode, String status);
 
 }

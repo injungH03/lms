@@ -56,7 +56,29 @@ public class EducationMasterVO implements GeneralModel {
 	
 	private String companyStatus;
 	
-	
+    private int eduCode;  // 교육 코드 추가
+
+    private String trainingTimeName; // 교육 시간 명칭
+
+    
+    
+    
+    public String getTrainingTimeName() {
+        return trainingTimeName;
+    }
+
+    public void setTrainingTimeName(String trainingTimeName) {
+        this.trainingTimeName = trainingTimeName;
+    }
+    
+    
+    public int getEduCode() {
+        return eduCode;
+    }
+
+    public void setEduCode(int eduCode) {
+        this.eduCode = eduCode;
+    }
 	
 
 	public int getPageIndex() {

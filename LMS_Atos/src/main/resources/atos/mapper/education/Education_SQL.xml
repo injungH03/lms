@@ -5,9 +5,9 @@
     <sql id="whereClause">
         <trim prefix="WHERE" prefixOverrides="AND">
             AND a.STATUS != '1005'
-            <if test="status != null and status != ''">
-                AND a.STATUS = #{status}
-            </if>
+           <if test="statusCode != null and statusCode != ''">
+			    AND a.STATUS = #{statusCode}
+		   </if>
             <if test="searchCnd == 0">
                 AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')
             </if>
@@ -17,19 +17,32 @@
         </trim>
     </sql>
 
-    <select id="selectEducationList" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationVO">
-        SELECT
-            a.EDU_CODE,
-            a.CATEGORY,
-            a.TITLE,
-            a.TRAINING_TIME,
-            a.STATUS
-        FROM
-            ATOS_EDUCATION a
-        <include refid="whereClause" />
-        ORDER BY a.EDU_CODE DESC
-        LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-    </select>
+
+
+	<select id="selectEducationList" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationVO">
+	    SELECT
+	        a.EDU_CODE,
+	        a.TITLE,
+	        t.NAME AS trainingTimeName,  <!-- 교육 시간 명칭 -->
+	        a.STATUS AS statusCode,
+	        s.NAME AS statusName,  <!-- 상태 명칭 -->
+	        c.MAIN_NAME AS mainName,  <!-- 대분류 명칭 -->
+	        c.SUB_NAME AS subName,    <!-- 중분류 명칭 -->
+	        c.DETAIL_NAME AS detailName,  <!-- 소분류 명칭 -->
+	        c.CODE AS categoryCode    <!-- 분류 코드 -->
+	    FROM
+	        ATOS_EDUCATION a
+	    JOIN
+	        ATOS_STATUS s ON a.STATUS = s.CODE  <!-- 상태 코드와 명칭 매핑 -->
+	    JOIN
+	        ATOS_CATEGORY c ON a.CATEGORY = c.CODE  <!-- 교육 분류 코드와 명칭 매핑 -->
+	    JOIN
+	        ATOS_TRAINING_TIME t ON a.TRAINING_TIME = t.CODE  <!-- 교육 시간 코드와 명칭 매핑 -->
+	    <include refid="whereClause" />
+	    ORDER BY a.EDU_CODE DESC
+	    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
 
     <select id="selectEducationListCnt" parameterType="atos.lms.education.service.EducationVO" resultType="int">
         SELECT
@@ -38,6 +51,8 @@
             ATOS_EDUCATION a
         <include refid="whereClause" />
     </select>
+
+
 
     <select id="selectStatusCode" resultType="atos.lms.education.service.EducationMasterVO">
         SELECT
@@ -48,6 +63,8 @@
         WHERE CODE IN ('1001', '1002', '1003', '1004')
     </select>
 
+
+
     <select id="selectCompany" resultType="atos.lms.education.service.EducationMasterVO">
         SELECT
             BIZ_REG_NO AS corpBiz,
@@ -55,6 +72,15 @@
         FROM
             ATOS_COMPANY
     </select>
-
+	
+	
+	
+	    <!-- 상태 업데이트 쿼리 -->
+    <update id="updateStatus">
+        UPDATE ATOS_EDUCATION
+        SET STATUS = #{statusCode}
+        WHERE EDU_CODE = #{eduCode}
+    </update>
+	
 
 </mapper>

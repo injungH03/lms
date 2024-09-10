@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
 /* 교육 과정 관리 */
-.company-management {
+.education-management {
     padding: 20px;
     background-color: #f5f7fa;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.company-management .board h2 {
+.education-management .board h2 {
     margin-top: 0;
     font-size: 1.5em;
     color: #2c3e50;
@@ -16,8 +16,8 @@
     padding-bottom: 10px;
 }
 
-.company-management .search_box select,
-.company-management .search_box input[type="text"] {
+.education-management .search_box select,
+.education-management .search_box input[type="text"] {
     padding: 8px 12px;
     font-size: 0.9em;
     border: 1px solid #ced4da;
@@ -27,7 +27,7 @@
     box-sizing: border-box;
 }
 
-.company-management .search_box .s_btn {
+.education-management .search_box .s_btn {
     padding: 8px 16px;
     font-size: 0.9em;
     background-color: #5cb85c;
@@ -38,12 +38,12 @@
     transition: background-color 0.3s ease;
 }
 
-.company-management .search_box div {
+.education-management .search_box div {
     margin-bottom: 15px;
 }
 
 /* 버튼 그룹 스타일 조정 */
-.company-management .btn-group {
+.education-management .btn-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,19 +52,19 @@
     margin-bottom: 20px;
 }
 
-.company-management .btn-group .left-group {
+.education-management .btn-group .left-group {
     display: flex;
     gap: 10px;
 }
 
-.company-management .btn-group .right-group {
+.education-management .btn-group .right-group {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
 }
 
-.company-management .btn-group select,
-.company-management .btn-group .s_submit {
+.education-management .btn-group select,
+.education-management .btn-group .s_submit {
     padding: 8px 12px;
     font-size: 0.9em;
     background-color: #ffffff;
@@ -73,43 +73,43 @@
     cursor: pointer;
 }
 
-.company-management .btn-group .s_submit {
+.education-management .btn-group .s_submit {
     background-color: #5cb85c;
     color: white;
     border: none;
     transition: background-color 0.3s ease;
 }
 
-.company-management .btn-group .s_submit:hover {
+.education-management .btn-group .s_submit:hover {
     background-color: #4cae4c;
 }
 
 /* 테이블 스타일 조정 */
-.company-management .board_list {
+.education-management .board_list {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
     background-color: #ffffff;
 }
 
-.company-management .board_list th,
-.company-management .board_list td {
+.education-management .board_list th,
+.education-management .board_list td {
     padding: 12px;
     font-size: 0.9em;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
 }
 
-.company-management .board_list th {
+.education-management .board_list th {
     background-color: #343a40;
     color: #ffffff;
 }
 
-.company-management .board_list td {
+.education-management .board_list td {
     color: #495057;
 }
 
-.company-management .board_list tr:hover td {
+.education-management .board_list tr:hover td {
     background-color: #f8f9fa;
 }
 

@@ -7,11 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import atos.lms.company.service.impl.CompanyServiceImpl;
 import atos.lms.education.service.EducationMasterVO;
 import atos.lms.education.service.EducationService;
 import atos.lms.education.service.EducationVO;
@@ -37,7 +34,15 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
     }
 
     @Override
-    public List<EducationMasterVO> selectCompany() {
-        return educationDAO.selectCompany();
+    public void updateStatus(int eduCode, String status) {
+        // EducationMasterVO에 상태값과 교육 코드를 세팅
+        EducationMasterVO educationMasterVO = new EducationMasterVO();
+        educationMasterVO.setEduCode(eduCode);  // 교육 코드 설정
+        educationMasterVO.setStatusCode(status);  // 상태 코드 설정
+
+        // DAO 메서드를 호출하여 상태를 업데이트
+        educationDAO.updateStatus(educationMasterVO);
     }
+
+
 }

@@ -3,33 +3,34 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://www.springframework.org/tags" %>
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/company/company.css' />">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/education/education.css' />">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 
 	function fn_egov_select_linkPage(pageNo) {
-	    document.companyForm.pageIndex.value = pageNo;
-	    document.companyForm.statusCode.value = "${educationSearchVO.statusCode}";
-	    document.companyForm.searchCnd.value = "${educationSearchVO.searchCnd}";
-	    document.companyForm.searchWrd.value = "${educationSearchVO.searchWrd}";
-	    document.companyForm.action = "<c:url value='/education/educationList.do' />";
-	    document.companyForm.submit();
+	    document.educationForm.pageIndex.value = pageNo;
+	    document.educationForm.statusCode.value = "${educationSearchVO.statusCode}";
+	    document.educationForm.searchCnd.value = "${educationSearchVO.searchCnd}";
+	    document.educationForm.searchWrd.value = "${educationSearchVO.searchWrd}";
+	    document.educationForm.action = "<c:url value='/education/educationList.do' />";
+	    document.educationForm.submit();
 	}
 
 </script>
-<div class="board company-management">
-	<form name="companyForm" action="<c:url value='/education/educationList.do'/>" method="post">
+<div class="board education-management">
+	<form name="educationForm" action="<c:url value='/education/educationList.do'/>" method="post">
  		<h3>교육 과정 목록</h3>
 
 		<!-- 검색 필터 부분 -->
 		<div class="search_box">
 
 			<div>
-				<span>상태</span> <select id="status" name="statusCode">
+				<span>상태</span> 
+				<select id="status" name="statusCode">
 					<option value="">선택</option>
-					<c:forEach var="status" items="${status }">
+					<c:forEach var="status" items="${status}">
 						<option value="${status.statusCode }"
 							<c:if test="${status.statusCode == educationSearchVO.statusCode}">selected</c:if>>
 							${status.statusName }</option>
@@ -60,7 +61,7 @@
 	    <div class="right-group">
 	        <button class="s_submit" id="statusUpdate">상태변경</button>
 	        <button class="s_submit" id="excelDown">EXCEL</button>
-	        <button class="s_submit" onclick="location.href='<c:url value='/education/EducationRegistView.do' />'">등록</button>
+	        <button class="s_submit" onclick="location.href='<c:url value='/education/educationRegistView.do' />'">등록</button>
 	    </div>
     </div>
 
@@ -80,11 +81,12 @@
         <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
             <tr>
                 <td><c:out value="${(educationSearchVO.pageIndex-1) * educationSearchVO.pageSize + status.count}"/></td>
-                <td>${resultInfo.category }</td>
+                <!-- 교육 분류 명칭을 대분류, 중분류, 소분류로 출력 -->
+                <td>${resultInfo.mainName } > ${resultInfo.subName } > ${resultInfo.detailName }</td> 
 				<td><a href="<c:url value='/education/educationDetail.do?eduCode=${resultInfo.eduCode}'/>">
 				${resultInfo.title} </a></td>
-				<td>${resultInfo.trainingTime }</td>
-                <td>${resultInfo.status }</td>
+				<td>${resultInfo.trainingTimeName}</td>
+                <td>${resultInfo.statusName }</td> <!-- 상태 코드 대신 명칭 -->
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.eduCode }"></td>
             </tr>
         </c:forEach>
@@ -105,7 +107,36 @@
 </div>
 
 <div id="statusModal" class="modal fade" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-  <!-- 상태 변경 모달 내용 유지 -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="statusModalLabel">상태 변경</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalContent">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="statusRadio" id="status1" value="1002" checked>
+            <label class="form-check-label" for="status1">정상</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="statusRadio" id="status2" value="1001">
+            <label class="form-check-label" for="status2">대기</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="statusRadio" id="status3" value="1004">
+            <label class="form-check-label" for="status3">정지</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="statusRadio" id="status4" value="1003">
+            <label class="form-check-label" for="status4">휴면</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="confirmChangeBtn">확인</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -120,8 +151,7 @@ $(document).ready(function() {
         var selectedEduCode = [];
 
         $('tbody input[name="rowCheck"]:checked').each(function() {
-            var tr = $(this).closest('tr');
-            var eduCode = tr.find('td:nth-child(4)').text(); // 교육코드 (4번째 컬럼)
+            var eduCode = $(this).val(); // 교육코드 값 가져오기
             selectedEduCode.push(eduCode);
         });
 
@@ -138,7 +168,7 @@ $(document).ready(function() {
         var selectedEduCode = [];
 
         $('tbody input[name="rowCheck"]:checked').each(function() {
-            var eduCode = $(this).closest('tr').find('td:nth-child(4)').text(); // 교육코드
+            var eduCode = $(this).val(); // 교육코드 값 가져오기
             selectedEduCode.push(eduCode);
         });
 
@@ -148,7 +178,7 @@ $(document).ready(function() {
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    eduCode: selectedEduCode.join(','), // 선택된 교육코드들을 전송
+                    eduCodes: selectedEduCode, // 배열 형태로 eduCode 전송
                     status: selectedStatus // 선택된 상태 값
                 }),
                 success: function(response) {
@@ -168,6 +198,18 @@ $(document).ready(function() {
         } else {
             alert("선택된 항목이 없습니다.");
         }
+    });
+});
+
+$(document).ready(function() {
+    $('#excelDown').on('click', function() {
+        const educationForm = $('form[name="educationForm"]');
+        const originalAction = educationForm.attr('action');
+
+        educationForm.attr('action', '/education/educationListExcelDown');
+        educationForm.submit();
+
+        educationForm.attr('action', originalAction);
     });
 });
 </script>

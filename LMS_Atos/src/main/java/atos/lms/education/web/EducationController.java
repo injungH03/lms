@@ -1,20 +1,26 @@
 package atos.lms.education.web;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import atos.lms.common.utl.ResponseVO;
+import atos.lms.education.service.EducationMasterVO;
 import atos.lms.education.service.EducationService;
-import atos.lms.education.service.EducationVO;
+import atos.lms.education.service.EducationVO; 
 
 
 @Controller
@@ -46,14 +52,35 @@ public class EducationController {
 		System.out.println("educationList resultCnt: " + map.get("resultCnt"));
 		
         int totalCount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
-        
+    
         paginationInfo.setTotalRecordCount(totalCount);
         
-
+        List<EducationMasterVO> status = educationService.selectStatusCode();
         model.addAttribute("resultList", map.get("resultList"));
         model.addAttribute("paginationInfo", paginationInfo);
+        model.addAttribute("status", status);
 
         return "education/educationList";
     }
+    
+    
+    // 상태 업데이트 요청을 처리하는 메서드
+    @RequestMapping("/education/updateStatus")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> updateStatus(@RequestBody EducationVO educationVO) throws Exception {
 
+        int eduCode = educationVO.getEduCode();  // 교육 코드 가져오기
+        String status = educationVO.getStatus();  // 변경할 상태 값 가져오기
+
+        // 상태 업데이트 서비스 호출
+        educationService.updateStatus(eduCode, status);
+
+        // 상태 업데이트 성공 메시지 반환
+        ResponseVO responseVO = new ResponseVO();
+        responseVO.setHttpStatus(HttpStatus.OK);
+        responseVO.setMessage("상태 변경 완료");
+
+        return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+    }
+    
 }
