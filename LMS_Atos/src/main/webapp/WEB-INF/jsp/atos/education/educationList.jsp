@@ -82,7 +82,7 @@
                 <td>${resultInfo.mainName } > ${resultInfo.subName } > ${resultInfo.detailName }</td> 
 				<td><a href="<c:url value='/education/educationDetail.do?eduCode=${resultInfo.eduCode}'/>">
 				${resultInfo.title} </a></td>
-				<td>${resultInfo.trainingTimeName}</td>
+				<td></td>
                 <td>${resultInfo.statusName }</td> <!-- 상태 코드 대신 명칭 -->
                 <td><input type="checkbox" name="rowCheck" value="${resultInfo.eduCode }"></td>
             </tr>

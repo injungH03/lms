@@ -43,5 +43,32 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
         educationDAO.updateStatus(educationMasterVO);
     }
 
+    @Override
+    public void insertEducation(EducationVO educationVO) {
+        educationVO.setStatus("1002");  // 정상 상태로 설정
+        educationDAO.insertEducation(educationVO);
+    }
+    
+   
+    @Override
+    public List<EducationMasterVO> selectCompletionCriteria() {
+        return educationDAO.selectCompletionCriteria();  // 수료 조건 데이터 조회
+    }
+    
+    @Override
+    public List<EducationVO> selectMainCategories() {
+        return educationDAO.selectMainCategories();
+    }
+
+    @Override
+    public List<EducationVO> selectSubCategories(String mainCode) {
+        return educationDAO.selectSubCategories(mainCode);
+    }
+
+    @Override
+    public List<EducationVO> selectDetailCategories(String subCode) {
+        return educationDAO.selectDetailCategories(subCode);
+    }
+    
 
 }

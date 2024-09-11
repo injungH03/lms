@@ -11,4 +11,17 @@ public interface EducationService {
 
     void updateStatus(List<Integer> eduCodes, String status);
 
+	void insertEducation(EducationVO educationVO);	
+    
+    List<EducationMasterVO> selectCompletionCriteria();  // 수료 조건 데이터 조회
+
+    // 대분류 조회
+    List<EducationVO> selectMainCategories();
+
+    // 중분류 조회
+    List<EducationVO> selectSubCategories(String mainCode);
+
+    // 소분류 조회
+    List<EducationVO> selectDetailCategories(String subCode);
+    
 }

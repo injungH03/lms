@@ -18,7 +18,6 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
     private int eduCode; // 코드
     private String title; // 명칭
     private String category; // 교육분류
-    private String trainingTime; // 교육시간
     private String description; // 과정소개
     private String objective; // 과정목표
     private String completionCriteria; // 수료조건
@@ -30,9 +29,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	public String toString() {
 		return "EducationVO [code=" + code + ", mainCode=" + mainCode + ", mainName=" + mainName + ", subCode="
 				+ subCode + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
-				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", trainingTime="
-				+ trainingTime + ", description=" + description + ", objective=" + objective + ", completionCriteria="
-				+ completionCriteria + ", note=" + note + ", status=" + status + "]";
+				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", description="
+				+ description + ", objective=" + objective + ", completionCriteria=" + completionCriteria + ", note="
+				+ note + ", status=" + status + "]";
 	}
 
 
@@ -133,16 +132,6 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-
-	public String getTrainingTime() {
-		return trainingTime;
-	}
-
-
-	public void setTrainingTime(String trainingTime) {
-		this.trainingTime = trainingTime;
 	}
 
 

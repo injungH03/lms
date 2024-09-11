@@ -27,5 +27,32 @@ public class EducationDAO extends EgovComAbstractDAO {
     public void updateStatus(EducationMasterVO educationMasterVO) {
         update("education.updateStatus", educationMasterVO);  
     }
+    
+    public void insertEducation(EducationVO educationVO) {
+        insert("education.insertEducation", educationVO);
+    }
+    
+
+    public List<EducationMasterVO> selectCompletionCriteria() {
+        return selectList("education.selectCompletionCriteria");  // 수료 조건 조회 쿼리 호출
+    }
+    
+    // 대분류 조회
+    public List<EducationVO> selectMainCategories() {
+        return selectList("education.selectMainCategories");
+    }
+
+    // 중분류 조회
+    public List<EducationVO> selectSubCategories(String mainCode) {
+        return selectList("education.selectSubCategories", mainCode);
+    }
+
+    // 소분류 조회
+    public List<EducationVO> selectDetailCategories(String subCode) {
+        return selectList("education.selectDetailCategories", subCode);
+    }
+    
+    
+    
 
 }
