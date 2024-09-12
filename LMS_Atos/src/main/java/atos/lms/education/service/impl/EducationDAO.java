@@ -1,6 +1,7 @@
 package atos.lms.education.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -37,22 +38,14 @@ public class EducationDAO extends EgovComAbstractDAO {
         return selectList("education.selectCompletionCriteria");  // 수료 조건 조회 쿼리 호출
     }
     
-    // 대분류 조회
-    public List<EducationVO> selectMainCategories() {
-        return selectList("education.selectMainCategories");
-    }
-
-    // 중분류 조회
-    public List<EducationVO> selectSubCategories(String mainCode) {
-        return selectList("education.selectSubCategories", mainCode);
-    }
-
-    // 소분류 조회
-    public List<EducationVO> selectDetailCategories(String subCode) {
-        return selectList("education.selectDetailCategories", subCode);
+    public List<EducationVO> selectAllCategoryList() {
+        return selectList("education.selectAllCategoryList");
     }
     
-    
+    // 교육 시간 목록 조회 메서드 추가
+    public List<Map<String, Object>> selectTrainingTimeList() {
+        return selectList("education.selectTrainingTimeList");
+    }
     
 
 }

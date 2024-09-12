@@ -45,7 +45,23 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
 
     @Override
     public void insertEducation(EducationVO educationVO) {
-        educationVO.setStatus("1002");  // 정상 상태로 설정
+        // 정상 상태 코드 설정 및 로깅 추가
+        educationVO.setStatus("1002");
+        System.out.println("설정된 상태값: " + educationVO.getStatus());
+
+        // 카테고리 값 확인 및 설정
+        if (educationVO.getCategory() == null || educationVO.getCategory().isEmpty()) {
+            // 만약 category 값이 null 또는 빈 문자열이라면, mainCode를 기본값으로 설정
+            if (educationVO.getMainCode() != null && !educationVO.getMainCode().isEmpty()) {
+                educationVO.setCategory(educationVO.getMainCode());
+                System.out.println("카테고리 값이 없으므로 mainCode로 설정: " + educationVO.getMainCode());
+            }
+        }
+
+        // educationVO에 설정된 값들을 확인
+        System.out.println("교육 과정 등록: " + educationVO.toString());
+
+        // DAO 호출을 통해 데이터 삽입
         educationDAO.insertEducation(educationVO);
     }
     
@@ -56,19 +72,14 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
     }
     
     @Override
-    public List<EducationVO> selectMainCategories() {
-        return educationDAO.selectMainCategories();
-    }
-
-    @Override
-    public List<EducationVO> selectSubCategories(String mainCode) {
-        return educationDAO.selectSubCategories(mainCode);
-    }
-
-    @Override
-    public List<EducationVO> selectDetailCategories(String subCode) {
-        return educationDAO.selectDetailCategories(subCode);
+    public List<EducationVO> selectAllCategoryList() {
+        return educationDAO.selectAllCategoryList();
     }
     
-
+    @Override
+    public List<Map<String, Object>> selectTrainingTimeList() {
+        return educationDAO.selectTrainingTimeList();
+    }
+    
+    
 }

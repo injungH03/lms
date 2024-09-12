@@ -101,61 +101,47 @@ public class EducationController {
     	
     	
         // 분류 및 수료 조건 데이터 조회
-        List<EducationVO> mainCategories = educationService.selectMainCategories();
+        List<EducationVO> categories = educationService.selectAllCategoryList();
         List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
-        
-        // 로그 추가
-        System.out.println("mainCategories: " + mainCategories);
-        
+        // 교육 시간 목록 조회
+        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
+
+       
         for (EducationMasterVO criteria : completionCriteria) {
             System.out.println("수료 조건 코드: " + criteria.getCompletionCode() + ", 진도율: " + criteria.getCompletionRate() + 
                                ", 시험 점수: " + criteria.getCompletionScore() + ", 설문 유무: " + criteria.getCompletionSurvey());
         }
         // 모델에 데이터 추가
-        model.addAttribute("mainCategories", mainCategories);
+        model.addAttribute("categories", categories);
         model.addAttribute("completionCriteria", completionCriteria);
-
+        model.addAttribute("trainingTimes", trainingTimes);
+        
+        System.out.println("categories" + categories);
+        
+        
         return "education/educationRegist"; // JSP 파일 경로에 맞게 수정
     }
     
+
     
-    // 교육 과정 등록 처리
     @RequestMapping("/education/educationInsert")
     @ResponseBody
-    public ResponseEntity<ResponseVO> educationInsert(@RequestBody EducationVO educationVO) throws Exception {
+    public ResponseEntity<ResponseVO> educationInsert(@RequestBody EducationVO educationVO) {
+        System.out.println("입력된 데이터: " + educationVO.toString());
+        System.out.println("카테고리 코드: " + educationVO.getCategory());
+        
         // 교육 과정 등록 처리
         educationService.insertEducation(educationVO);
 
-        // 성공 메시지 반환
         ResponseVO responseVO = new ResponseVO();
         responseVO.setHttpStatus(HttpStatus.OK);
         responseVO.setMessage("교육 과정이 성공적으로 등록되었습니다.");
-
+        
         return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
     }
-
     
     
-    @RequestMapping("/education/mainCategories")
-    @ResponseBody
-    public List<EducationVO> getMainCategories() {
-        return educationService.selectMainCategories();
-    }
-
-    @RequestMapping("/education/subCategories")
-    @ResponseBody
-    public List<EducationVO> getSubCategories(@RequestParam("mainCode") String mainCode) {
-    	System.out.println("Received mainCode: " + mainCode);  // mainCode 값 출력
-        return educationService.selectSubCategories(mainCode);
-    }
-
-    @RequestMapping("/education/detailCategories")
-    @ResponseBody
-    public List<EducationVO> getDetailCategories(@RequestParam("subCode") String subCode) {
-    	System.out.println("Received subCode: " + subCode);  // mainCode 값 출력
-        return educationService.selectDetailCategories(subCode);
-    }
     
-  
+    
     
 }

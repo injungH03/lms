@@ -8,39 +8,24 @@
 
 <div class="table-section">
     <h2>교육 과정 등록</h2>
-    <form id="educationForm" method="post" action="<c:url value='/educationRegist'/>" enctype="multipart/form-data">
+    <form id="educationForm" method="post" action="<c:url value='/education/educationInsert'/>">
         <table class="search-table regist-table">
-            <!-- 교육 분류 -->
-			<tr>
-			    <th>교육 분류*</th>
-			    <td colspan="3">
-			        <div class="d-flex">
-			            <!-- 대분류 -->
-			            <select name="mainCategory" id="mainCategory" class="form-select me-2" required>
-			                <option value="">대분류 선택</option>
-			                <c:forEach var="mainCategory" items="${mainCategories}">
-			                    <option value="${mainCategory.mainCode}">${mainCategory.mainName}</option>
-			                </c:forEach>
-			            </select>
-			
-			            <!-- 중분류 -->
-			            <select name="subCategory" id="subCategory" class="form-select me-2">
-			                <option value="">중분류 선택</option>
-			                <c:forEach var="subCategory" items="${subCategories}">
-			                    <option value="${subCategory.subCode}">${subCategory.subName}</option>
-			                </c:forEach>
-			            </select>
-			
-			            <!-- 소분류 -->
-			            <select name="detailCategory" id="detailCategory" class="form-select">
-			                <option value="">소분류 선택</option>
-			                <c:forEach var="detailCategory" items="${detailCategories}">
-			                    <option value="${detailCategory.detailCode}">${detailCategory.detailName}</option>
-			                </c:forEach>
-			            </select>
-			        </div>
-			    </td>
-			</tr>
+            <!-- 과정 선택 -->
+            <tr>
+                <th>과정 선택*</th>
+                <td colspan="3">
+				<select name="category" id="category" class="form-select me-2" required>
+				    <option value="">과정 선택</option>
+				    <c:forEach var="category" items="${categories}">
+				        <option value="${category.code}"> <!-- mainCode 대신 code를 사용 -->
+				            ${category.mainName}
+				            <c:if test="${category.subName != null}"> > ${category.subName}</c:if>
+				            <c:if test="${category.detailName != null}"> > ${category.detailName}</c:if>
+				        </option>
+				    </c:forEach>
+				</select>
+                </td>
+            </tr>
 
             <!-- 과정명 -->
             <tr>
@@ -50,17 +35,31 @@
                 </td>
             </tr>
 
+            <!-- 교육 시간 -->
+            <tr>
+                <th>교육 시간*</th>
+                <td colspan="3">
+                    <select name="trainingTime" id="trainingTime" class="form-select me-2">
+                        <option value="">교육 시간 선택</option>
+                        <c:forEach var="time" items="${trainingTimes}">
+                            <option value="${time.value}">${time.label}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+
             <!-- 수료 조건 -->
             <tr>
                 <th>수료 조건*</th>
                 <td colspan="3">
                     <select name="completionCriteria" id="completionCriteria" class="form-select" required>
                         <option value="">수료 조건 선택</option>
-		               <c:forEach var="criteria" items="${completionCriteria}">
-						    <option value="${criteria.completionCode}">
-						       [ 코드: ${criteria.completionCode} ] [ 진도율: ${criteria.completionRate} ] [ 시험 점수: ${criteria.completionScore} ] [ 설문 유무: ${criteria.completionSurvey } ]
-						    </option>
-					   </c:forEach>
+                        <c:forEach var="criteria" items="${completionCriteria}">
+                            <option value="${criteria.completionCode}">
+                                [ 코드: ${criteria.completionCode} ] [ 진도율: ${criteria.completionRate} ] 
+                                [ 시험 점수: ${criteria.completionScore} ] [ 설문 유무: ${criteria.completionSurvey} ]
+                            </option>
+                        </c:forEach>
                     </select>
                 </td>
             </tr>
@@ -101,82 +100,51 @@
     CKEDITOR.replace('description');
     CKEDITOR.replace('objective');
 
-    $(document).ready(function() {
-        // 대분류 선택 시 중분류 로드
-        $('#mainCategory').on('change', function() {
-            const mainCode = $(this).val();
-            console.log("Selected mainCode:", mainCode); // 선택된 mainCode 로그 확인
-            if (mainCode) {
-                $.ajax({
-                    url: '<c:url value="/education/subCategories" />',
-                    method: 'GET',
-                    data: { mainCode: mainCode },
-                    success: function(data) {
-                    	console.log("Received subCategories:", data); // 응답 받은 데이터 로그 확인
-                        let subCategoryOptions = '<option value="">중분류 선택</option>';
-                        $.each(data, function(index, item) {
-                            subCategoryOptions += `<option value="${item.subCode}">${item.subName}</option>`;
-                        });
-                        $('#subCategory').html(subCategoryOptions);
-                        $('#detailCategory').html('<option value="">소분류 선택</option>'); // 소분류 초기화
-                    },
-                    error: function() {
-                        alert('중분류 데이터를 불러오는 중 오류가 발생했습니다.');
-                    }
-                });
-            } else {
-                $('#subCategory').html('<option value="">중분류 선택</option>');
-                $('#detailCategory').html('<option value="">소분류 선택</option>');
-            }
-        });
-
-        // 중분류 선택 시 소분류 로드
-        $('#subCategory').on('change', function() {
-            const subCode = $(this).val();
-            console.log("Received subCode:", subCode); // subCode 확인
-            if (subCode) {
-                $.ajax({
-                    url: '<c:url value="/education/detailCategories" />',
-                    method: 'GET',
-                    data: { subCode: subCode },
-                    success: function(data) {
-                    	console.log("Received detailCategories:", data); // 소분류 응답 데이터 확인
-                        let detailCategoryOptions = '<option value="">소분류 선택</option>';
-                        $.each(data, function(index, item) {
-                            detailCategoryOptions += `<option value="${item.detailCode}">${item.detailName}</option>`;
-                        });
-                        $('#detailCategory').html(detailCategoryOptions);
-                    },
-                    error: function() {
-                        alert('소분류 데이터를 불러오는 중 오류가 발생했습니다.');
-                    }
-                });
-            } else {
-                $('#detailCategory').html('<option value="">소분류 선택</option>');
-            }
-        });
-    });
-
-    // 유효성 검사
     $('#educationForm').on('submit', function(e) {
-        const mainCategory = $('#mainCategory').val();
-        const title = $('#title').val().trim();
-        const description = CKEDITOR.instances.description.getData().trim();
-        const objective = CKEDITOR.instances.objective.getData().trim();
-        const completionCriteria = $('#completionCriteria').val();
+        e.preventDefault();
 
-        if (!mainCategory) {
-            alert('대분류를 선택해주세요.');
-            e.preventDefault(); // 폼 제출 중단
-            return false;
+        // CKEditor에서 내용 가져오기
+        var description = CKEDITOR.instances.description.getData();
+        var objective = CKEDITOR.instances.objective.getData();
+        
+        var educationData = {
+            title: $('#title').val(),
+            category: $('#category').val(),
+            trainingTime: $('#trainingTime').val(),
+            description: description,
+            objective: objective,
+            completionCriteria: $('#completionCriteria').val(),
+            note: $('#note').val()
+        };
+
+/*         
+        // 필수 값 검증 | !educationData.trainingTime |
+        if (!educationData.title || !educationData.category || !educationData.description || !educationData.objective || !educationData.completionCriteria) {
+            alert('필수 항목을 모두 입력해주세요.');
+            return;
         }
 
-        if (!title || !description || !objective || !completionCriteria) {
-            alert('모든 필수 입력란을 입력해주세요.');
-            e.preventDefault(); // 폼 제출 중단
-            return false;
-        }
+   */      
+        // 전송 전에 데이터 확인
+        console.log("전송할 데이터:", educationData);
 
-        return true; // 유효성 검사 통과 시 폼 제출
+        $.ajax({
+            url: '/education/educationInsert',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(educationData),
+            success: function(response) {
+                console.log(response); 
+                if (response.httpStatus === 'OK') {
+                    alert('교육 과정이 성공적으로 등록되었습니다.');
+                    window.location.href = '/education/educationList.do';
+                } else {
+                    alert('등록에 실패했습니다: ' + response.message);
+                }
+            },
+            error: function(error) {
+                alert('서버와의 통신에 실패했습니다.');
+            }
+        });
     });
 </script>

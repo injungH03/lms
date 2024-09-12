@@ -23,6 +23,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
     private String completionCriteria; // 수료조건
     private String note; // 비고
     private String status; // 상태정보
+    private String trainingTime; // 교육시간
+    
+    
     
     
 	@Override
@@ -31,8 +34,10 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 				+ subCode + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
 				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", description="
 				+ description + ", objective=" + objective + ", completionCriteria=" + completionCriteria + ", note="
-				+ note + ", status=" + status + "]";
+				+ note + ", status=" + status + ", trainingTime=" + trainingTime + "]";
 	}
+
+
 
 
 	public String getCode() {
@@ -40,9 +45,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+
 
 
 	public String getMainCode() {
@@ -50,9 +59,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setMainCode(String mainCode) {
 		this.mainCode = mainCode;
 	}
+
+
 
 
 	public String getMainName() {
@@ -60,9 +73,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setMainName(String mainName) {
 		this.mainName = mainName;
 	}
+
+
 
 
 	public String getSubCode() {
@@ -70,9 +87,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
 	}
+
+
 
 
 	public String getSubName() {
@@ -80,9 +101,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setSubName(String subName) {
 		this.subName = subName;
 	}
+
+
 
 
 	public String getDetailCode() {
@@ -90,9 +115,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setDetailCode(String detailCode) {
 		this.detailCode = detailCode;
 	}
+
+
 
 
 	public String getDetailName() {
@@ -100,9 +129,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setDetailName(String detailName) {
 		this.detailName = detailName;
 	}
+
+
 
 
 	public int getEduCode() {
@@ -110,9 +143,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setEduCode(int eduCode) {
 		this.eduCode = eduCode;
 	}
+
+
 
 
 	public String getTitle() {
@@ -120,9 +157,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+
 
 
 	public String getCategory() {
@@ -130,9 +171,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+
 
 
 	public String getDescription() {
@@ -140,9 +185,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+
 
 
 	public String getObjective() {
@@ -150,9 +199,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setObjective(String objective) {
 		this.objective = objective;
 	}
+
+
 
 
 	public String getCompletionCriteria() {
@@ -160,9 +213,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setCompletionCriteria(String completionCriteria) {
 		this.completionCriteria = completionCriteria;
 	}
+
+
 
 
 	public String getNote() {
@@ -170,9 +227,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setNote(String note) {
 		this.note = note;
 	}
+
+
 
 
 	public String getStatus() {
@@ -180,11 +241,31 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-    
 
+
+
+
+	public String getTrainingTime() {
+		return trainingTime;
+	}
+
+
+
+
+	public void setTrainingTime(String trainingTime) {
+		this.trainingTime = trainingTime;
+	}
+    
+	
+    
+    
+    
+    
     
 	
 
