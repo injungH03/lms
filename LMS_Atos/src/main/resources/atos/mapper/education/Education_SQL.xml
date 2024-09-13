@@ -28,15 +28,19 @@
 	        a.STATUS AS statusCode,
 	        s.NAME AS statusName,  <!-- 상태 명칭 -->
 	        c.MAIN_NAME,  <!-- 대분류 명칭 -->
-	        c.SUB_NAME,    <!-- 중분류 명칭 -->
+	        c.SUB_NAME,   <!-- 중분류 명칭 -->
 	        c.DETAIL_NAME,  <!-- 소분류 명칭 -->
-	        c.CODE <!-- 분류 코드 -->
+	        c.CODE,  <!-- 분류 코드 -->
+	        a.TRAINING_TIME,  <!-- 교육 시간 코드 -->
+	        t.NAME AS trainingTimeName  <!-- 교육 시간 이름 추가 -->
 	    FROM
 	        ATOS_EDUCATION a
 	    JOIN
 	        ATOS_STATUS s ON a.STATUS = s.CODE  <!-- 상태 코드와 명칭 매핑 -->
 	    JOIN
 	        ATOS_CATEGORY c ON a.CATEGORY = c.CODE  <!-- 교육 분류 코드와 명칭 매핑 -->
+	    LEFT JOIN
+	        ATOS_TRAINING_TIME t ON a.TRAINING_TIME = t.CODE  <!-- 교육 시간 코드와 이름 매핑 -->
 	    <include refid="whereClause" />
 	    ORDER BY a.EDU_CODE DESC
 	    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
