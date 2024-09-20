@@ -29,19 +29,69 @@ public class LectureController {
 		return "lecture/lectureRegist";
 	}
 	
+	@RequestMapping("lectureDetail.do")
+	public String lectureDetail(ModelMap model) throws Exception {
+		
+		
+		model.addAttribute("page", "lectureDetail");
+		
+		return "lecture/lectureDetail";
+	}
+
+	@RequestMapping("lectureStudentList.do")
+	public String lectureStudentList(ModelMap model) throws Exception {
+		
+		
+		model.addAttribute("page", "lectureStudentList");
+		
+		return "lecture/lectureStudentList";
+	}
+	
+	@RequestMapping("attendanceInfo.do")
+	public String attendanceInfo(ModelMap model) throws Exception {
+		
+		
+		model.addAttribute("page", "attendanceInfo");
+		
+		return "lecture/lectureAttendance";
+	}
+	
+	
+	
 	
 	@RequestMapping("educationPopup.do")
 	public String educationPopup(ModelMap model) throws Exception {
 		
 		
-		return "atos/lecture/educationPopup";
+		return "atos/lecture/popupEducation";
 	}
 	
 	@RequestMapping("instructorPopup.do")
 	public String instructorPopup(ModelMap model) throws Exception {
 		
 		
-		return "atos/lecture/instructorPopup";
+		return "atos/lecture/popupInstructor";
+	}
+	
+	@RequestMapping("studentListPopup.do")
+	public String studentListPopup(ModelMap model) throws Exception {
+		
+		
+		return "atos/lecture/popupStudentList";
+	}
+	
+	@RequestMapping("studentDetailPopup.do")
+	public String studentDetailPopup(ModelMap model) throws Exception {
+		
+		
+		return "atos/lecture/popupStudentDetail";
+	}
+	
+	@RequestMapping("studentLecturePopup.do")
+	public String studentLecturePopup(ModelMap model) throws Exception {
+		
+		
+		return "atos/lecture/popupStudentLecture";
 	}
 	
 }

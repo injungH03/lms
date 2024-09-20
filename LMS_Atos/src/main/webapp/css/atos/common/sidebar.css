@@ -1,16 +1,13 @@
 @charset "UTF-8";
 
 .sidebar {
-    grid-area: sidebar;
+/*     grid-area: sidebar; */
     background-color: #ffffff; /* 배경을 흰색으로 설정 */
     padding: 10px 0; /* 패딩을 줄여서 더 컴팩트하게 */
-    border-right: 1px solid #ddd;
-    font-size: 16px; /* 기본 폰트 크기 한 단계 증가 */
 }
 
 .sidebar .menu-group {
     margin-bottom: 10px; /* 각 메뉴 그룹 사이에 여백 추가 */
-    border-bottom: 1px solid #ddd; /* 메뉴 그룹 하단에 구분선 추가 */
 }
 
 .sidebar .menu-group:last-child {
@@ -30,7 +27,7 @@
 
 .sidebar .menu-group ul {
     list-style-type: none;
-    padding-left: 15px; /* 하위 메뉴와 헤더의 간격을 좁힘 */
+    padding-left: 10px; /* 하위 메뉴와 헤더의 간격을 좁힘 */
     margin: 0;
     display: none; /* 기본적으로 하위 메뉴는 숨김 */
 }
