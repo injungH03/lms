@@ -1,5 +1,7 @@
 package atos.lms.education.service;
 
+import java.time.LocalDate;
+
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
@@ -24,7 +26,8 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
     private String note; // 비고
     private String status; // 상태정보
     private String trainingTime; // 교육시간
-    
+    private LocalDate regDate; // 등록일
+    private String register; // 등록자
     
     
     
@@ -34,9 +37,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 				+ subCode + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
 				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", description="
 				+ description + ", objective=" + objective + ", completionCriteria=" + completionCriteria + ", note="
-				+ note + ", status=" + status + ", trainingTime=" + trainingTime + "]";
+				+ note + ", status=" + status + ", trainingTime=" + trainingTime + ", regDate=" + regDate
+				+ ", register=" + register + "]";
 	}
-
 
 
 
@@ -46,11 +49,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setCode(String code) {
 		this.code = code;
 	}
-
 
 
 
@@ -60,11 +61,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setMainCode(String mainCode) {
 		this.mainCode = mainCode;
 	}
-
 
 
 
@@ -74,11 +73,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setMainName(String mainName) {
 		this.mainName = mainName;
 	}
-
 
 
 
@@ -88,11 +85,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
 	}
-
 
 
 
@@ -102,11 +97,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setSubName(String subName) {
 		this.subName = subName;
 	}
-
 
 
 
@@ -116,11 +109,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setDetailCode(String detailCode) {
 		this.detailCode = detailCode;
 	}
-
 
 
 
@@ -130,11 +121,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setDetailName(String detailName) {
 		this.detailName = detailName;
 	}
-
 
 
 
@@ -144,11 +133,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setEduCode(int eduCode) {
 		this.eduCode = eduCode;
 	}
-
 
 
 
@@ -158,11 +145,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 
 
 
@@ -172,11 +157,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
 
 
 
@@ -186,11 +169,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 
 
@@ -200,11 +181,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setObjective(String objective) {
 		this.objective = objective;
 	}
-
 
 
 
@@ -214,11 +193,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setCompletionCriteria(String completionCriteria) {
 		this.completionCriteria = completionCriteria;
 	}
-
 
 
 
@@ -228,11 +205,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setNote(String note) {
 		this.note = note;
 	}
-
 
 
 
@@ -242,11 +217,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 
 
 
@@ -256,14 +229,37 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 
 
-
 	public void setTrainingTime(String trainingTime) {
 		this.trainingTime = trainingTime;
 	}
+
+
+
+	public LocalDate getRegDate() {
+		return regDate;
+	}
+
+
+
+	public void setRegDate(LocalDate regDate) {
+		this.regDate = regDate;
+	}
+
+
+
+	public String getRegister() {
+		return register;
+	}
+
+
+
+	public void setRegister(String register) {
+		this.register = register;
+	}
     
-	
     
     
+   
     
     
     
