@@ -8,7 +8,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.education-management .board h2 {
+.education-management .board h3 {
     margin-top: 0;
     font-size: 1.5em;
     color: #2c3e50;
@@ -16,18 +16,19 @@
     padding-bottom: 10px;
 }
 
-.education-management .search_box select,
-.education-management .search_box input[type="text"] {
-    padding: 8px 12px;
-    font-size: 0.9em;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: #ffffff;
-    width: 200px;
-    box-sizing: border-box;
+/* 검색 테이블 */
+.search-box {
+    margin-bottom: 20px;
 }
 
-.education-management .search_box .s_btn {
+.search-box th,
+.search-box td {
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+/* 검색 버튼 */
+.education-management .search_box .btn {
     padding: 8px 16px;
     font-size: 0.9em;
     background-color: #5cb85c;
@@ -38,8 +39,8 @@
     transition: background-color 0.3s ease;
 }
 
-.education-management .search_box div {
-    margin-bottom: 15px;
+.education-management .search_box .btn:hover {
+    background-color: #4cae4c;
 }
 
 /* 버튼 그룹 스타일 조정 */
@@ -63,53 +64,49 @@
     justify-content: flex-end;
 }
 
-.education-management .btn-group select,
-.education-management .btn-group .s_submit {
+/* Bootstrap 버튼 스타일 적용 */
+.education-management .btn {
     padding: 8px 12px;
     font-size: 0.9em;
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.education-management .btn-group .s_submit {
+.education-management .btn-primary {
     background-color: #5cb85c;
-    color: white;
     border: none;
     transition: background-color 0.3s ease;
 }
 
-.education-management .btn-group .s_submit:hover {
+.education-management .btn-primary:hover {
     background-color: #4cae4c;
 }
 
 /* 테이블 스타일 조정 */
-.education-management .board_list {
+.table-bordered {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
     background-color: #ffffff;
 }
 
-.education-management .board_list th,
-.education-management .board_list td {
+.table-bordered th,
+.table-bordered td {
     padding: 12px;
     font-size: 0.9em;
     text-align: left;
     border-bottom: 1px solid #e9ecef;
 }
 
-.education-management .board_list th {
+.table-bordered th {
     background-color: #343a40;
     color: #ffffff;
 }
 
-.education-management .board_list td {
+.table-bordered td {
     color: #495057;
 }
 
-.education-management .board_list tr:hover td {
+.table-bordered tr:hover td {
     background-color: #f8f9fa;
 }
 
