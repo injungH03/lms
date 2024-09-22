@@ -29,15 +29,17 @@ body {
 	color: #ffffff;
 	display: flex;
 	flex-direction: column;
-	padding: 10px 5px 0 10px;
+	border-right: 1px solid #ddd;
+    min-height: calc(100vh - 50px);
+/* 	padding: 10px 5px 0 10px; */
 }
 
-.dashboard-content {
+/* .dashboard-content {
 	grid-area: content;
 	min-height: calc(100vh - 50px);
 	background-color: #ecf0f1;
 	padding: 10px 10px 0 5px;
-}
+} */
 
 .pagination {
 	margin-top: 20px;

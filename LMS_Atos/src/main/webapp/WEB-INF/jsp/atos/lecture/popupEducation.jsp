@@ -16,20 +16,22 @@
 </head>
 <body>
     <div class="popup-wrapper">
-        <h4>과정 선택</h4>
+        
+	<div class="tab-section" style="margin-bottom:20px;">
+	    <ul class="nav nav-tabs" id="myTab" role="tablist">
+	        <li class="nav-item" role="presentation">
+	            <button class="nav-link active" id="supervisor-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="supervisor" aria-selected="true">관리감독자 정기교육</button>
+	        </li>
+	        <li class="nav-item" role="presentation">
+	            <button class="nav-link" id="worker-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="worker" aria-selected="false">근로자 정기교육</button>
+	        </li>
+	        <li class="nav-item" role="presentation">
+	            <button class="nav-link" id="assessment-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="assessment" aria-selected="false">위험성평가교육</button>
+	        </li>
+	    </ul>
+	</div>
     <form method="get" action="" class="form-inline mb-3">
 		<table class="search-table">
-            <tr>
-                <th>분류</th>
-                <td colspan="2">
-                    <select name="course" class="form-select search-select me-2">
-                        <option value="all">대분류</option>
-                    </select>
-                    <select name="course" class="form-select search-select me-2">
-                        <option value="all">중분류</option>
-                    </select>
-                </td>
-            </tr>
             <tr>
                 <th>검색</th>
                 <td colspan="5">
@@ -52,28 +54,24 @@
 		        <col style="width: 5%;">
 		        <col style="width: 10%;">
 		        <col style="width: 10%;">
-		        <col style="width: 50%;">
 	    	</colgroup>
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>대분류</th>
-                    <th>중분류</th>
-                    <th>과정명</th>
+                    <th>교육명</th>
+                    <th>교육시간</th>
                 </tr>
             </thead>
             <tbody>
             	<tr>
             		<td>1</td>
-            		<td>2</td>
-            		<td>3</td>
-            		<td>4</td>
+            		<td>2024년 관리감독자 제조업</td>
+            		<td>8시간</td>
             	</tr>
             	<tr>
-            		<td>1</td>
             		<td>2</td>
-            		<td>3</td>
-            		<td>4</td>
+            		<td>2024년 관리감독자 제조업</td>
+            		<td>8시간</td>
             	</tr>
             </tbody>
         </table>
