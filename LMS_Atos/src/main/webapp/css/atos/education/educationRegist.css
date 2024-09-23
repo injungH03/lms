@@ -1,0 +1,267 @@
+@charset "UTF-8";
+
+/* 제목 섹션 스타일 */
+.table-section h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 테이블 섹션 스타일 */
+.table-section {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* 검색 테이블 스타일 */
+.search-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 테이블 헤더 스타일 */
+.search-table th {
+    background-color: #f9f9f9;
+}
+
+/* 등록 테이블 헤더 너비 */
+.regist-table th {
+    width: 13%;
+}
+
+/* 테이블 셀 스타일 */
+.search-table th, .search-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* 검색 필드 스타일 */
+.search-table select, .search-table input {
+    padding: 5px;
+}
+
+/* 라디오 그룹 스타일 */
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 라디오 버튼 스타일 */
+.radio-group .form-check {
+    margin-right: 10px;
+}
+
+/* 기본 라디오 버튼 모양 */
+.form-check-input {
+    appearance: radio !important;
+    margin-top: 2px;
+}
+
+/* 테이블 헤더 스타일 */
+.table th {
+    background-color: #f9f9f9;
+    color: #333;
+    white-space: nowrap;
+}
+
+/* 테이블 헤더 및 바디 스타일 */
+.table thead th {
+    background-color: #f2f2f2;
+    border-bottom: 2px solid #ddd;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* 테이블 테두리 스타일 */
+.table-bordered {
+    text-align: center;
+}
+
+/* 상태 박스 스타일 */
+.status-box {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-신청 {
+    background-color: #f39c12;
+}
+
+.status-종료 {
+    background-color: #2d3436;
+}
+
+/* 버튼 그룹 스타일 */
+.btn-group button {
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    margin-right: 10px;
+}
+
+/* 마지막 버튼 간격 제거 */
+.btn-group button:last-child {
+    margin-right: 0;
+}
+
+/* 버튼 hover 효과 */
+.btn-group button:hover {
+    opacity: 0.8;
+}
+
+/* 엑셀 및 과정 생성 버튼 */
+.btn-excel, .btn-create-course {
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+.btn-excel {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-create-course {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+/* 버튼 hover 효과 */
+.btn-excel:hover, .btn-create-course:hover {
+    opacity: 0.8;
+}
+
+/* 검색 버튼 스타일 */
+.btn-search {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+/* 검색 선택 필드 스타일 */
+.search-select {
+    width: 200px;
+    max-width: 100%;
+}
+
+/* 검색 입력 필드 스타일 */
+.search-input {
+    width: 300px;
+    max-width: 100%;
+}
+
+/* d-flex 스타일 */
+.d-flex input {
+    width: 25%;
+    margin-left: 5px;
+}
+
+.d-flex span {
+    line-height: 35px;
+}
+
+.d-flex {
+    align-items: center;
+}
+
+.span-ml {
+    margin-left: 10px;
+}
+
+/* 선택 박스 스타일 */
+.form-select {
+    display: inline-block;
+}
+
+/* 커스텀 헤더 너비 */
+.custom-th-width {
+    width: 150px;
+}
+
+/* 커스텀 필드 너비 */
+.custom-width {
+    display: inline-block;
+    width: 30%;
+}
+
+/* 팝업 스타일 */
+.popup-wrapper {
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* 과정 테이블 스타일 */
+.course-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.course-table th, .course-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.course-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.course-table td {
+    vertical-align: middle;
+}
+
+/* 선택 버튼 스타일 */
+.btn-select {
+    padding: 5px 10px;
+    font-size: 12px;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+}
+
+.btn-select:hover {
+    background-color: #218838;
+}
+
+/* 배지 스타일 */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.pagination .page-item .page-link {
+    color: #007bff;
+    padding: 8px 12px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e9ecef;
+}

@@ -62,9 +62,47 @@ public class EducationMasterVO implements GeneralModel {
 
     private List<Integer> eduCodeList;  // 여러 개의 교육 코드 처리
 
+    // 수료 조건 관련 필드
+    private String completionCode; // 수료 조건 코드
+    private String completionRate; // 진도율
+    private String completionScore; // 시험 점수
+    private String completionSurvey; // 설문 유무
     
+   
     
-    public List<Integer> getEduCodeList() {
+    public String getCompletionCode() {
+		return completionCode;
+	}
+
+	public void setCompletionCode(String completionCode) {
+		this.completionCode = completionCode;
+	}
+
+	public String getCompletionRate() {
+		return completionRate;
+	}
+
+	public void setCompletionRate(String completionRate) {
+		this.completionRate = completionRate;
+	}
+
+	public String getCompletionScore() {
+		return completionScore;
+	}
+
+	public void setCompletionScore(String completionScore) {
+		this.completionScore = completionScore;
+	}
+
+	public String getCompletionSurvey() {
+		return completionSurvey;
+	}
+
+	public void setCompletionSurvey(String completionSurvey) {
+		this.completionSurvey = completionSurvey;
+	}
+
+	public List<Integer> getEduCodeList() {
         return eduCodeList;
     }
 
