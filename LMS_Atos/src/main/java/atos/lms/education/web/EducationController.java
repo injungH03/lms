@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -88,4 +89,63 @@ public class EducationController {
 
         return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
     }
+    
+    
+    
+    // 등록 페이지 이동
+    @RequestMapping("/education/educationRegistView.do")
+    public String educationRegistView(@ModelAttribute("educationVO") EducationVO educationVO, ModelMap model) throws Exception {
+    	
+        // 로그 추가
+        System.out.println("educationRegistView 접근");
+    	
+    	
+        // 분류 및 수료 조건 데이터 조회
+        List<EducationVO> categories = educationService.selectAllCategoryList();
+        List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
+        // 교육 시간 목록 조회
+        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
+
+       
+        for (EducationMasterVO criteria : completionCriteria) {
+            System.out.println("수료 조건 코드: " + criteria.getCompletionCode() + ", 진도율: " + criteria.getCompletionRate() + 
+                               ", 시험 점수: " + criteria.getCompletionScore() + ", 설문 유무: " + criteria.getCompletionSurvey());
+        }
+        // 모델에 데이터 추가
+        model.addAttribute("categories", categories);
+        model.addAttribute("completionCriteria", completionCriteria);
+        model.addAttribute("trainingTimes", trainingTimes);
+        
+        System.out.println("categories" + categories);
+        
+        
+        return "education/educationRegist"; // JSP 파일 경로에 맞게 수정
+    }
+    
+
+    
+    @RequestMapping("/education/educationInsert")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> educationInsert(@RequestBody EducationVO educationVO) {
+        System.out.println("입력된 데이터: " + educationVO.toString());
+        System.out.println("카테고리 코드: " + educationVO.getCategory());
+        
+        // 교육 과정 등록 처리
+        educationService.insertEducation(educationVO);
+
+        ResponseVO responseVO = new ResponseVO();
+        responseVO.setHttpStatus(HttpStatus.OK);
+        responseVO.setMessage("교육 과정이 성공적으로 등록되었습니다.");
+        
+        return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+    }
+    
+    // 엑셀 다운로드 요청 처리
+    @RequestMapping("/education/educationListExcelDown")
+    public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {
+        educationService.educationListExcelDown(response, educationVO);
+    }
+    
+    
+    
 }

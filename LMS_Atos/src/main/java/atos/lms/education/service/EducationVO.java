@@ -1,38 +1,48 @@
 package atos.lms.education.service;
 
+import java.time.LocalDate;
+
 import atos.lms.exam.service.GeneralModel;
 
 @SuppressWarnings("serial")
 public class EducationVO extends EducationMasterVO implements GeneralModel {
 	
-	// atos_category
+	
+	// atos_category_detail
+	// atos_category_main
+    // atos_category_sub
     private String code; // 교육 분류 정보 코드
     private String mainCode; // 대분류 코드
-    private String mainName; // 대분류 명칭
     private String subCode; // 중분류 코드
+    private String mainName; // 대분류 명칭
     private String subName; // 중분류 명칭
     private String detailCode; // 소분류 코드
     private String detailName; // 소분류 명칭
+    private String use_Yn; // 사용 여부
+    
     
     // atos_education
     private int eduCode; // 코드
     private String title; // 명칭
     private String category; // 교육분류
-    private String trainingTime; // 교육시간
     private String description; // 과정소개
     private String objective; // 과정목표
     private String completionCriteria; // 수료조건
     private String note; // 비고
     private String status; // 상태정보
+    private String trainingTime; // 교육시간
+    private LocalDate regDate; // 등록일
+    private String register; // 등록자
     
     
 	@Override
 	public String toString() {
-		return "EducationVO [code=" + code + ", mainCode=" + mainCode + ", mainName=" + mainName + ", subCode="
-				+ subCode + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
-				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", trainingTime="
-				+ trainingTime + ", description=" + description + ", objective=" + objective + ", completionCriteria="
-				+ completionCriteria + ", note=" + note + ", status=" + status + "]";
+		return "EducationVO [code=" + code + ", mainCode=" + mainCode + ", subCode=" + subCode + ", mainName="
+				+ mainName + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
+				+ ", use_Yn=" + use_Yn + ", eduCode=" + eduCode + ", title=" + title + ", category=" + category
+				+ ", description=" + description + ", objective=" + objective + ", completionCriteria="
+				+ completionCriteria + ", note=" + note + ", status=" + status + ", trainingTime=" + trainingTime
+				+ ", regDate=" + regDate + ", register=" + register + "]";
 	}
 
 
@@ -56,16 +66,6 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-	public String getMainName() {
-		return mainName;
-	}
-
-
-	public void setMainName(String mainName) {
-		this.mainName = mainName;
-	}
-
-
 	public String getSubCode() {
 		return subCode;
 	}
@@ -73,6 +73,16 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
+	}
+
+
+	public String getMainName() {
+		return mainName;
+	}
+
+
+	public void setMainName(String mainName) {
+		this.mainName = mainName;
 	}
 
 
@@ -106,6 +116,16 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
+	public String getUse_Yn() {
+		return use_Yn;
+	}
+
+
+	public void setUse_Yn(String use_Yn) {
+		this.use_Yn = use_Yn;
+	}
+
+
 	public int getEduCode() {
 		return eduCode;
 	}
@@ -133,16 +153,6 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-
-	public String getTrainingTime() {
-		return trainingTime;
-	}
-
-
-	public void setTrainingTime(String trainingTime) {
-		this.trainingTime = trainingTime;
 	}
 
 
@@ -194,8 +204,44 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-    
 
+
+	public String getTrainingTime() {
+		return trainingTime;
+	}
+
+
+	public void setTrainingTime(String trainingTime) {
+		this.trainingTime = trainingTime;
+	}
+
+
+	public LocalDate getRegDate() {
+		return regDate;
+	}
+
+
+	public void setRegDate(LocalDate regDate) {
+		this.regDate = regDate;
+	}
+
+
+	public String getRegister() {
+		return register;
+	}
+
+
+	public void setRegister(String register) {
+		this.register = register;
+	}
+    
+    
+    
+	
+    
+   
+    
+    
     
 	
 
