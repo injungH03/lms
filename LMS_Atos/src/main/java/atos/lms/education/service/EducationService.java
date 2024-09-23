@@ -3,6 +3,8 @@ package atos.lms.education.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface EducationService {
 	
     Map<String, Object> selectEducationList(EducationVO educationVO);
@@ -18,4 +20,7 @@ public interface EducationService {
     List<EducationVO> selectAllCategoryList();
     
     List<Map<String, Object>> selectTrainingTimeList();
+    
+    void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception;
+
 }

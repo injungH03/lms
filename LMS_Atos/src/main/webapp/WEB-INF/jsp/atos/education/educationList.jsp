@@ -6,6 +6,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/education/education.css' />">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script>
     function fn_egov_select_linkPage(pageNo) {
@@ -17,16 +18,18 @@
 
 <div class="board education-management">
     <form name="educationForm" action="<c:url value='/education/educationList.do'/>" method="post">
-        <h3>교육 과정 목록</h3>
+        <div class="head-section" style="margin-bottom:20px;">
+		<span>&nbsp;교육 과정 목록</span>
+		</div>
 
-        <!-- 검색 필터와 상태 선택을 테이블로 구성 -->
+        <!-- 상태와 검색을 각각 위아래로 배치 -->
         <div class="search-box">
-            <table class="table table-bordered">
+            <table class="table table-bordered search-table">
                 <tr>
                     <th>상태</th>
                     <td>
-                        <select id="status" name="statusCode" class="form-control">
-                            <option value="">선택</option>
+                        <select id="status" name="statusCode" class="form-control form-control-sm short-select">
+                            <option value="">전체</option>
                             <c:forEach var="status" items="${status}">
                                 <option value="${status.statusCode }"
                                     <c:if test="${status.statusCode == educationSearchVO.statusCode}">selected</c:if>>
@@ -39,13 +42,14 @@
                 <tr>
                     <th>검색</th>
                     <td>
-                        <select name="searchCnd" title="검색 조건 선택" class="form-control">
-                            <option value="">선택</option>
-                            <option value="0" <c:if test="${educationSearchVO.searchCnd == '0'}">selected="selected"</c:if>>교육명</option>
-                            <option value="1" <c:if test="${educationSearchVO.searchCnd == '1'}">selected="selected"</c:if>>교육분류</option>
-                        </select>
-                        <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" class="form-control mt-2" placeholder="텍스트를 입력해 주세요." value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="155">
-                        <button type="submit" class="btn btn-primary mt-2">검색</button>
+                        <div class="d-flex align-items-center">
+                            <select name="searchCnd" title="검색 조건 선택" class="form-control form-control-sm short-select">
+                                <option value="0" <c:if test="${educationSearchVO.searchCnd == '0'}">selected="selected"</c:if>>교육명</option>
+                                <option value="1" <c:if test="${educationSearchVO.searchCnd == '1'}">selected="selected"</c:if>>교육분류</option>
+                            </select>
+                            <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" class="form-control form-control-sm short-input ms-2" placeholder="검색어를 입력하세요" value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="155">
+                            <button type="submit" class="btn btn-primary btn-sm ms-2" style="width: auto;">검색</button>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -58,9 +62,9 @@
     <div class="btn-group">
         <div class="left-group"></div>
         <div class="right-group">
-            <button class="btn btn-primary" id="statusUpdate">상태변경</button>
-            <button class="btn btn-primary" id="excelDown">EXCEL</button>
-            <button class="btn btn-primary" onclick="location.href='<c:url value='/education/educationRegistView.do' />'">등록</button>
+            <button class="btn btn-primary btn-sm" id="statusUpdate">상태변경</button>
+            <button class="btn btn-primary btn-sm" id="excelDown">EXCEL</button>
+            <button class="btn btn-primary btn-sm" onclick="location.href='<c:url value='/education/educationRegistView.do' />'">등록</button>
         </div>
     </div>
 
@@ -69,28 +73,31 @@
         <thead>
             <tr>
                 <th>번호</th>
+                <th>등록일</th>
                 <th>교육 분류</th>
                 <th>교육명</th>
                 <th>교육 시간</th>
+                <th>등록자</th>
                 <th>상태</th>
                 <th><input type="checkbox" id="checkAll"></th>
             </tr>
         </thead>
         <tbody>
-        <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-            <tr>
-                <td><c:out value="${(educationSearchVO.pageIndex-1) * educationSearchVO.pageSize + status.count}"/></td>
-                <td>
-                    ${resultInfo.mainName}
-                    <c:if test="${resultInfo.subName != null && !resultInfo.subName.isEmpty()}"> > ${resultInfo.subName}</c:if>
-                    <c:if test="${resultInfo.detailName != null && !resultInfo.detailName.isEmpty()}"> > ${resultInfo.detailName}</c:if>
-                </td>
-                <td><a href="<c:url value='/education/educationDetail.do?eduCode=${resultInfo.eduCode}'/>">${resultInfo.title}</a></td>
-                <td>${resultInfo.trainingTimeName}</td>
-                <td>${resultInfo.statusName }</td>
-                <td><input type="checkbox" name="rowCheck" value="${resultInfo.eduCode }"></td>
-            </tr>
-        </c:forEach>
+	    <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
+	        <tr>
+	            <td><c:out value="${(educationSearchVO.pageIndex-1) * educationSearchVO.pageSize + status.count}"/></td>
+	            <td>${resultInfo.regDate }</td><!-- 등록일 출력 -->
+	            <td>
+	                ${resultInfo.mainName}
+	                <c:if test="${resultInfo.subName != null && !resultInfo.subName.isEmpty()}"> > ${resultInfo.subName}</c:if>
+	            </td>
+	            <td><a href="<c:url value='/education/educationDetail.do?eduCode=${resultInfo.eduCode}'/>">${resultInfo.title}</a></td>
+	            <td>${resultInfo.trainingTimeName}</td>
+	            <td>${resultInfo.register}</td> <!-- 등록자 출력 -->
+	            <td>${resultInfo.statusName }</td>
+	            <td><input type="checkbox" name="rowCheck" value="${resultInfo.eduCode }"></td>
+	        </tr>
+	    </c:forEach>
         <c:if test="${fn:length(resultList) == 0}">
             <tr>
                 <td colspan="6">조회된 결과가 존재하지 않습니다.</td>

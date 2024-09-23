@@ -1,14 +1,18 @@
 package atos.lms.education.service.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
+import atos.lms.common.utl.ExcelUtil;
+import atos.lms.education.service.EducationExcelVO;
 import atos.lms.education.service.EducationMasterVO;
 import atos.lms.education.service.EducationService;
 import atos.lms.education.service.EducationVO;
@@ -81,5 +85,28 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
         return educationDAO.selectTrainingTimeList();
     }
     
+    
+    
+    @Override
+    public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {
+        List<EducationExcelVO> educationList = educationDAO.educationListExcelDown(educationVO);
+
+        // 필드와 엑셀 헤더 매핑
+        Map<String, String> fieldToHeaderMap = new LinkedHashMap<>();
+        fieldToHeaderMap.put("title", "교육명");
+        fieldToHeaderMap.put("category", "교육 분류");
+        fieldToHeaderMap.put("description", "과정 소개");
+        fieldToHeaderMap.put("objective", "과정 목표");
+        fieldToHeaderMap.put("completionCriteria", "수료 조건");
+        fieldToHeaderMap.put("note", "비고");
+        fieldToHeaderMap.put("status", "상태");
+        fieldToHeaderMap.put("trainingTime", "교육 시간");
+        fieldToHeaderMap.put("regDate", "등록일");
+        fieldToHeaderMap.put("register", "등록자");
+
+        // 엑셀 파일로 출력
+        ExcelUtil.exportToExcel(response, educationList, "교육목록", "교육목록엑셀파일", fieldToHeaderMap);
+    }
+
     
 }

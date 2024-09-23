@@ -7,14 +7,19 @@ import atos.lms.exam.service.GeneralModel;
 @SuppressWarnings("serial")
 public class EducationVO extends EducationMasterVO implements GeneralModel {
 	
-	// atos_category
+	
+	// atos_category_detail
+	// atos_category_main
+    // atos_category_sub
     private String code; // 교육 분류 정보 코드
     private String mainCode; // 대분류 코드
-    private String mainName; // 대분류 명칭
     private String subCode; // 중분류 코드
+    private String mainName; // 대분류 명칭
     private String subName; // 중분류 명칭
     private String detailCode; // 소분류 코드
     private String detailName; // 소분류 명칭
+    private String use_Yn; // 사용 여부
+    
     
     // atos_education
     private int eduCode; // 코드
@@ -30,17 +35,15 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
     private String register; // 등록자
     
     
-    
 	@Override
 	public String toString() {
-		return "EducationVO [code=" + code + ", mainCode=" + mainCode + ", mainName=" + mainName + ", subCode="
-				+ subCode + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
-				+ ", eduCode=" + eduCode + ", title=" + title + ", category=" + category + ", description="
-				+ description + ", objective=" + objective + ", completionCriteria=" + completionCriteria + ", note="
-				+ note + ", status=" + status + ", trainingTime=" + trainingTime + ", regDate=" + regDate
-				+ ", register=" + register + "]";
+		return "EducationVO [code=" + code + ", mainCode=" + mainCode + ", subCode=" + subCode + ", mainName="
+				+ mainName + ", subName=" + subName + ", detailCode=" + detailCode + ", detailName=" + detailName
+				+ ", use_Yn=" + use_Yn + ", eduCode=" + eduCode + ", title=" + title + ", category=" + category
+				+ ", description=" + description + ", objective=" + objective + ", completionCriteria="
+				+ completionCriteria + ", note=" + note + ", status=" + status + ", trainingTime=" + trainingTime
+				+ ", regDate=" + regDate + ", register=" + register + "]";
 	}
-
 
 
 	public String getCode() {
@@ -48,11 +51,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setCode(String code) {
 		this.code = code;
 	}
-
 
 
 	public String getMainCode() {
@@ -60,23 +61,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setMainCode(String mainCode) {
 		this.mainCode = mainCode;
 	}
-
-
-
-	public String getMainName() {
-		return mainName;
-	}
-
-
-
-	public void setMainName(String mainName) {
-		this.mainName = mainName;
-	}
-
 
 
 	public String getSubCode() {
@@ -84,11 +71,19 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setSubCode(String subCode) {
 		this.subCode = subCode;
 	}
 
+
+	public String getMainName() {
+		return mainName;
+	}
+
+
+	public void setMainName(String mainName) {
+		this.mainName = mainName;
+	}
 
 
 	public String getSubName() {
@@ -96,11 +91,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setSubName(String subName) {
 		this.subName = subName;
 	}
-
 
 
 	public String getDetailCode() {
@@ -108,11 +101,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setDetailCode(String detailCode) {
 		this.detailCode = detailCode;
 	}
-
 
 
 	public String getDetailName() {
@@ -120,11 +111,19 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setDetailName(String detailName) {
 		this.detailName = detailName;
 	}
 
+
+	public String getUse_Yn() {
+		return use_Yn;
+	}
+
+
+	public void setUse_Yn(String use_Yn) {
+		this.use_Yn = use_Yn;
+	}
 
 
 	public int getEduCode() {
@@ -132,11 +131,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setEduCode(int eduCode) {
 		this.eduCode = eduCode;
 	}
-
 
 
 	public String getTitle() {
@@ -144,11 +141,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 
 
 	public String getCategory() {
@@ -156,11 +151,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
 
 
 	public String getDescription() {
@@ -168,11 +161,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 
 
 	public String getObjective() {
@@ -180,11 +171,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setObjective(String objective) {
 		this.objective = objective;
 	}
-
 
 
 	public String getCompletionCriteria() {
@@ -192,11 +181,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setCompletionCriteria(String completionCriteria) {
 		this.completionCriteria = completionCriteria;
 	}
-
 
 
 	public String getNote() {
@@ -204,11 +191,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setNote(String note) {
 		this.note = note;
 	}
-
 
 
 	public String getStatus() {
@@ -216,11 +201,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 
 
 	public String getTrainingTime() {
@@ -228,11 +211,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setTrainingTime(String trainingTime) {
 		this.trainingTime = trainingTime;
 	}
-
 
 
 	public LocalDate getRegDate() {
@@ -240,11 +221,9 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setRegDate(LocalDate regDate) {
 		this.regDate = regDate;
 	}
-
 
 
 	public String getRegister() {
@@ -252,12 +231,13 @@ public class EducationVO extends EducationMasterVO implements GeneralModel {
 	}
 
 
-
 	public void setRegister(String register) {
 		this.register = register;
 	}
     
     
+    
+	
     
    
     

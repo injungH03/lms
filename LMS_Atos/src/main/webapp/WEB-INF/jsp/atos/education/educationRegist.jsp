@@ -11,21 +11,21 @@
     <form id="educationForm" method="post" action="<c:url value='/education/educationInsert'/>">
         <table class="search-table regist-table">
             <!-- 과정 선택 -->
-            <tr>
-                <th>과정 선택*</th>
-                <td colspan="3">
-				<select name="category" id="category" class="form-select me-2" required>
-				    <option value="">과정 선택</option>
-				    <c:forEach var="category" items="${categories}">
-				        <option value="${category.code}"> <!-- mainCode 대신 code를 사용 -->
-				            ${category.mainName}
-				            <c:if test="${category.subName != null}"> > ${category.subName}</c:if>
-				            <c:if test="${category.detailName != null}"> > ${category.detailName}</c:if>
-				        </option>
-				    </c:forEach>
-				</select>
-                </td>
-            </tr>
+             <tr>
+			    <th>과정 선택*</th>
+			    <td colspan="3">
+			        <select name="category" id="category" class="form-select me-2" required>
+			            <option value="">과정 선택</option>
+			            <c:forEach var="category" items="${categories}">
+			                <option value="${category.code}">
+			                    ${category.mainName}
+			                    <!-- 소분류 관련 코드 제거 -->
+			                    <c:if test="${category.subName != null}"> > ${category.subName}</c:if>
+			                </option>
+			            </c:forEach>
+			        </select>
+			    </td>
+			</tr>
 
             <!-- 과정명 -->
             <tr>
@@ -64,6 +64,14 @@
                 </td>
             </tr>
 
+            <!-- 등록자 -->
+            <tr>
+                <th>등록자</th>
+                <td colspan="3">
+                    <input type="text" id="register" name="register" class="form-control" />
+                </td>
+            </tr>
+
             <!-- 과정 소개 및 과정 목표 -->
             <tr>
                 <th>과정 소개*</th>
@@ -85,6 +93,7 @@
                     <textarea name="note" id="note" class="form-control" rows="3"></textarea>
                 </td>
             </tr>
+
         </table>
 
         <!-- 등록 및 목록 버튼 -->
@@ -97,8 +106,12 @@
 
 <script>
     // CKEditor 설정
-    CKEDITOR.replace('description');
-    CKEDITOR.replace('objective');
+	CKEDITOR.replace('description', {
+	    removePlugins: 'format,styles'
+	});
+	CKEDITOR.replace('objective', {
+	    removePlugins: 'format,styles'
+	});
 
     $('#educationForm').on('submit', function(e) {
         e.preventDefault();
@@ -114,17 +127,10 @@
             description: description,
             objective: objective,
             completionCriteria: $('#completionCriteria').val(),
-            note: $('#note').val()
+            note: $('#note').val(),
+            register: $('#register').val()
         };
 
-/*         
-        // 필수 값 검증 | !educationData.trainingTime |
-        if (!educationData.title || !educationData.category || !educationData.description || !educationData.objective || !educationData.completionCriteria) {
-            alert('필수 항목을 모두 입력해주세요.');
-            return;
-        }
-
-   */      
         // 전송 전에 데이터 확인
         console.log("전송할 데이터:", educationData);
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.common.utl.ResponseVO;
@@ -140,7 +140,11 @@ public class EducationController {
         return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
     }
     
-    
+    // 엑셀 다운로드 요청 처리
+    @RequestMapping("/education/educationListExcelDown")
+    public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {
+        educationService.educationListExcelDown(response, educationVO);
+    }
     
     
     

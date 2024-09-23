@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import atos.lms.education.service.EducationExcelVO;
 import atos.lms.education.service.EducationMasterVO;
 import atos.lms.education.service.EducationVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -47,5 +48,9 @@ public class EducationDAO extends EgovComAbstractDAO {
         return selectList("education.selectTrainingTimeList");
     }
     
+    
+    public List<EducationExcelVO> educationListExcelDown(EducationVO educationVO) {
+        return selectList("education.selectEducationListForExcel", educationVO);
+    }
 
 }
