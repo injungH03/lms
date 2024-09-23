@@ -22,5 +22,7 @@ public interface EducationService {
     List<Map<String, Object>> selectTrainingTimeList();
     
     void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception;
+    
+    EducationVO selectEducationDetail(int eduCode);
 
 }

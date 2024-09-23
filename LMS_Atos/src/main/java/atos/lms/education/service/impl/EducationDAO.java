@@ -52,5 +52,10 @@ public class EducationDAO extends EgovComAbstractDAO {
     public List<EducationExcelVO> educationListExcelDown(EducationVO educationVO) {
         return selectList("education.selectEducationListForExcel", educationVO);
     }
+    
+    
+    public EducationVO selectEducationDetail(int eduCode) {
+        return selectOne("education.selectEducationDetail", eduCode);
+    }
 
 }

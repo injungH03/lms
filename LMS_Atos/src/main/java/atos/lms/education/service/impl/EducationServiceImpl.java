@@ -107,6 +107,13 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
         // 엑셀 파일로 출력
         ExcelUtil.exportToExcel(response, educationList, "교육목록", "교육목록엑셀파일", fieldToHeaderMap);
     }
+    
+    
+    
+    @Override
+    public EducationVO selectEducationDetail(int eduCode) {
+        return educationDAO.selectEducationDetail(eduCode);
+    }
 
     
 }

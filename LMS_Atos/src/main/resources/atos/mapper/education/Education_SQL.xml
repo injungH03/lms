@@ -186,6 +186,25 @@
 
 	
 	
+	<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
+	    SELECT 
+	        EDU_CODE,
+	        TITLE,
+	        CATEGORY,
+	        DESCRIPTION,
+	        OBJECTIVE,
+	        COMPLETION_CRITERIA,
+	        NOTE,
+	        STATUS,
+	        TRAINING_TIME,
+	        REG_DATE,
+	        REGISTER
+	    FROM
+	        ATOS_EDUCATION
+	    WHERE
+	        EDU_CODE = #{eduCode}
+	</select>
+		
 	
 
 </mapper>
