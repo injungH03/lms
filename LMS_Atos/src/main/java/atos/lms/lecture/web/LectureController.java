@@ -1,11 +1,17 @@
 package atos.lms.lecture.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import atos.lms.common.service.CategoryService;
+import atos.lms.common.service.CategoryVO;
 import atos.lms.lecture.service.LectureService;
 
 @Controller
@@ -15,9 +21,23 @@ public class LectureController {
 	@Resource(name = "LectureService")
 	LectureService lectureService;
 	
+	@Autowired
+	CategoryService categoryservice;
+	
 	@RequestMapping("lectureList.do")
 	public String lectureList(ModelMap model) throws Exception {
 		
+		List<String> typelist = new ArrayList<String>();
+		typelist.add("A001");
+		typelist.add("A002");
+		typelist.add("A003");
+		
+		CategoryVO categoryVO = new CategoryVO();
+		categoryVO.setMtype(typelist);
+		
+		List<CategoryVO> list = categoryservice.selectCodeList(categoryVO);
+		
+		list.forEach(category -> System.out.println("데이터 = " +category));
 		
 		return "lecture/lectureList";
 	}

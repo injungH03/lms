@@ -23,4 +23,16 @@
 		<constructor-arg ref="egov.sqlSession"/>
 	</bean>
 	
+	
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="atos.lms.**.service.dao" />
+    	<property name="sqlSessionFactoryBeanName" value="egov.sqlSession" />
+	</bean>
+	
+<!-- 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.happyjob.study.**.dao" />
+	</bean> -->
+	
+	
 </beans>
