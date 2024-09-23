@@ -32,12 +32,12 @@ public class LectureController {
 		typelist.add("A002");
 		typelist.add("A003");
 		
-		CategoryVO categoryVO = new CategoryVO();
-		categoryVO.setMtype(typelist);
-		
-		List<CategoryVO> list = categoryservice.selectCodeList(categoryVO);
-		
-		list.forEach(category -> System.out.println("데이터 = " +category));
+//		CategoryVO categoryVO = new CategoryVO();
+//		categoryVO.setMtype(typelist);
+//		
+//		List<CategoryVO> list = categoryservice.selectCodeList(categoryVO);
+//		
+//		list.forEach(category -> System.out.println("데이터 = " +category));
 		
 		return "lecture/lectureList";
 	}
