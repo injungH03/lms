@@ -1,1 +1,85 @@
 @charset "UTF-8";
+
+.table-section h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.table-section {
+	background-color: white;
+	padding: 15px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+.head-section span {
+    display: block;
+    background-color: #f5f5f5;
+    color: black;
+    padding: 9px;
+    border-radius: 4px;
+    font-size: 17px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.search-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.search-table th {
+	background-color: #f9f9f9;
+}
+.regist-table th {
+	width:13%;
+}
+.regist-table td {
+	width:35%;
+}
+.detail-table th {
+	width:13%;
+}
+.detail-table td {
+	width:36%;
+}
+
+.search-table th, .search-table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	vertical-align: middle;
+}
+
+.search-table select, .search-table input {
+	padding: 5px;
+}
+
+.text-container {
+    width: 100%;  /* 원하는 너비로 설정 */
+    height: 100px;  /* 원하는 높이로 설정 */
+    border: 1px solid #ccc;  /* 테두리 스타일 */
+    padding: 10px;
+    overflow: auto;  /* 내용이 넘치면 스크롤 */
+    box-sizing: border-box;
+}
+
+.btn-group button {
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    margin-right: 10px; /* 버튼 간의 간격을 추가 */
+}
+
+.btn-group button:last-child {
+    margin-right: 0; /* 마지막 버튼에만 간격 제거 */
+}
+
+.btn-group button:hover {
+	opacity: 0.8;
+}
+
+.mt-3 {
+    margin-top: 3rem;
+}

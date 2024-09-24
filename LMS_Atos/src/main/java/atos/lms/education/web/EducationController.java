@@ -149,11 +149,23 @@ public class EducationController {
     
     
     @RequestMapping("/education/educationDetail.do")
-    public String educationDetail(@RequestParam("eduCode") int eduCode, ModelMap model) throws Exception {
-        EducationVO educationDetail = educationService.selectEducationDetail(eduCode);
-        model.addAttribute("educationDetail", educationDetail);
-        return "education/educationDetail";
-    }
+    public String educationDetail(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
+        LOGGER.info("요청으로 받은 eduCode: {}", educationVO.getEduCode());  // eduCode 출력
 
+        // eduCode를 통해 서비스에서 상세 정보 조회
+        EducationVO educationDetail = educationService.selectEducationDetail(educationVO.getEduCode());
+
+        if (educationDetail == null) {
+            LOGGER.warn("해당 eduCode로 조회된 데이터가 없습니다: {}", educationVO.getEduCode());
+        } else {
+            LOGGER.info("조회된 데이터: {}", educationDetail.toString());
+        }
+
+        // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
+        model.addAttribute("educationDetail", educationDetail);
+
+        // 상세 조회 페이지로 이동
+        return "education/educationDetail"; 
+    }
     
 }

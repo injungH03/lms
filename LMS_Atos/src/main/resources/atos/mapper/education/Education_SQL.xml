@@ -21,7 +21,6 @@
 	</sql>
 
 <!-- 교육 과정 리스트 조회 -->
-
 	<select id="selectEducationList" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationVO">
 	    SELECT
 	        a.EDU_CODE,
@@ -118,12 +117,18 @@
 	        d.CODE,  <!-- 세부 정보 코드 -->
 	        m.MAIN_CODE, m.MAIN_NAME,  <!-- 대분류 코드 및 명칭 -->
 	        sub.SUB_CODE, sub.SUB_NAME  <!-- 중분류 코드 및 명칭 -->
-	    FROM ATOS_CATEGORY_DETAIL d
-	    JOIN ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 코드로 조인 -->
-	    JOIN ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 코드로 조인 -->
-	    WHERE d.USE_YN = 'Y'  <!-- 사용 여부 필터링 -->
-	    GROUP BY d.CODE, m.MAIN_CODE, sub.SUB_CODE  <!-- 그룹화하여 중복 제거 -->
-	    ORDER BY m.MAIN_CODE, sub.SUB_CODE, d.CODE
+	    FROM 
+	    	ATOS_CATEGORY_DETAIL d
+	    JOIN 
+	    	ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 코드로 조인 -->
+	    JOIN 
+	    	ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 코드로 조인 -->
+	    WHERE 
+	    	d.USE_YN = 'Y'  <!-- 사용 여부 필터링 -->
+	    GROUP 
+	    	BY d.CODE, m.MAIN_CODE, sub.SUB_CODE  <!-- 그룹화하여 중복 제거 -->
+	    ORDER 
+	    	BY m.MAIN_CODE, sub.SUB_CODE, d.CODE
 	</select>
 
 
@@ -184,27 +189,82 @@
         a.REG_DATE DESC  <!-- 등록일 기준 내림차순 정렬 -->
 </select>
 
-	
-	
+
+<!-- 
+<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
+    SELECT 
+        EDU_CODE,
+        CATEGORY,
+        TITLE,
+        DESCRIPTION,
+        OBJECTIVE,
+        COMPLETION_CRITERIA,
+        NOTE,
+        STATUS,
+        TRAINING_TIME,
+        REG_DATE,
+        REGISTER
+    FROM 
+        ATOS_EDUCATION
+    WHERE 
+        EDU_CODE = #{eduCode}
+</select>
+ -->
+ 
+
+	<!-- 교육 과정 상세 조회 -->
 	<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
 	    SELECT 
-	        EDU_CODE,
-	        TITLE,
-	        CATEGORY,
-	        DESCRIPTION,
-	        OBJECTIVE,
-	        COMPLETION_CRITERIA,
-	        NOTE,
-	        STATUS,
-	        TRAINING_TIME,
-	        REG_DATE,
-	        REGISTER
-	    FROM
-	        ATOS_EDUCATION
-	    WHERE
-	        EDU_CODE = #{eduCode}
+	        e.EDU_CODE, 
+	        e.TITLE, 
+	        e.DESCRIPTION, 
+	        e.OBJECTIVE, 
+	        e.COMPLETION_CRITERIA, 
+	        c.RATE AS completionRate,       <!-- 수료 조건: 진도율 -->
+	        c.SCORE AS completionScore,     <!-- 수료 조건: 시험 점수 -->
+	        c.SURVEY AS completionSurvey,   <!-- 수료 조건: 설문 유무 -->
+	        e.CATEGORY, 
+	        m.MAIN_NAME AS mainName,         <!-- 대분류 명칭 -->
+	        sub.SUB_NAME AS subName,         <!-- 중분류 명칭 -->
+	        e.TRAINING_TIME, 
+	        t.NAME AS trainingTimeName,      <!-- 교육 시간 명칭 -->
+	        e.NOTE, 
+	        e.STATUS, 
+	        e.REG_DATE, 
+	        e.REGISTER
+	    FROM 
+	        ATOS_EDUCATION e
+	    LEFT JOIN 
+	        ATOS_COMPLETION_CRITERIA c ON e.COMPLETION_CRITERIA = c.CODE   <!-- 수료 조건 연결 -->
+	    LEFT JOIN 
+	        ATOS_TRAINING_TIME t ON e.TRAINING_TIME = t.CODE               <!-- 교육 시간 연결 -->
+	    LEFT JOIN 
+	        ATOS_CATEGORY_DETAIL d ON e.CATEGORY = d.CODE                  <!-- 카테고리 연결 -->
+	    LEFT JOIN 
+	        ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE              <!-- 대분류 연결 -->
+	    LEFT JOIN 
+	        ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE             <!-- 중분류 연결 -->
+	    WHERE 
+	        e.EDU_CODE = #{eduCode}   <!-- 교육 코드로 상세 정보 조회 -->
+	    GROUP BY 
+	        e.EDU_CODE, 
+	        e.TITLE, 
+	        e.DESCRIPTION, 
+	        e.OBJECTIVE, 
+	        e.COMPLETION_CRITERIA, 
+	        c.RATE, 
+	        c.SCORE, 
+	        c.SURVEY, 
+	        e.CATEGORY, 
+	        m.MAIN_NAME, 
+	        sub.SUB_NAME, 
+	        e.TRAINING_TIME, 
+	        t.NAME, 
+	        e.NOTE, 
+	        e.STATUS, 
+	        e.REG_DATE, 
+	        e.REGISTER
 	</select>
-		
-	
 
+ 
 </mapper>
