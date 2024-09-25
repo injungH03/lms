@@ -71,7 +71,7 @@
 
     <!-- 버튼 그룹 -->
     <div class="mt-3">
-        <button type="submit" class="btn btn-success me-2">수정</button>
+        <button type="button" class="btn btn-success me-2" onclick="location.href='<c:url value='/education/educationUpdateView.do?eduCode=${educationDetail.eduCode}' />'">수정</button>
         <button type="button" class="btn btn-secondary me-2" onclick="location.href='<c:url value='/education/educationList.do' />'">목록</button>
         <button type="button" class="btn btn-danger" style="float:right" id="deleteBtn">삭제</button>
     </div>

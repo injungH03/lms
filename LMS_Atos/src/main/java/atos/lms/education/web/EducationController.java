@@ -168,4 +168,40 @@ public class EducationController {
         return "education/educationDetail"; 
     }
     
+    
+    
+    @RequestMapping("/education/educationUpdateView.do")
+    public String educationUpdateView(@ModelAttribute("educationVO") EducationVO educationVO, ModelMap model) throws Exception {
+
+        LOGGER.info("수정할 eduCode: {}", educationVO.getEduCode());  // eduCode 로그 출력
+
+        // eduCode를 통해 서비스에서 교육 과정 정보 조회
+        EducationVO educationDetail = educationService.selectEducationDetail(educationVO.getEduCode());
+
+        // 분류 및 수료 조건 데이터 조회
+        List<EducationVO> categories = educationService.selectAllCategoryList();
+        List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
+        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
+
+        // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
+        model.addAttribute("educationDetail", educationDetail);
+        model.addAttribute("categories", categories);
+        model.addAttribute("completionCriteria", completionCriteria);
+        model.addAttribute("trainingTimes", trainingTimes);
+
+        // 수정 페이지로 이동
+        return "education/educationUpdate"; // 수정 페이지의 JSP 경로에 맞게 설정
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

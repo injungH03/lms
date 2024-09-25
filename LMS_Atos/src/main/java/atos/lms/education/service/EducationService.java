@@ -24,5 +24,7 @@ public interface EducationService {
     void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception;
     
     EducationVO selectEducationDetail(int eduCode);
+    
+    void updateEducation(EducationVO educationVO);
 
 }

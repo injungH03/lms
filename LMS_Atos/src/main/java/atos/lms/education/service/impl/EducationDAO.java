@@ -57,5 +57,9 @@ public class EducationDAO extends EgovComAbstractDAO {
     public EducationVO selectEducationDetail(int eduCode) {
         return selectOne("education.selectEducationDetail", eduCode);
     }
+    
+    public void updateEducation(EducationVO educationVO) {
+        update("education.updateEducation", educationVO);
+    }
 
 }

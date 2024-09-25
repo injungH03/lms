@@ -114,6 +114,12 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
     public EducationVO selectEducationDetail(int eduCode) {
         return educationDAO.selectEducationDetail(eduCode);
     }
+    
+    
+    @Override
+    public void updateEducation(EducationVO educationVO) {
+        educationDAO.updateEducation(educationVO);  // DAO 호출을 통해 수정 작업 수행
+    }
 
     
 }
