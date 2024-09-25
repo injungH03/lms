@@ -26,5 +26,7 @@ public interface EducationService {
     EducationVO selectEducationDetail(int eduCode);
     
     void updateEducation(EducationVO educationVO);
+    
+    void deleteEducation(int eduCode);
 
 }

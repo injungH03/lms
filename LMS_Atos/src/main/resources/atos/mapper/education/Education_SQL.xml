@@ -189,29 +189,6 @@
         a.REG_DATE DESC  <!-- 등록일 기준 내림차순 정렬 -->
 </select>
 
-
-<!-- 
-<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
-    SELECT 
-        EDU_CODE,
-        CATEGORY,
-        TITLE,
-        DESCRIPTION,
-        OBJECTIVE,
-        COMPLETION_CRITERIA,
-        NOTE,
-        STATUS,
-        TRAINING_TIME,
-        REG_DATE,
-        REGISTER
-    FROM 
-        ATOS_EDUCATION
-    WHERE 
-        EDU_CODE = #{eduCode}
-</select>
- -->
- 
-
 	<!-- 교육 과정 상세 조회 -->
 	<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
 	    SELECT 
@@ -265,6 +242,39 @@
 	        e.REG_DATE, 
 	        e.REGISTER
 	</select>
+
+	<!-- 교육 과정 업데이트 쿼리 -->
+	<update id="updateEducation" parameterType="atos.lms.education.service.EducationVO">
+	    UPDATE ATOS_EDUCATION
+	    SET
+	        TITLE = #{title},
+	        CATEGORY = #{category},
+	        DESCRIPTION = #{description},
+	        OBJECTIVE = #{objective},
+	        COMPLETION_CRITERIA = #{completionCriteria},
+	        NOTE = #{note},
+	        TRAINING_TIME = #{trainingTime},
+	        REGISTER = #{register}
+	    WHERE
+	        EDU_CODE = #{eduCode}
+	</update>
+	
+
+	<!-- 교육 상태 '삭제'로 변경 -->
+	<update id="deleteEducationByEduCode">
+	    UPDATE ATOS_EDUCATION
+	    SET STATUS = '1005'  <!-- '삭제' 상태로 변경 -->
+	    WHERE EDU_CODE = #{eduCode}
+	</update>
+	
+	<!-- 강의 상태 '폐강'으로 변경 -->
+	<update id="deleteLecturesByEduCode">
+	    UPDATE ATOS_LECTURE
+	    SET STATUS = '4002'  <!-- '폐강' 상태로 변경 -->
+	    WHERE EDUCATION = #{eduCode}
+	</update>
+
+
 
  
 </mapper>

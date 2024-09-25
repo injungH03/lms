@@ -195,12 +195,59 @@ public class EducationController {
     
     
     
+    @RequestMapping("/education/educationUpdate")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> educationUpdate(@RequestBody EducationVO educationVO) {
+        try {
+            // 로그 추가
+            LOGGER.info("수정할 교육 과정 정보: {}", educationVO.toString());
+
+            // 서비스에서 수정 작업 수행
+            educationService.updateEducation(educationVO);
+
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.OK);
+            responseVO.setMessage("교육 과정이 성공적으로 수정되었습니다.");
+            
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+
+        } catch (Exception e) {
+            LOGGER.error("교육 과정 수정 중 오류 발생", e);
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseVO.setMessage("수정 중 오류가 발생했습니다.");
+            
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        }
+    }
+
     
     
     
-    
-    
-    
+    // 교육 삭제 요청 처리
+    @RequestMapping("/education/deleteEducation")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> deleteEducation(@RequestBody EducationVO educationVO) {
+        int eduCode = educationVO.getEduCode();
+
+        try {
+            // 서비스에서 교육 삭제 처리
+            educationService.deleteEducation(eduCode);
+
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.OK);
+            responseVO.setMessage("교육 과정과 관련된 강의가 성공적으로 삭제되었습니다.");
+
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        } catch (Exception e) {
+            LOGGER.error("교육 과정 삭제 중 오류 발생", e);
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseVO.setMessage("교육 과정 삭제 중 오류가 발생했습니다.");
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        }
+    }
+
     
     
     

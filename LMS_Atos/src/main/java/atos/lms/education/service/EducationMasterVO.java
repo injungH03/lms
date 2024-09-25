@@ -67,9 +67,20 @@ public class EducationMasterVO implements GeneralModel {
     private String completionScore; // 시험 점수
     private String completionSurvey; // 설문 유무
     
-   
+    // 강의 정보 코드
+    private int lectureCode; 
     
-    public String getCompletionCode() {
+    
+    
+    public int getLectureCode() {
+		return lectureCode;
+	}
+
+	public void setLectureCode(int lectureCode) {
+		this.lectureCode = lectureCode;
+	}
+
+	public String getCompletionCode() {
 		return completionCode;
 	}
 

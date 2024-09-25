@@ -80,20 +80,24 @@
 <!-- jQuery Script -->
 <script>
 $(document).ready(function() {
-    // 삭제 버튼 클릭 시 확인 메시지
     $('#deleteBtn').on('click', function() {
         if(confirm("정말로 삭제하시겠습니까?")) {
             $.ajax({
                 url: '/education/deleteEducation',
                 method: 'POST',
-                data: { eduCode: '${educationDetail.eduCode}' },
+                contentType: 'application/json',
+                data: JSON.stringify({ eduCode: '${educationDetail.eduCode}' }),
                 success: function(response) {
-                    if(response.success) {
+                    // 서버 응답의 HttpStatus를 사용하여 성공 여부를 판단
+                    if (response.httpStatus === 'OK') {  
                         alert('삭제 완료되었습니다.');
                         location.href = '/education/educationList.do';
                     } else {
                         alert('삭제에 실패했습니다.');
                     }
+                },
+                error: function() {
+                    alert('서버에서 오류가 발생했습니다.');
                 }
             });
         }
