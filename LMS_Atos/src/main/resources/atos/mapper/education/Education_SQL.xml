@@ -13,9 +13,8 @@
 	            AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 교육명으로 검색 -->
 	        </if>
 	        <if test="searchCnd == '1'">
-	            AND (c.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%')
-	            OR c.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%')
-	            OR c.DETAIL_NAME LIKE CONCAT('%', #{searchWrd}, '%'))  <!-- 교육분류로 검색 -->
+	            AND (m.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%')
+	            OR sub.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%') <!-- 교육분류로 검색 -->
 	        </if>
 	    </trim>
 	</sql>
@@ -30,7 +29,6 @@
 	        m.MAIN_NAME AS mainName,  <!-- 대분류 명칭 -->
 	        sub.SUB_NAME AS subName,  <!-- 중분류 명칭 -->
 	        a.TRAINING_TIME,  <!-- 교육 시간 코드 -->
-	        t.NAME AS trainingTimeName,  <!-- 교육 시간 이름 -->
 	        a.REG_DATE,  <!-- 등록일 추가 -->
 	        a.REGISTER  <!-- 등록자 추가 -->
 	    FROM
@@ -43,26 +41,24 @@
 	        ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 코드 매핑 -->
 	    JOIN
 	        ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 코드 매핑 -->
-	    LEFT JOIN
-	        ATOS_TRAINING_TIME t ON a.TRAINING_TIME = t.CODE  <!-- 교육 시간 코드와 이름 매핑 -->
 	    <include refid="whereClause" />  <!-- whereClause에 USE_YN 포함 -->
-	    GROUP BY a.EDU_CODE, a.TITLE, a.STATUS, s.NAME, m.MAIN_NAME, sub.SUB_NAME, a.TRAINING_TIME, t.NAME, a.REG_DATE, a.REGISTER  -- 중복 제거
+	    GROUP BY a.EDU_CODE, a.TITLE, a.STATUS, s.NAME, m.MAIN_NAME, sub.SUB_NAME, a.TRAINING_TIME, a.REG_DATE, a.REGISTER
 	    ORDER BY a.EDU_CODE DESC
 	    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 
-<!-- 교육 과정 총 개수 조회 -->
-<select id="selectEducationListCnt" parameterType="atos.lms.education.service.EducationVO" resultType="int">
-    SELECT
-        COUNT(a.EDU_CODE)
-    FROM
-        ATOS_EDUCATION a
-    JOIN
-        ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE
-    <include refid="whereClause" />  <!-- whereClause에 USE_YN 포함 -->
-</select>
+	<!-- 교육 과정 총 개수 조회 -->
+	<select id="selectEducationListCnt" parameterType="atos.lms.education.service.EducationVO" resultType="int">
+	    SELECT
+	        COUNT(a.EDU_CODE)
+	    FROM
+	        ATOS_EDUCATION a
+	    JOIN
+	        ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE
+	    <include refid="whereClause" />  <!-- whereClause에 USE_YN 포함 -->
+	</select>
 
-<!-- 상태 코드 조회 -->
+	<!-- 상태 코드 조회 -->
     <select id="selectStatusCode" resultType="atos.lms.education.service.EducationMasterVO">
         SELECT
             CODE AS statusCode,
@@ -72,7 +68,7 @@
         WHERE CODE IN ('1001', '1002', '1003', '1004')
     </select>
 	
-<!-- 상태 업데이트 쿼리 -->
+	<!-- 상태 업데이트 쿼리 -->
 	 <update id="updateStatus">
 	    UPDATE ATOS_EDUCATION
 	    SET STATUS = #{statusCode}
@@ -82,7 +78,7 @@
 	    </foreach>
 	 </update>
 	
-<!-- 교육 과정 등록 -->
+	<!-- 교육 과정 등록 -->
 	<insert id="insertEducation" parameterType="atos.lms.education.service.EducationVO">
 	    INSERT INTO ATOS_EDUCATION(
 	        TITLE, 
@@ -132,16 +128,6 @@
 	</select>
 
 
-	<select id="selectTrainingTimeList" resultType="map">
-	    SELECT
-	        CODE AS value,
-	        NAME AS label
-	    FROM
-	        ATOS_TRAINING_TIME
-	    ORDER BY
-	        CODE ASC
-	</select>
-
     
 <!-- 수료 조건 조회 쿼리 추가 -->
 	<select id="selectCompletionCriteria" resultType="atos.lms.education.service.EducationMasterVO">
@@ -156,38 +142,36 @@
 	
 	
 	
-	
-<select id="selectEducationListForExcel" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationExcelVO">
-    SELECT
-        a.TITLE AS title,                            <!-- 교육명 -->
-        CONCAT_WS(' > ', m.MAIN_NAME, sub.SUB_NAME) AS category,  <!-- 교육 분류 명칭 (대분류 > 중분류) -->
-        a.DESCRIPTION AS description,                <!-- 과정소개 -->
-        a.OBJECTIVE AS objective,                    <!-- 과정목표 -->
-        CONCAT_WS('/', IFNULL(c.RATE, 'N/A'), IFNULL(c.SCORE, 'N/A'), IFNULL(c.SURVEY, 'N/A')) AS completionCriteria, <!-- 수료조건 (진도율/시험 점수/설문 유무) -->
-        a.NOTE AS note,                              <!-- 비고 -->
-        s.NAME AS status,                            <!-- 상태명 -->
-        t.NAME AS trainingTime,                      <!-- 교육시간 -->
-        a.REG_DATE AS regDate,                       <!-- 등록일 -->
-        a.REGISTER AS register                       <!-- 등록자 -->
-    FROM
-        ATOS_EDUCATION a
-    LEFT JOIN
-        ATOS_COMPLETION_CRITERIA c ON a.COMPLETION_CRITERIA = c.CODE  <!-- 수료 조건과 JOIN -->
-    JOIN
-        ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE  <!-- 대분류, 중분류 코드와 명칭을 JOIN -->
-    JOIN
-        ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 -->
-    JOIN
-        ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 -->
-    LEFT JOIN
-        ATOS_STATUS s ON a.STATUS = s.CODE  <!-- 상태 코드와 명칭을 JOIN -->
-    LEFT JOIN
-        ATOS_TRAINING_TIME t ON a.TRAINING_TIME = t.CODE  <!-- 교육시간 코드와 명칭을 JOIN -->
-    WHERE
-        a.STATUS != '1005'  <!-- 삭제된 상태는 제외 -->
-    ORDER BY
-        a.REG_DATE DESC  <!-- 등록일 기준 내림차순 정렬 -->
-</select>
+    <!-- 엑셀 다운로드 쿼리 -->
+    <select id="selectEducationListForExcel" parameterType="atos.lms.education.service.EducationVO" resultType="atos.lms.education.service.EducationExcelVO">
+        SELECT
+            a.TITLE AS title,                            <!-- 교육명 -->
+            CONCAT_WS(' > ', m.MAIN_NAME, sub.SUB_NAME) AS category,  <!-- 교육 분류 명칭 (대분류 > 중분류) -->
+            a.DESCRIPTION AS description,                <!-- 과정소개 -->
+            a.OBJECTIVE AS objective,                    <!-- 과정목표 -->
+            CONCAT_WS('/', IFNULL(c.RATE, 'N/A'), IFNULL(c.SCORE, 'N/A'), IFNULL(c.SURVEY, 'N/A')) AS completionCriteria, <!-- 수료조건 (진도율/시험 점수/설문 유무) -->
+            a.NOTE AS note,                              <!-- 비고 -->
+            s.NAME AS status,                            <!-- 상태명 -->
+            a.TRAINING_TIME AS trainingTime,                      <!-- 교육시간 -->
+            a.REG_DATE AS regDate,                       <!-- 등록일 -->
+            a.REGISTER AS register                       <!-- 등록자 -->
+        FROM
+            ATOS_EDUCATION a
+        LEFT JOIN
+            ATOS_COMPLETION_CRITERIA c ON a.COMPLETION_CRITERIA = c.CODE  <!-- 수료 조건과 JOIN -->
+        JOIN
+            ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE  <!-- 대분류, 중분류 코드와 명칭을 JOIN -->
+        JOIN
+            ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 -->
+        JOIN
+            ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 -->
+        LEFT JOIN
+            ATOS_STATUS s ON a.STATUS = s.CODE  <!-- 상태 코드와 명칭을 JOIN -->
+        WHERE
+            a.STATUS != '1005'  <!-- 삭제된 상태는 제외 -->
+        ORDER BY
+            a.REG_DATE DESC  <!-- 등록일 기준 내림차순 정렬 -->
+    </select>
 
 	<!-- 교육 과정 상세 조회 -->
 	<select id="selectEducationDetail" parameterType="int" resultType="atos.lms.education.service.EducationVO">
@@ -204,7 +188,6 @@
 	        m.MAIN_NAME AS mainName,         <!-- 대분류 명칭 -->
 	        sub.SUB_NAME AS subName,         <!-- 중분류 명칭 -->
 	        e.TRAINING_TIME, 
-	        t.NAME AS trainingTimeName,      <!-- 교육 시간 명칭 -->
 	        e.NOTE, 
 	        e.STATUS, 
 	        e.REG_DATE, 
@@ -236,7 +219,6 @@
 	        m.MAIN_NAME, 
 	        sub.SUB_NAME, 
 	        e.TRAINING_TIME, 
-	        t.NAME, 
 	        e.NOTE, 
 	        e.STATUS, 
 	        e.REG_DATE, 

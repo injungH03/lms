@@ -35,7 +35,15 @@ public class EducationController {
 
     @RequestMapping("/education/educationList.do")
     public String educationList(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
-
+    	
+        // 검색 조건이 없을 경우 null로 설정하여 검색어만으로 검색할 수 있게 처리
+        if (educationVO.getSearchCnd() == null || educationVO.getSearchCnd().isEmpty()) {
+            educationVO.setSearchCnd(null);
+        }
+    	
+    	
+    	System.out.println("검색 조건: " + educationVO.getSearchCnd());
+    	System.out.println("검색어: " + educationVO.getSearchWrd());
     	
         // 페이지네이션 설정
         PaginationInfo paginationInfo = new PaginationInfo();
@@ -104,8 +112,7 @@ public class EducationController {
         // 분류 및 수료 조건 데이터 조회
         List<EducationVO> categories = educationService.selectAllCategoryList();
         List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
-        // 교육 시간 목록 조회
-        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
+
 
        
         for (EducationMasterVO criteria : completionCriteria) {
@@ -115,7 +122,6 @@ public class EducationController {
         // 모델에 데이터 추가
         model.addAttribute("categories", categories);
         model.addAttribute("completionCriteria", completionCriteria);
-        model.addAttribute("trainingTimes", trainingTimes);
         
         System.out.println("categories" + categories);
         
@@ -181,13 +187,11 @@ public class EducationController {
         // 분류 및 수료 조건 데이터 조회
         List<EducationVO> categories = educationService.selectAllCategoryList();
         List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
-        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
 
         // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
         model.addAttribute("educationDetail", educationDetail);
         model.addAttribute("categories", categories);
         model.addAttribute("completionCriteria", completionCriteria);
-        model.addAttribute("trainingTimes", trainingTimes);
 
         // 수정 페이지로 이동
         return "education/educationUpdate"; // 수정 페이지의 JSP 경로에 맞게 설정

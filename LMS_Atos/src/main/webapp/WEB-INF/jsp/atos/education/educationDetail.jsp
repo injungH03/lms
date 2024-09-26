@@ -35,7 +35,7 @@
                 [ 설문 유무: ${educationDetail.completionSurvey} ]
             </td>
             <th>교육시간</th>
-            <td>${educationDetail.trainingTimeName}</td> <!-- 교육시간 명칭으로 표시 -->
+            <td>${educationDetail.trainingTime}</td> <!-- 교육시간 명칭으로 표시 -->
         </tr>
         <tr>
             <th>등록일</th>

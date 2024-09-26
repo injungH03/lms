@@ -18,8 +18,7 @@ public interface EducationService {
     List<EducationMasterVO> selectCompletionCriteria();  // 수료 조건 데이터 조회
 
     List<EducationVO> selectAllCategoryList();
-    
-    List<Map<String, Object>> selectTrainingTimeList();
+   
     
     void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception;
     

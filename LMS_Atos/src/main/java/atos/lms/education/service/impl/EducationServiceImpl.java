@@ -1,6 +1,5 @@
 package atos.lms.education.service.impl;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -85,12 +84,7 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
         return educationDAO.selectAllCategoryList();
     }
     
-    @Override
-    public List<Map<String, Object>> selectTrainingTimeList() {
-        return educationDAO.selectTrainingTimeList();
-    }
-    
-    
+   
     
     @Override
     public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {

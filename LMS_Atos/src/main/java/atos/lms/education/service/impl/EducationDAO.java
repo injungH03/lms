@@ -43,11 +43,6 @@ public class EducationDAO extends EgovComAbstractDAO {
         return selectList("education.selectAllCategoryList");
     }
     
-    // 교육 시간 목록 조회 메서드 추가
-    public List<Map<String, Object>> selectTrainingTimeList() {
-        return selectList("education.selectTrainingTimeList");
-    }
-    
     
     public List<EducationExcelVO> educationListExcelDown(EducationVO educationVO) {
         return selectList("education.selectEducationListForExcel", educationVO);

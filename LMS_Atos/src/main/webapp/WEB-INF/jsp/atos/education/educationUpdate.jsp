@@ -33,18 +33,12 @@
             </tr>
 
             <!-- 교육 시간 -->
-            <tr>
-                <th>교육 시간*</th>
-                <td colspan="3">
-                    <select name="trainingTime" id="trainingTime" class="form-select me-2">
-                        <c:forEach var="time" items="${trainingTimes}">
-                            <option value="${time.value}" <c:if test="${time.value == educationDetail.trainingTime}">selected</c:if>>
-                                ${time.label}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </td>
-            </tr>
+			<tr>
+			    <th>교육 시간*</th>
+			    <td colspan="3">
+			        <input type="text" id="trainingTime" name="trainingTime" class="form-control" value="${educationDetail.trainingTime}" required />
+			    </td>
+			</tr>
 
             <!-- 수료 조건 -->
             <tr>

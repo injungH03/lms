@@ -56,9 +56,6 @@ public class EducationMasterVO implements GeneralModel {
 	
 	private String companyStatus;
 
-
-    private String trainingTimeName; // 교육 시간 명칭
-
     private List<Integer> eduCodeList;  // 여러 개의 교육 코드 처리
 
     // 수료 조건 관련 필드
@@ -120,15 +117,6 @@ public class EducationMasterVO implements GeneralModel {
         this.eduCodeList = eduCodeList;
     }
     
-    
-    public String getTrainingTimeName() {
-        return trainingTimeName;
-    }
-
-    public void setTrainingTimeName(String trainingTimeName) {
-        this.trainingTimeName = trainingTimeName;
-    }
-	
 
 	public int getPageIndex() {
 		return pageIndex;
