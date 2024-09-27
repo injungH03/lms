@@ -35,16 +35,7 @@ public class EducationController {
 
     @RequestMapping("/education/educationList.do")
     public String educationList(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
-    	
-        // 검색 조건이 없을 경우 null로 설정하여 검색어만으로 검색할 수 있게 처리
-        if (educationVO.getSearchCnd() == null || educationVO.getSearchCnd().isEmpty()) {
-            educationVO.setSearchCnd(null);
-        }
-    	
-    	
-    	System.out.println("검색 조건: " + educationVO.getSearchCnd());
-    	System.out.println("검색어: " + educationVO.getSearchWrd());
-    	
+    
         // 페이지네이션 설정
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setCurrentPageNo(educationVO.getPageIndex());
@@ -76,7 +67,7 @@ public class EducationController {
         model.addAttribute("resultList", map.get("resultList"));
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("status", status);
-
+        
         return "education/educationList";
     }
     

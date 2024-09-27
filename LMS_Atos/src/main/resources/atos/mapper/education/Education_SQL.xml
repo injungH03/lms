@@ -9,13 +9,16 @@
 	        <if test="statusCode != null and statusCode != ''">
 	            AND a.STATUS = #{statusCode}
 	        </if>
-	        <if test="searchCnd == '0'">
+	        <if test="eduCode != null and eduCode != ''">
+				AND a.EDU_CODE = #{eduCode}
+			</if>
+	        <if test="searchCnd == 0">
 	            AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 교육명으로 검색 -->
 	        </if>
-	        <if test="searchCnd == '1'">
-	            AND (m.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%')
-	            OR sub.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%') <!-- 교육분류로 검색 -->
-	        </if>
+	                
+	        <if test="searchCnd == 1">
+	         AND (m.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%') OR sub.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%'))
+	        </if>    
 	    </trim>
 	</sql>
 
@@ -33,16 +36,17 @@
 	        a.REGISTER  <!-- 등록자 추가 -->
 	    FROM
 	        ATOS_EDUCATION a
-	    JOIN
+	    LEFT JOIN
 	        ATOS_STATUS s ON a.STATUS = s.CODE  <!-- 상태 코드와 상태 명칭 매핑 -->
-	    JOIN
-	        ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE  <!-- 소분류 코드 매핑 -->
-	    JOIN
-	        ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  <!-- 대분류 코드 매핑 -->
-	    JOIN
-	        ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  <!-- 중분류 코드 매핑 -->
-	    <include refid="whereClause" />  <!-- whereClause에 USE_YN 포함 -->
-	    GROUP BY a.EDU_CODE, a.TITLE, a.STATUS, s.NAME, m.MAIN_NAME, sub.SUB_NAME, a.TRAINING_TIME, a.REG_DATE, a.REGISTER
+	    LEFT JOIN
+	        ATOS_CATEGORY_DETAIL d ON a.CATEGORY = d.CODE  
+	    LEFT JOIN
+	        ATOS_CATEGORY_MAIN m ON d.MAIN_CODE = m.MAIN_CODE  
+	    LEFT JOIN
+	        ATOS_CATEGORY_SUB sub ON d.SUB_CODE = sub.SUB_CODE  
+	    <include refid="whereClause" />  <!-- whereClause에 USE_YN 포함 -->    
+	    GROUP BY 
+	        a.EDU_CODE, a.TITLE, a.STATUS, s.NAME, m.MAIN_NAME, sub.SUB_NAME, a.TRAINING_TIME, a.REG_DATE, a.REGISTER
 	    ORDER BY a.EDU_CODE DESC
 	    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
