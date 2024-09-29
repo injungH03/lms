@@ -11,53 +11,42 @@
 	<span>&nbsp;집합과정운영</span>
 </div>
 
+<form id="searchForm" action="<c:url value='/education/lectureList.do'/>" method="post">
 <div class="tab-section">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="supervisor-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="supervisor" aria-selected="true">관리감독자 정기교육</button>
+
+<input type="hidden" id="srcMainCode" name="srcMainCode"  value="" />
+    <ul class="nav nav-tabs">
+       <li class="nav-item" role="presentation">
+            <button class="nav-link ${(searchVO.srcMainCode == null || searchVO.srcMainCode == '') ? 'active' : ''}"  type="button"  >전체</button>
         </li>
+    <c:forEach items="${categoryList }" var="category">
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="worker-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="worker" aria-selected="false">근로자 정기교육</button>
+            <button class="nav-link ${category.mainCode == searchVO.srcMainCode ? 'active' : ''}"  type="button" data-category-id="${category.mainCode}" >${category.mainName }</button>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="assessment-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="assessment" aria-selected="false">위험성평가교육</button>
-        </li>
+    </c:forEach>
     </ul>
+
 </div>
+
 
 
 <div class="table-section">
 
-    <form method="get" action="">
         <table class="search-table">
             <tr>
-                 <th class="custom-th-width">신청시작/종료일</th>
+                 <th class="custom-th-width">신청시작/종료일
                  <td colspan="2">
                     <div class="d-flex">
-                        <span>시작일 :</span><input type="date" name="startDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
+                        <span>시작일 :</span><input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
                         <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
-						<span class="span-ml">종료일 :</span><input type="date" name="endDate" id="endDate" class="form-control me-2 custom-date-picker" />
+						<span class="span-ml">종료일 :</span><input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" />
 						<span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
                     </div>
                 </td>
-<!--                 <th class="custom-th-width">신청시작일</th>
-                <td>
-                    <div class="d-flex">
-                        <input type="date" name="startDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
-                    </div>
-                </td>
-                <th class="custom-th-width">신청종료일</th>
-                <td>
-                    <div class="d-flex">
-						<input type="date" name="endDate" id="endDate" class="form-control me-2 custom-date-picker" />
-						<span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
-                    </div>
-                </td> -->
                 <th class="custom-th-width">과정날짜</th>
                 <td colspan="3">
                     <div class="d-flex">
-                        <input type="date" name="learnDate" id="learningStartDate" class="form-control me-2 custom-date-picker" />
+                        <input type="date" name="srcLearnDate" id="learningStartDate" class="form-control me-2 custom-date-picker" />
                         <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
                     </div>
                 </td>
@@ -66,18 +55,17 @@
                 <th>검색</th>
                 <td colspan="5">
                     <div class="d-flex">
-                        <select name="searchType" class="form-select search-select me-2">
-                            <option value="전체">전체</option>
-                            <option value="전체">과정명</option>
-                            <option value="전체">배정강사</option>
+                        <select name="searchCnd" class="form-select search-select me-2">
+                            <option value="">전체</option>
+                            <option value="0">배정강사</option>
+                            <option value="1">과정명</option>
                         </select>
-                        <input type="text" name="searchKeyword" class="form-control search-input me-2" placeholder="검색어를 입력하세요" />
+                        <input type="text" name="searchWrd" class="form-control search-input me-2" placeholder="검색어를 입력하세요" />
                         <button type="submit" class="btn-search">검색</button>
                     </div>
                 </td>
             </tr>
         </table>
-    </form>
 
 
 <!-- 테이블 위에 버튼 섹션 -->
@@ -157,6 +145,7 @@
     </table>
 </div>
 </div>
+</form>
 <script>
 $(document).ready(function() {
     $('.custom-date-picker').flatpickr({
@@ -169,6 +158,19 @@ $(document).ready(function() {
     $('.calendar-icon').on('click', function() {
         $(this).prev('.custom-date-picker').flatpickr().open(); 
     });
+    
+    $('.nav-link').click(function() {
+/*         $('.nav-link').removeClass('active');
+        
+        $(this).addClass('active'); */
+
+        var categoryId = $(this).data('category-id');
+        $('#srcMainCode').val(categoryId);
+
+        // form 전송
+        $('#searchForm').submit();
+    });
+    
 
 });
 </script>

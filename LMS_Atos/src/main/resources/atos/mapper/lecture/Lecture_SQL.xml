@@ -1,29 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="lecture">
+<mapper namespace="atos.lms.lecture.service.dao.LectureDAO">
 
 
 	<sql id="whereClause">
 		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="statusCode != null and statusCode != ''">
-				AND A.STATUS = #{statusCode}
+			<if test="srcMainCode != null and srcMainCode !=''">
+				AND CD.MAIN_CODE = #{srcMainCode}
 			</if>
-			<if test="corpBiz != null and corpBiz != ''">
-				AND A.BIZ_REG_NO = #{corpBiz}
-			</if>
+			
+		    <if test="srcStartDate != null and srcStartDate != ''">
+		        <![CDATA[
+		        AND L.REC_START_DATE >= #{srcStartDate}
+		        ]]>
+		    </if>
+		    <if test="srcEndDate != null and srcEndDate != ''">
+		        <![CDATA[
+		        AND L.REC_END_DATE <= #{srcEndDate}
+		        ]]>
+		    </if>
+		    
+		    <if test="srcLearnDate != null and srcLearnDate !=''">
+		    	AND L.LEARN_DATE = #{srcLearnDate}
+		    </if>
+		
 			<if test="searchCnd != null and searchCnd != ''">
 				<if test="searchCnd == 0">
-					AND A.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+					AND L.INSTRUCTOR LIKE CONCAT ('%', #{searchWrd},'%') 		
 				</if>
 				<if test="searchCnd == 1">
-					AND A.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+					AND E.TITLE LIKE CONCAT ('%', #{searchWrd},'%') 		
 				</if>
 			</if>
-			AND A.STATUS != '1005'	
-
 		</trim>
 	</sql>
+	
+	<select id="selectLectureList" resultType="atos.lms.lecture.service.LectureVO">
+		SELECT
+		    L.LECTURE_CODE, L.EDUCATION, L.INSTRUCTOR, L.LOCATION, L.ATCH_FILE_ID,          
+		    L.REC_START_DATE, L.REC_END_DATE, L.STATUS, L.LEARN_DATE, L.START_TIME,            
+		    L.END_TIME, L.MANAGER, L.MANAGER_CONTACT, L.LECTURE_METHOD, L.CAPACITY,              
+		    L.ENROLLED, L.REG_DATE, L.REGISTER,              
+		    E.TITLE, E.CATEGORY, E.DESCRIPTION, E.OBJECTIVE,             
+		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME,         
+		    CM.MAIN_CODE, CM.USE_YN, CM.MAIN_NAME,            
+		    CS.SUB_NAME, CS.SUB_CODE              
+		FROM ATOS_LECTURE L
+		INNER JOIN ATOS_EDUCATION E 
+			ON L.EDUCATION = E.EDU_CODE
+		INNER JOIN ATOS_CATEGORY_DETAIL CD 
+			ON E.CATEGORY = CD.CODE
+		INNER JOIN ATOS_CATEGORY_MAIN CM 
+			ON CD.MAIN_CODE = CM.MAIN_CODE
+		INNER JOIN ATOS_CATEGORY_SUB CS 
+			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
+		<include refid="whereClause" />
+		ORDER BY L.LECTURE_CODE DESC		
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}	
+	</select>
+	
+	<select id="selectLectureListCnt" resultType="java.lang.Integer"> 
+		SELECT
+		    COUNT(L.LECTURE_CODE)            
+		FROM ATOS_LECTURE L
+		INNER JOIN ATOS_EDUCATION E 
+			ON L.EDUCATION = E.EDU_CODE
+		INNER JOIN ATOS_CATEGORY_DETAIL CD 
+			ON E.CATEGORY = CD.CODE
+		INNER JOIN ATOS_CATEGORY_MAIN CM 
+			ON CD.MAIN_CODE = CM.MAIN_CODE
+		INNER JOIN ATOS_CATEGORY_SUB CS 
+			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
+		<include refid="whereClause" />
+	</select>
 	
 <!-- 	<select id="selectStatusCode" resultType="atos.lms.member.service.MemberMasterVO">
 		SELECT
