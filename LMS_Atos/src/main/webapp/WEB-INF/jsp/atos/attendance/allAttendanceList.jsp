@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/allAttendance/allAttendance.css' />">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/attendance/allAttendance.css' />">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
@@ -59,7 +59,7 @@
     <div>
     	<button class="btn-create-course" id="attendAllCheck">전체출석</button>
     	<button class="btn-create-course" id="attendAllCheck">전체퇴실</button>
-    	<button class="btn-create-course" id="attendAllCheck">결석</button>
+    	<button class="btn-create-course" id="attendAllCheck">결석처리</button>
         <button class="btn-excel">EXCEL</button>
     </div>
 </div>

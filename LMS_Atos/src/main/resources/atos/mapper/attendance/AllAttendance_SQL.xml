@@ -23,9 +23,9 @@
             AND s.NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 학생명 검색 -->
         </if>
 
-        <!-- 검색 조건이 1일 때: 강의명으로 검색 -->
+        <!-- 검색 조건이 1일 때: 다른 필드로 검색 (예시로 남겨둠) -->
         <if test="searchCnd == 1">
-            AND e.TITLE LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 강의명 검색 -->
+            <!-- 여기 다른 조건을 추가하거나 삭제할 수 있습니다. -->
         </if>
     </trim>
 </sql>
@@ -42,7 +42,7 @@
         a.STATUS,       <!-- 출석 상태 -->
         s.ID AS studentId,  <!-- 학생 아이디 -->
         s.NAME AS studentName,    <!-- 학생 이름 -->
-        c.CORP_NAME AS corpName,  <!-- 업체명 (소속) -->
+        c.CORP_NAME AS corpName   <!-- 업체명 (소속) -->
     FROM
         ATOS_ATTENDANCE a
     JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
@@ -58,9 +58,7 @@
     FROM ATOS_ATTENDANCE a
     JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
     JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
-    JOIN ATOS_LECTURE e ON a.LECTURE_CODE = e.LECTURE_CODE
     <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
 </select>
-
 
 </mapper>
