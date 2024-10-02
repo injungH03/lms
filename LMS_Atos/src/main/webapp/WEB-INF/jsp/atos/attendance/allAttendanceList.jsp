@@ -39,6 +39,15 @@
                 </td>
             </tr>
             <tr>
+                 <th class="custom-th-width">출석일
+                 <td colspan="2">
+                    <div class="d-flex">
+                        <input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
+						<input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <th>검색</th>
                 <td>
                     <div class="d-flex">
@@ -55,7 +64,7 @@
 
 
 <!-- 테이블 위에 버튼 섹션 -->
-<div class="d-flex justify-content-between mb-2 mt-5">
+<div class="d-flex justify-content-end mb-2 mt-5">
     <div>
     	<button class="btn-create-course" id="attendAllCheck">전체출석</button>
     	<button class="btn-create-course" id="attendAllCheck">전체퇴실</button>
@@ -68,14 +77,15 @@
 <div class="course-table-section">
     <table class="table table-bordered">
        <colgroup>
-	        <col style="width: 5%;">
-	        <col style="width: 10%;">
-	        <col style="width: 20%;">
+	        <col style="width: 3%;">
 	        <col style="width: 15%;">
-	        <col style="width: 10%;">
-	        <col style="width: 10%;">
-	        <col style="width: 10%;">
+	        <col style="width: 20%;">
 	        <col style="width: 5%;">
+	        <col style="width: 9%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 3%;">
     	</colgroup>
         <thead>
             <tr>
@@ -95,14 +105,14 @@
                 <tr>
                     <td>${(searchVO.pageIndex - 1) * searchVO.recordCountPerPage + status.index + 1}</td>
                     <td>${resultInfo.corpName}</td> <!-- 소속 -->
-                    <td>${resultInfo.studentId}(${resultInfo.studentName})</td> <!-- 수강생 아이디(이름) -->
-                    <td>${resultInfo.status}</td> <!-- 출석/결석 상태 -->
+                    <td>${resultInfo.id}(${resultInfo.name})</td> <!-- 수강생 아이디(이름) -->
+                    <td>${resultInfo.statusName}</td> <!-- 상태 -->
                     <td>${resultInfo.attendDate}</td> <!-- 출석일 -->
                     <td>${resultInfo.inTime}</td> <!-- 입실 시간 -->
                     <td>${resultInfo.outTime}</td> <!-- 퇴실 시간 -->
                     <td class="manage">
-                        <span class="status-box me-2 attend">출석</span>
-                        <span class="status-box absent">결석</span>
+                        <span class="status-box me-2 status-attend">출석</span>
+                        <span class="status-box status-absent">결석</span>
                     </td>
                     <td><input type="checkbox" name="rowCheck" value="${resultInfo.attendCode}"></td>
                 </tr>
