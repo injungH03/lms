@@ -9,11 +9,25 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script>
+
+
+
     function fn_egov_select_linkPage(pageNo) {
         document.educationForm.pageIndex.value = pageNo;
         document.educationForm.action = "<c:url value='/education/educationList.do' />";
         document.educationForm.submit();
     }
+  
+/*     
+    function fn_egov_select_linkPage(pageNo) {
+        document.educationForm.pageIndex.value = pageNo;
+        document.educationForm.statusCode.value = "${educationSearchVO.statusCode}";
+        document.educationForm.searchCnd.value = "${educationSearchVO.searchCnd}";
+        document.educationForm.searchWrd.value = "${educationSearchVO.searchWrd}";
+        document.educationForm.action = "<c:url value='/education/educationList.do' />";
+        document.educationForm.submit();
+    }
+     */
 </script>
 
 <div class="board education-management">
@@ -44,10 +58,12 @@
                     <td>
                         <div class="d-flex align-items-center">
                             <select name="searchCnd" title="검색 조건 선택" class="form-control form-control-sm short-select">
+                            	<option value="">선택</option>
                                 <option value="0" <c:if test="${educationSearchVO.searchCnd == '0'}">selected="selected"</c:if>>교육명</option>
                                 <option value="1" <c:if test="${educationSearchVO.searchCnd == '1'}">selected="selected"</c:if>>교육분류</option>
                             </select>
-                            <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" class="form-control form-control-sm short-input ms-2" placeholder="검색어를 입력하세요" value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="155">
+                            <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" class="form-control form-control-sm short-input ms-2" 
+                            	placeholder="검색어를 입력하세요" value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="155">
                             <button type="submit" class="btn btn-primary btn-sm ms-2" style="width: auto;">검색</button>
                         </div>
                     </td>
@@ -92,7 +108,7 @@
 	                <c:if test="${resultInfo.subName != null && !resultInfo.subName.isEmpty()}"> > ${resultInfo.subName}</c:if>
 	            </td>
 	            <td><a href="<c:url value='/education/educationDetail.do?eduCode=${resultInfo.eduCode}'/>">${resultInfo.title}</a></td>
-	            <td>${resultInfo.trainingTimeName}</td>
+	            <td>${resultInfo.trainingTime}</td>
 	            <td>${resultInfo.register}</td> <!-- 등록자 출력 -->
 	            <td>${resultInfo.statusName }</td>
 	            <td><input type="checkbox" name="rowCheck" value="${resultInfo.eduCode }"></td>

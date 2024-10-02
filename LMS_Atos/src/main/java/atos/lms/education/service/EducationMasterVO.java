@@ -55,10 +55,6 @@ public class EducationMasterVO implements GeneralModel {
 	private List<String> corpBizList;  // 여러 사업자등록번호를 처리할 리스트
 	
 	private String companyStatus;
-	
-    private int eduCode;  // 교육 코드 추가
-
-    private String trainingTimeName; // 교육 시간 명칭
 
     private List<Integer> eduCodeList;  // 여러 개의 교육 코드 처리
 
@@ -68,9 +64,20 @@ public class EducationMasterVO implements GeneralModel {
     private String completionScore; // 시험 점수
     private String completionSurvey; // 설문 유무
     
-   
+    // 강의 정보 코드
+    private int lectureCode; 
     
-    public String getCompletionCode() {
+    
+    
+    public int getLectureCode() {
+		return lectureCode;
+	}
+
+	public void setLectureCode(int lectureCode) {
+		this.lectureCode = lectureCode;
+	}
+
+	public String getCompletionCode() {
 		return completionCode;
 	}
 
@@ -110,24 +117,6 @@ public class EducationMasterVO implements GeneralModel {
         this.eduCodeList = eduCodeList;
     }
     
-    
-    public String getTrainingTimeName() {
-        return trainingTimeName;
-    }
-
-    public void setTrainingTimeName(String trainingTimeName) {
-        this.trainingTimeName = trainingTimeName;
-    }
-    
-    
-    public int getEduCode() {
-        return eduCode;
-    }
-
-    public void setEduCode(int eduCode) {
-        this.eduCode = eduCode;
-    }
-	
 
 	public int getPageIndex() {
 		return pageIndex;

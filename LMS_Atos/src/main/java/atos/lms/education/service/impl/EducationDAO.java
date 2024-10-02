@@ -43,14 +43,27 @@ public class EducationDAO extends EgovComAbstractDAO {
         return selectList("education.selectAllCategoryList");
     }
     
-    // 교육 시간 목록 조회 메서드 추가
-    public List<Map<String, Object>> selectTrainingTimeList() {
-        return selectList("education.selectTrainingTimeList");
-    }
-    
     
     public List<EducationExcelVO> educationListExcelDown(EducationVO educationVO) {
         return selectList("education.selectEducationListForExcel", educationVO);
+    }
+    
+    
+    public EducationVO selectEducationDetail(int eduCode) {
+        return selectOne("education.selectEducationDetail", eduCode);
+    }
+    
+    public void updateEducation(EducationVO educationVO) {
+        update("education.updateEducation", educationVO);
+    }
+    
+    public void deleteEducationByEduCode(int eduCode) {
+        update("education.deleteEducationByEduCode", eduCode);  // Mapper에서 작성한 쿼리 호출
+    }
+
+    // 관련된 강의 상태를 '4002(폐강)'으로 변경하는 쿼리
+    public void deleteLecturesByEduCode(int eduCode) {
+        update("education.deleteLecturesByEduCode", eduCode);  // Mapper에서 작성한 쿼리 호출
     }
 
 }

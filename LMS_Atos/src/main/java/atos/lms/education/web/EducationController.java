@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.common.utl.ResponseVO;
@@ -34,8 +35,7 @@ public class EducationController {
 
     @RequestMapping("/education/educationList.do")
     public String educationList(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
-
-    	
+    
         // 페이지네이션 설정
         PaginationInfo paginationInfo = new PaginationInfo();
         paginationInfo.setCurrentPageNo(educationVO.getPageIndex());
@@ -67,7 +67,7 @@ public class EducationController {
         model.addAttribute("resultList", map.get("resultList"));
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("status", status);
-
+        
         return "education/educationList";
     }
     
@@ -103,8 +103,7 @@ public class EducationController {
         // 분류 및 수료 조건 데이터 조회
         List<EducationVO> categories = educationService.selectAllCategoryList();
         List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
-        // 교육 시간 목록 조회
-        List<Map<String, Object>> trainingTimes = educationService.selectTrainingTimeList();
+
 
        
         for (EducationMasterVO criteria : completionCriteria) {
@@ -114,7 +113,6 @@ public class EducationController {
         // 모델에 데이터 추가
         model.addAttribute("categories", categories);
         model.addAttribute("completionCriteria", completionCriteria);
-        model.addAttribute("trainingTimes", trainingTimes);
         
         System.out.println("categories" + categories);
         
@@ -145,6 +143,106 @@ public class EducationController {
     public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {
         educationService.educationListExcelDown(response, educationVO);
     }
+    
+    
+    @RequestMapping("/education/educationDetail.do")
+    public String educationDetail(@ModelAttribute("educationSearchVO") EducationVO educationVO, ModelMap model) throws Exception {
+        LOGGER.info("요청으로 받은 eduCode: {}", educationVO.getEduCode());  // eduCode 출력
+
+        // eduCode를 통해 서비스에서 상세 정보 조회
+        EducationVO educationDetail = educationService.selectEducationDetail(educationVO.getEduCode());
+
+        if (educationDetail == null) {
+            LOGGER.warn("해당 eduCode로 조회된 데이터가 없습니다: {}", educationVO.getEduCode());
+        } else {
+            LOGGER.info("조회된 데이터: {}", educationDetail.toString());
+        }
+
+        // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
+        model.addAttribute("educationDetail", educationDetail);
+
+        // 상세 조회 페이지로 이동
+        return "education/educationDetail"; 
+    }
+    
+    
+    
+    @RequestMapping("/education/educationUpdateView.do")
+    public String educationUpdateView(@ModelAttribute("educationVO") EducationVO educationVO, ModelMap model) throws Exception {
+
+        LOGGER.info("수정할 eduCode: {}", educationVO.getEduCode());  // eduCode 로그 출력
+
+        // eduCode를 통해 서비스에서 교육 과정 정보 조회
+        EducationVO educationDetail = educationService.selectEducationDetail(educationVO.getEduCode());
+
+        // 분류 및 수료 조건 데이터 조회
+        List<EducationVO> categories = educationService.selectAllCategoryList();
+        List<EducationMasterVO> completionCriteria = educationService.selectCompletionCriteria();
+
+        // 조회한 데이터를 모델에 추가하여 JSP에서 사용 가능하게 설정
+        model.addAttribute("educationDetail", educationDetail);
+        model.addAttribute("categories", categories);
+        model.addAttribute("completionCriteria", completionCriteria);
+
+        // 수정 페이지로 이동
+        return "education/educationUpdate"; // 수정 페이지의 JSP 경로에 맞게 설정
+    }
+    
+    
+    
+    @RequestMapping("/education/educationUpdate")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> educationUpdate(@RequestBody EducationVO educationVO) {
+        try {
+            // 로그 추가
+            LOGGER.info("수정할 교육 과정 정보: {}", educationVO.toString());
+
+            // 서비스에서 수정 작업 수행
+            educationService.updateEducation(educationVO);
+
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.OK);
+            responseVO.setMessage("교육 과정이 성공적으로 수정되었습니다.");
+            
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+
+        } catch (Exception e) {
+            LOGGER.error("교육 과정 수정 중 오류 발생", e);
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseVO.setMessage("수정 중 오류가 발생했습니다.");
+            
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        }
+    }
+
+    
+    
+    
+    // 교육 삭제 요청 처리
+    @RequestMapping("/education/deleteEducation")
+    @ResponseBody
+    public ResponseEntity<ResponseVO> deleteEducation(@RequestBody EducationVO educationVO) {
+        int eduCode = educationVO.getEduCode();
+
+        try {
+            // 서비스에서 교육 삭제 처리
+            educationService.deleteEducation(eduCode);
+
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.OK);
+            responseVO.setMessage("교육 과정과 관련된 강의가 성공적으로 삭제되었습니다.");
+
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        } catch (Exception e) {
+            LOGGER.error("교육 과정 삭제 중 오류 발생", e);
+            ResponseVO responseVO = new ResponseVO();
+            responseVO.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseVO.setMessage("교육 과정 삭제 중 오류가 발생했습니다.");
+            return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+        }
+    }
+
     
     
     

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atos.lms.attendance.service.dao.AllAttendanceDAO">
+
+
+<!-- 조건에 따른 동적 WHERE 절 구성 -->
+<sql id="whereClause">
+    <trim prefix="WHERE" prefixOverrides="AND">
+        a.STATUS != '1005'  <!-- 기본 조건: 삭제된 항목 제외 -->
+
+        <!-- 상태 코드가 있는 경우 조건 추가 -->
+        <if test="statusCode != null and statusCode != ''">
+            AND a.STATUS = #{statusCode}
+        </if>
+
+        <!-- 강의 코드가 있는 경우 조건 추가 -->
+        <if test="lectureCode != null and lectureCode != ''">
+            AND a.LECTURE_CODE = #{lectureCode}
+        </if>
+
+        <!-- 검색 조건이 0일 때: 학생명으로 검색 -->
+        <if test="searchCnd == 0">
+            AND s.NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 학생명 검색 -->
+        </if>
+
+        <!-- 검색 조건이 1일 때: 다른 필드로 검색 (예시로 남겨둠) -->
+        <if test="searchCnd == 1">
+            <!-- 여기 다른 조건을 추가하거나 삭제할 수 있습니다. -->
+        </if>
+    </trim>
+</sql>
+
+<!-- 출석 목록 조회 -->
+<select id="selectAttendanceList" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="atos.lms.attendance.service.AllAttendanceVO">
+    SELECT
+        a.ATTEND_CODE,  <!-- 출석 코드 -->
+        a.LECTURE_CODE, <!-- 강의 정보 코드 -->
+        a.STUDENT,      <!-- 학생 아이디 -->
+        a.ATTEND_DATE,  <!-- 출석일 -->
+        a.IN_TIME,      <!-- 입실 시간 -->
+        a.OUT_TIME,     <!-- 퇴실 시간 -->
+        a.STATUS,       <!-- 출석 상태 -->
+        s.ID AS studentId,  <!-- 학생 아이디 -->
+        s.NAME AS studentName,    <!-- 학생 이름 -->
+        c.CORP_NAME AS corpName   <!-- 업체명 (소속) -->
+    FROM
+        ATOS_ATTENDANCE a
+    JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
+    JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
+    <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
+    ORDER BY a.ATTEND_CODE DESC
+    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+</select>
+
+<!-- 출석 목록 총 개수 조회 -->
+<select id="selectAttendanceListCnt" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="int">
+    SELECT COUNT(a.ATTEND_CODE)
+    FROM ATOS_ATTENDANCE a
+    JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
+    JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
+    <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
+</select>
+
+</mapper>

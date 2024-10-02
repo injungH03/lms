@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import atos.lms.common.utl.ExcelUtil;
@@ -19,6 +21,8 @@ import atos.lms.education.service.EducationVO;
 
 @Service("EducationService")
 public class EducationServiceImpl extends EgovAbstractServiceImpl implements EducationService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EducationServiceImpl.class);
 	
 	
     @Resource(name = "EducationDAO")
@@ -80,12 +84,7 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
         return educationDAO.selectAllCategoryList();
     }
     
-    @Override
-    public List<Map<String, Object>> selectTrainingTimeList() {
-        return educationDAO.selectTrainingTimeList();
-    }
-    
-    
+   
     
     @Override
     public void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception {
@@ -106,6 +105,40 @@ public class EducationServiceImpl extends EgovAbstractServiceImpl implements Edu
 
         // 엑셀 파일로 출력
         ExcelUtil.exportToExcel(response, educationList, "교육목록", "교육목록엑셀파일", fieldToHeaderMap);
+    }
+    
+    
+    
+    @Override
+    public EducationVO selectEducationDetail(int eduCode) {
+        return educationDAO.selectEducationDetail(eduCode);
+    }
+    
+    
+    @Override
+    public void updateEducation(EducationVO educationVO) {
+        // 로그 확인용 (선택 사항)
+        System.out.println("수정할 교육 과정 정보: " + educationVO.toString());
+
+        // DAO 호출하여 교육 과정 업데이트
+        educationDAO.updateEducation(educationVO);
+    }
+    
+    
+    @Override
+    public void deleteEducation(int eduCode) {
+        try {
+            // DAO에서 교육 상태를 '1005(삭제)'로 변경하는 메서드 호출
+            educationDAO.deleteEducationByEduCode(eduCode);
+
+            // 관련된 강의 상태를 '4002(폐강)'으로 변경하는 메서드 호출
+            educationDAO.deleteLecturesByEduCode(eduCode);
+
+            LOGGER.info("교육 과정과 관련된 강의가 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            LOGGER.error("교육 과정 삭제 중 오류 발생", e);
+            throw e;
+        }
     }
 
     
