@@ -13,9 +13,6 @@
     <!-- 부트스트랩  -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- 달력 API -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
     <!-- Header Section -->

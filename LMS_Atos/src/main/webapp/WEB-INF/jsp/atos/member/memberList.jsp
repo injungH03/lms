@@ -16,7 +16,7 @@ function fn_egov_select_linkPage(pageNo){
 }
 </script>
 <div class="board member-management">
-<form name="memberForm" id="memberForm" action="<c:url value='/member/memberList.do'/>" method="post">
+<form name="memberForm" id="memberForm" action="<c:url value='/member/memberList.do'/>" method="get">
 
     <h3>회원 목록</h3>
 
@@ -52,7 +52,7 @@ function fn_egov_select_linkPage(pageNo){
                     <option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if>>아이디</option>
                     <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if>>이름</option>
                 </select>
-                <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" placeholder="텍스트를 입력해 주세요." value='<c:out value="${searchVO.searchWrd}"/>' maxlength="155">
+                <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" placeholder="텍스트를 입력해 주세요." value='<c:out value="${searchVO.searchWrd}"/>' maxlength="50">
                 <button type="submit" class="btn btn-primary">검색</button>
         </div> 
     </div>

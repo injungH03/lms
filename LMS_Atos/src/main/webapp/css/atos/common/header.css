@@ -2,7 +2,7 @@
 
 .header {
     grid-area: header;
-    background-color: #4cae4c;
+    background-color:#888c88;
     color: white;
     display: flex;
     align-items: center;
@@ -30,7 +30,7 @@
 }
 
 .header .header-links a.active, .header .header-links a:hover {
-    background-color: #63eb0e; /* 메뉴 항목 활성화 및 호버 색상 */
+    background-color: #525550;
     color: white;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .header .logout-btn, .header .customer-center-btn, .header .site-btn {
-    background-color: #4CAF50; /* 버튼 배경색 설정 */
+	background-color:#525550;
     color: white;
     padding: 5px 10px;
     text-decoration: none;
@@ -55,7 +55,7 @@
 }
 
 .header .customer-center-btn {
-    background-color: #5cb85c; /* 고객센터 버튼 색상 */
+	background-color:#525550;
 }
 
 .header .site-btn {
