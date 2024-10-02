@@ -22,6 +22,30 @@ public class MenuInterceptor implements HandlerInterceptor {
 		if (modelAndView != null) {
 			Map<String, MenuItemVO> menuItems = menuItem.getMenuItems();
 			modelAndView.addObject("menuItems", menuItems);
+			
+			String currentUrl = request.getRequestURI();
+            
+            String activeMenuUrl = findActiveMenuUrl(menuItems, currentUrl);
+            modelAndView.addObject("activeMenuUrl", activeMenuUrl);
 		}
 	}
+	
+    private String findActiveMenuUrl(Map<String, MenuItemVO> menuItems, String currentUrl) {
+        String activeMenuUrl = "";
+        int longestMatch = -1;
+        
+        for (MenuItemVO menuItem : menuItems.values()) {
+            for (MenuItemVO subMenuItem : menuItem.getSubMenuItems()) {
+                String linkUrl = subMenuItem.getUrl();
+                // 정확히 일치하거나, baseUrl로 시작하는지 확인
+                if (currentUrl.equals(linkUrl) || currentUrl.startsWith(linkUrl.replace("List.do", ""))) {
+                    if (linkUrl.length() > longestMatch) {
+                        longestMatch = linkUrl.length();
+                        activeMenuUrl = linkUrl;
+                    }
+                }
+            }
+        }
+        return activeMenuUrl;
+    }
 }

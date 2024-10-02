@@ -27,7 +27,7 @@
 		
 			<if test="searchCnd != null and searchCnd != ''">
 				<if test="searchCnd == 0">
-					AND L.INSTRUCTOR LIKE CONCAT ('%', #{searchWrd},'%') 		
+					AND I.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
 				</if>
 				<if test="searchCnd == 1">
 					AND E.TITLE LIKE CONCAT ('%', #{searchWrd},'%') 		
@@ -44,11 +44,14 @@
 		    L.ENROLLED, L.REG_DATE, L.REGISTER,              
 		    E.TITLE, E.CATEGORY, E.DESCRIPTION, E.OBJECTIVE,             
 		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME,         
-		    CM.MAIN_CODE, CM.USE_YN, CM.MAIN_NAME,            
-		    CS.SUB_NAME, CS.SUB_CODE              
+		    CD.USE_YN, CM.MAIN_CODE, CM.MAIN_NAME,            
+		    CS.SUB_NAME, CS.SUB_CODE,
+		    I.NAME AS instructorName              
 		FROM ATOS_LECTURE L
 		INNER JOIN ATOS_EDUCATION E 
 			ON L.EDUCATION = E.EDU_CODE
+		INNER JOIN ATOS_INSTRUCTOR I
+	   		ON L.INSTRUCTOR = I.ID 
 		INNER JOIN ATOS_CATEGORY_DETAIL CD 
 			ON E.CATEGORY = CD.CODE
 		INNER JOIN ATOS_CATEGORY_MAIN CM 

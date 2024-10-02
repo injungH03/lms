@@ -48,14 +48,12 @@
                 <td>
                     <div class="d-flex">
                         <input type="date" name="regStartDate" class="form-control me-2 custom-date-picker" />
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
                     </div>
                 </td>
                 <th>접수 종료일</th>
                 <td>
                     <div class="d-flex">
                         <input type="date" name="regEndDate" class="form-control me-2 custom-date-picker" />
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
                     </div>
                 </td>
  
@@ -65,7 +63,6 @@
                 <td>
                     <div class="d-flex">
                         <input type="date" name="learnStartDate" class="form-control me-2 custom-date-picker" />
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
                     </div>
                 </td>
                 <th>모집 인원수</th>
@@ -85,13 +82,13 @@
                 <th>연락처</th>
             	<td><input type="text" name="" class="form-control " placeholder="연락처를 입력하세요" /></td>
             </tr>
-            <tr>
-                <th>파일</th>
-                <td colspan="3">
-		            <input name="file_1" id="egovComFileUploader" type="file" title="첨부파일" multiple />
-		            <div id="egovComFileList" class="file-list"></div>
-                </td>
-            </tr>
+			<tr>
+			    <th>파일</th>
+			    <td colspan="3">
+			        <input name="file_1" id="egovComFileUploader" class="file-button" type="file" title="첨부파일" multiple />
+			        <div id="egovComFileList" class="file-list"></div>
+			    </td>
+			</tr>
 
         </table>
 
@@ -126,17 +123,6 @@ $(document).ready(function() {
 	var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum );
 	multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
 
-    $('.custom-date-picker').flatpickr({
-        dateFormat: 'Y-m-d',
-        altInput: true,
-        altFormat: 'Y-m-d',
-    });
-
-    // 달력 아이콘 클릭 시 달력 열기
-    $('.calendar-icon').on('click', function() {
-        $(this).prev('.custom-date-picker').flatpickr().open(); 
-    });
-    
     $('#addressSearchButton').on('click', function() {
         new daum.Postcode({
             oncomplete: function(data) {

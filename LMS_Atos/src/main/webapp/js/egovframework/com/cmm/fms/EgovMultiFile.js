@@ -136,7 +136,7 @@ function MultiSelector( list_target, max , file_label ){
 		// Delete button
 		var new_row_button = document.createElement( 'input' );
 		new_row_button.type = 'button';
-		new_row_button.value = 'Delete';
+		new_row_button.value = '삭제';
 		new_row_button.setAttribute("style", "margin: 1px; padding: 3px;");
 		//new_row_button.style.top = '3px';
 
