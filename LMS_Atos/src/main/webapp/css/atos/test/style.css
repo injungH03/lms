@@ -69,6 +69,59 @@ body {
 }
 
 .pagination ul li a:hover {
-	background-color: #3498db;
+	background-color:#888c88;
 	color: #ffffff;
+}
+.current {
+	background-color:#888c88;
+	color: #ffffff;
+}
+
+/* 파일 리스트 스타일 */
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 파일 추가 시 각 파일의 스타일 */
+.file_add {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    max-width: 500px; 
+    white-space: nowrap; 
+}
+
+/* 파일 이름과 삭제 버튼을 나란히 배치 */
+.file_add span {
+	flex: 1;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+
+/* 삭제 버튼 스타일 */
+.file_add input[type="button"] {
+    background-color: #ff5a5f;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file_add input[type="button"]:hover {
+    background-color: #ff3034;
 }

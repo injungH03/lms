@@ -57,6 +57,12 @@ public class LectureController {
     	
     	paginationInfo.setTotalRecordCount(totalcount);
 		
+    	
+    	List<LectureVO> list = (List<LectureVO>) map.get("resultList");
+    	
+    	list.forEach(lecture -> System.out.println("데이터 = " + lecture));
+    	
+    	
     	model.addAttribute("paginationInfo", paginationInfo);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("totalcount", totalcount);

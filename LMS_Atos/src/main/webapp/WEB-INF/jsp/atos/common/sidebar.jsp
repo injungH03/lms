@@ -1,14 +1,23 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/sidebar.css' />">
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="activeMenuUrl" value="${activeMenuUrl}" />
 
 <div class="sidebar">
     <c:forEach var="menuItem" items="${menuItems}">
-        <div class="menu-group ${menuItem.value.data}-menu" data-url="${menuItem.value.url}">
+        <div class="menu-group ${menuItem.value.data}-menu" data-base-url="${menuItem.value.url}">
             <h3 id="${menuItem.value.data}Management">${menuItem.value.title}</h3>
             <ul>
                 <c:forEach var="subMenuItem" items="${menuItem.value.subMenuItems}">
-                    <li><a href="<c:url value='${subMenuItem.url}'/>" class="">${subMenuItem.title}</a></li>
+                    <li>
+                        <a href="<c:url value='${subMenuItem.url}'/>"
+                           class="${subMenuItem.url == activeMenuUrl ? 'active' : ''}">
+                           ${subMenuItem.title}
+                        </a>
+                    </li>
                 </c:forEach>
             </ul>
         </div>
@@ -18,95 +27,117 @@
 
 <script>
 $(document).ready(function() {
-    // 로컬 스토리지에서 열려 있는 메뉴 상태 복원
-    var openMenus = JSON.parse(localStorage.getItem('openMenus')) || [];
+    const LOCAL_STORAGE_KEY = 'openMenus';
 
+    // 캐싱 jQuery 셀렉터
+    const $sidebar = $('.sidebar');
+    const $menuGroups = $sidebar.find('.menu-group');
+    const $menuLinks = $sidebar.find('ul li a');
+
+    // 로컬 스토리지에서 열려 있는 메뉴 상태 복원
+    let openMenus = [];
+    try {
+        const storedMenus = localStorage.getItem(LOCAL_STORAGE_KEY);
+        openMenus = storedMenus ? JSON.parse(storedMenus) : [];
+    } catch (error) {
+        console.error('로컬 스토리지에서 openMenus를 가져오는 데 실패했습니다:', error);
+        openMenus = [];
+    }
+
+    // 열려 있는 메뉴 열기
     openMenus.forEach(function(menuId) {
         if (menuId) {
-            $('#' + menuId).next('ul').show(); // 저장된 메뉴 상태를 복원
-        }
-    });
-
-    // 현재 URL 기반으로 메뉴 자동 열기
-    var currentUrl = window.location.pathname;
-
-    $('.sidebar .menu-group').each(function() {
-        var menuUrl = $(this).data('url');
-        if (currentUrl.startsWith(menuUrl)) {
-            $(this).show();
-            var menuId = $(this).find('h3').attr('id');
-            if (menuId && !openMenus.includes(menuId)) {
-                openMenus.push(menuId);
-                localStorage.setItem('openMenus', JSON.stringify(openMenus));
+            const $menuHeader = $('#' + menuId);
+            if ($menuHeader.length) {
+                $menuHeader.next('ul').show();
             }
         }
     });
-    
-    
-    // 메뉴 클릭 시 active 클래스 추가 및 다른 메뉴에서 제거
-    $('.sidebar .menu-group ul li a').on('click', function(e) {
-        e.preventDefault();  // 기본 링크 이동 막기 (필요 시 제거)
-        // 모든 메뉴에서 active 클래스 제거
-        $('.sidebar .menu-group ul li a').removeClass('active');
+
+    // 현재 URL 기반으로 메뉴 자동 열기 및 active 클래스 설정
+    const currentUrl = window.location.pathname;
+
+    $menuGroups.each(function() {
+        const $this = $(this);
+        const menuGroupUrl = $this.data('base-url');
+        const baseUrl = menuGroupUrl.replace(/List\.do$/, '');
+
+        if (currentUrl.startsWith(baseUrl)) {
+            $this.find('ul').show();
+            const menuId = $this.find('h3').attr('id');
+            if (menuId && !openMenus.includes(menuId)) {
+                openMenus.push(menuId);
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(openMenus));
+            }
+
+            // 하위 메뉴 중 현재 URL과 가장 일치하는 메뉴 찾기
+            let matched = false;
+            let bestMatchLength = 0;
+            let bestMatchElement = null;
+
+            $this.find('ul li a').each(function() {
+                const $link = $(this);
+                const linkUrl = $link.attr('href');
+                if (currentUrl === linkUrl) {
+                    $link.addClass('active');
+                    matched = true;
+                    return false; 
+                } else if (currentUrl.startsWith(linkUrl.replace(/\.do$/, '')) && linkUrl.length > bestMatchLength) {
+                    bestMatchLength = linkUrl.length;
+                    bestMatchElement = $link;
+                }
+            });
+
+            // 정확히 일치하는 항목이 없을 경우 가장 긴 일치 항목에 active 클래스 추가
+            if (!matched && bestMatchElement) {
+                bestMatchElement.addClass('active');
+            }
+        }
+    });
+
+    // 메뉴 클릭 시 active 클래스 관리 및 메뉴 상태 저장
+    $sidebar.on('click', '.menu-group ul li a', function(e) {
+        e.preventDefault(); // 기본 링크 이동 막기 (필요 시 제거)
         
+        const $this = $(this);
+        const href = $this.attr('href');
+
+        // 모든 메뉴에서 active 클래스 제거
+        $menuLinks.removeClass('active');
+
         // 클릭한 메뉴에 active 클래스 추가
-        $(this).addClass('active');
+        $this.addClass('active');
 
         // 링크로 이동
-        var href = $(this).attr('href');
         window.location.href = href;
     });
 
-    // 현재 페이지 URL과 일치하는 메뉴 항목에 active 클래스 적용
-    $('.sidebar .menu-group ul li a').each(function() {
-        var linkUrl = $(this).attr('href');
-        if (currentUrl === linkUrl) {
-            $(this).addClass('active');
+    // 메뉴 그룹 헤더 클릭 시 메뉴 토글 및 상태 업데이트
+    $sidebar.on('click', '.menu-group h3', function() {
+        const $this = $(this);
+        const $submenu = $this.next('ul');
+        const menuId = $this.attr('id');
+
+        $submenu.slideToggle();
+
+        // 현재 열려 있는 메뉴 수집
+        openMenus = [];
+        $menuGroups.each(function() {
+            const $group = $(this);
+            if ($group.find('ul').is(':visible')) {
+                const groupId = $group.find('h3').attr('id');
+                if (groupId) {
+                    openMenus.push(groupId);
+                }
+            }
+        });
+
+        // 로컬 스토리지에 저장
+        try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(openMenus));
+        } catch (error) {
+            console.error('로컬 스토리지에 openMenus를 저장하는 데 실패했습니다:', error);
         }
     });
-    
-
- 	// 사이드바 메뉴 클릭 시 활성화 처리
-/*     $('.sidebar .menu-group h3').off('click').click(function(event) {
-
-        event.preventDefault(); // 기본 클릭 동작 방지
-        event.stopPropagation(); // 이벤트 전파 방지
-
-        var $submenu = $(this).next('ul');
-        var menuId = $(this).attr('id');
-
-        // 현재 열려 있는 메뉴 토글
-        // $submenu.stop(true, true).slideToggle();
-
-        // 로컬 스토리지에 열린 메뉴 상태 저장
-        if ($submenu.is(':visible')) {
-            if (!openMenus.includes(menuId)) {
-                openMenus.push(menuId);
-            }
-        } else {
-            openMenus = openMenus.filter(function(id) {
-                return id !== menuId;
-            });
-        }
-
-        localStorage.setItem('openMenus', JSON.stringify(openMenus));
-
-    }); */
- 
-
-
-    // 헤더 메뉴 클릭 시 사이드바 메뉴를 활성화 처리
-/*     $('.menu-link').off('click').on('click', function(e) {
-        e.preventDefault(); // 기본 클릭 동작 방지
-
-        $('.menu-link').removeClass('active'); // 모든 메뉴에서 active 클래스 제거
-        $(this).addClass('active');
-
-        var menuType = $(this).data('menu');
-        localStorage.setItem('activeMenu', menuType); // 활성화된 메뉴 저장
-
-        $('.sidebar .menu-group').hide(); // 모든 메뉴를 숨기고
-        $('.sidebar .' + menuType + '-menu').show(); // 해당 메뉴를 표시
-    }); */
 });
 </script>

@@ -5,13 +5,21 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/lecture/lecture.css' />">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script>
+function fn_egov_select_linkPage(pageNo){
+	document.searchForm.pageIndex.value = pageNo;
+	document.searchForm.action = "<c:url value='/education/lectureList.do'/>";
+   	document.searchForm.submit();
+}
+</script>
 
 <div class="head-section" style="margin-bottom:20px;">
 	<span>&nbsp;집합과정운영</span>
 </div>
 
-<form id="searchForm" action="<c:url value='/education/lectureList.do'/>" method="post">
+<form id="searchForm" name="searchForm" action="<c:url value='/education/lectureList.do'/>" method="get">
+<input type="hidden" name="pageIndex" value="${searchVO.pageIndex}">
 <div class="tab-section">
 
 <input type="hidden" id="srcMainCode" name="srcMainCode"  value="" />
@@ -37,17 +45,14 @@
                  <th class="custom-th-width">신청시작/종료일
                  <td colspan="2">
                     <div class="d-flex">
-                        <span>시작일 :</span><input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
-						<span class="span-ml">종료일 :</span><input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" />
-						<span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
+                        <span>시작일 :</span><input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcStartDate }"/> 
+						<span class="span-ml">종료일 :</span><input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcEndDate }"/>
                     </div>
                 </td>
                 <th class="custom-th-width">과정날짜</th>
                 <td colspan="3">
                     <div class="d-flex">
-                        <input type="date" name="srcLearnDate" id="learningStartDate" class="form-control me-2 custom-date-picker" />
-                        <span class="input-group-text calendar-icon"><i class="material-icons">calendar_today</i></span>
+                        <input type="date" name="srcLearnDate" id="learningStartDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcLearnDate }" />
                     </div>
                 </td>
             </tr>
@@ -57,24 +62,25 @@
                     <div class="d-flex">
                         <select name="searchCnd" class="form-select search-select me-2">
                             <option value="">전체</option>
-                            <option value="0">배정강사</option>
-                            <option value="1">과정명</option>
+                            <option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if>>배정강사</option>
+                            <option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if>>과정명</option>
                         </select>
-                        <input type="text" name="searchWrd" class="form-control search-input me-2" placeholder="검색어를 입력하세요" />
+                        <input type="text" name="searchWrd" class="form-control search-input me-2" placeholder="검색어를 입력하세요" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="100"/>
                         <button type="submit" class="btn-search">검색</button>
                     </div>
                 </td>
             </tr>
         </table>
+    
 
 
 <!-- 테이블 위에 버튼 섹션 -->
 <div class="d-flex justify-content-between mb-2 mt-5">
     <div>
-        Total: <strong>38건</strong>
+        Total: <strong>${totalcount }건</strong>
     </div>
     <div>
-        <button class="btn-create-course">과정개설</button>
+        <button class="btn-create-course" id="regist">과정개설</button>
         <button class="btn-excel">EXCEL</button>
     </div>
 </div>
@@ -95,70 +101,53 @@
             </tr>
         </thead>
         <tbody>
+        <c:forEach items="${resultList }" var="resultInfo" varStatus="status">
             <tr>
-                <td>1</td>
-                <td>테스트 과정 1 (제조업)</td>
-                <td>홍길동</td>
-                <td>8</td>
-                <td>40/50</td>
-                <td>2024.09.08 ~ 2024.09.19</td>
-                <td>2024.09.11</td>
+                <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.index + 1}"/></td>
+                <td class="left"><a href="<c:url value='/education/lectureDetail.do' />?lectureCode=${resultInfo.lectureCode }&pageIndex=${searchVO.pageIndex}"><c:out value="${resultInfo.title }" /></a></td>
+                <td><c:out value="${resultInfo.instructorName }" /></td>
+                <td><c:out value="${resultInfo.trainingTime }" /></td>
+                <td><c:out value="${resultInfo.enrolled }" />/<c:out value="${resultInfo.capacity }" /></td>
+                <td>
+                	<c:out value="${fn:substring(resultInfo.recStartDate, 0, 10)}" /> ~
+    				<c:out value="${fn:substring(resultInfo.recEndDate, 0, 10)}" />
+    			</td>
+                <td><c:out value="${resultInfo.learnDate }" /></td>
                 <td>
                     <div class="btn-group">
-                        <button>수정</button>
                         <button>삭제</button>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>테스트 과정 1 (서비스업)</td>
-                <td>홍길동</td>
-                <td>8</td>
-                <td>40/50</td>
-                <td>2024.09.08 ~ 2024.09.19</td>
-                <td>2024.09.11</td>
-                <td>
-                    <div class="btn-group">
-                        <button>수정</button>
-                        <button>삭제</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>테스트 과정 1 (건설업)</td>
-                <td>홍길동</td>
-                <td>8</td>
-                <td>40/50</td>
-                <td>2024.09.08 ~ 2024.09.19</td>
-                <td>2024.09.11</td>
-                <td>
-                    <div class="btn-group">
-                        <button>수정</button>
-                        <button>삭제</button>
-                    </div>
-                </td>
-            </tr>
+		</c:forEach>
+
+        <c:if test="${fn:length(resultList) == 0}">
+	        <tr>
+	            <td colspan="8">조회된 결과가 존재하지 않습니다.</td>
+	        </tr>
+        </c:if>
 
         </tbody>
     </table>
 </div>
+    <!-- 페이지네이션 -->
+    <div class="pagination justify-content-center">
+        <ul>
+            <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
+        </ul>
+    </div>    
+
 </div>
 </form>
 <script>
 $(document).ready(function() {
-    $('.custom-date-picker').flatpickr({
-        dateFormat: 'Y-m-d',
-        altInput: true,
-        altFormat: 'Y-m-d',
-    });
+	
+	$('#regist').on('click', function(event){
+		event.preventDefault();
+		window.location.href = "<c:url value='/education/lectureRegist.do'/>";
+	});
+	
 
-    // 달력 아이콘 클릭 시 달력 열기
-    $('.calendar-icon').on('click', function() {
-        $(this).prev('.custom-date-picker').flatpickr().open(); 
-    });
-    
     $('.nav-link').click(function() {
 /*         $('.nav-link').removeClass('active');
         
