@@ -52,7 +52,8 @@ public class CompanyMasterVO implements GeneralModel {
 	/** 첨부가능파일사이즈 */
 	private String atchPosblFileSize = "";
 
-	private List<String> corpBizList;  // 여러 사업자등록번호를 처리할 리스트
+	/** 여러 사업자등록번호를 처리할 리스트 */
+	private List<String> corpBizList; 
 	
 	private String companyStatus;
 	

@@ -8,53 +8,68 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
+<script>
+function fn_egov_select_linkPage(pageNo){
+    document.allAttendancenForm.pageIndex.value = pageNo;
+    document.allAttendancenForm.action = "<c:url value='/attendance/allAttendanceList.do'/>";
+    document.allAttendancenForm.submit();
+}
+</script>
+
 
 
 <div class="head-section">
 	<span>&nbsp;통합수강생출석관리</span>
 </div>
+
 <div class="table-section">
-     <form name="allAttendancenForm" action="<c:url value='/attendance/allAttendanceList.do'/>" method="post">
+	<form id="allAttendancenForm" name="allAttendancenForm" action="<c:url value='/attendance/allAttendanceList.do'/>" method="get">
+		<input type="hidden" name="pageIndex" value="${attendanceSearchVO.pageIndex}">
+	
+<!-- 과정 선택 -->
         <table class="search-table">
             <tr>
-                <th>소속</th>
+                <th>과정</th>
                 <td>
                     <div class="d-flex">
-                        <select name="searchType" class="form-select search-select me-2">
-                            <option value="">전체</option>
-                            <option value=""></option>
-                        </select>
+						<select name="lectureCode" class="form-select search-select me-2">
+						    <option value="">전체</option>
+                        <c:forEach var="lecture" items="${educationList}"> <!-- 변경: items="${educationList}"로 변경 -->
+	                        <option value="${lecture.eduCode}" 
+							    <c:if test="${lecture.eduCode == attendanceSearchVO.lectureCode}">selected="selected"</c:if>>
+							    ${lecture.title}
+							</option>
+                        </c:forEach>
+						</select>
                     </div>
                 </td>
             </tr>
+
+            <!-- 출석일 선택 -->
             <tr>
-                <th>강의</th>
-                <td>
+                <th>출석일</th>
+                <td colspan="2">
                     <div class="d-flex">
-                        <select name="searchType" class="form-select search-select me-2">
-                            <option value="">전체</option>
-                            <option value=""></option>
-                        </select>
+                        <input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" 
+                               value="${attendanceSearchVO.srcStartDate}"/>
+                        <input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" 
+                               value="${attendanceSearchVO.srcEndDate}"/>
                     </div>
                 </td>
             </tr>
-            <tr>
-                 <th class="custom-th-width">출석일
-                 <td colspan="2">
-                    <div class="d-flex">
-                        <input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" /> 
-						<input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" />
-                    </div>
-                </td>
-            </tr>
+
+            <!-- 검색 조건 -->
             <tr>
                 <th>검색</th>
                 <td>
                     <div class="d-flex">
-                        <select name="searchType" class="form-select search-select me-2">
-                            <option value="전체">전체</option>
+                        <select name="searchCnd" class="form-select search-select me-2">
+                            <option value="">전체</option>
+                            <option value="0" <c:if test="${attendanceSearchVO.searchCnd == '0'}">selected</c:if>>회원명</option>
+                            <option value="1" <c:if test="${attendanceSearchVO.searchCnd == '1'}">selected</c:if>>업체명</option>
+                            <option value="2" <c:if test="${attendanceSearchVO.searchCnd == '2'}">selected</c:if>>상태</option>
                         </select>
-                        <input type="text" name="searchKeyword" class="form-control search-input me-2" placeholder="검색어를 입력하세요" />
+                        <input type="text" name="searchWrd" class="form-control search-input me-2" placeholder="검색어를 입력하세요" value='<c:out value="${attendanceSearchVO.searchWrd}"/>'/>
                         <button type="submit" class="btn-search">검색</button>
                     </div>
                 </td>
@@ -84,7 +99,7 @@
 	        <col style="width: 9%;">
 	        <col style="width: 7%;">
 	        <col style="width: 7%;">
-	        <col style="width: 7%;">
+	        <col style="width: 10%;">
 	        <col style="width: 3%;">
     	</colgroup>
         <thead>
@@ -103,7 +118,7 @@
         <tbody>
             <c:forEach var="resultInfo" items="${resultList}" varStatus="status">
                 <tr>
-                    <td>${(searchVO.pageIndex - 1) * searchVO.recordCountPerPage + status.index + 1}</td>
+                    <td>${(attendanceSearchVO.pageIndex - 1) * attendanceSearchVO.recordCountPerPage + status.index + 1}</td>
                     <td>${resultInfo.corpName}</td> <!-- 소속 -->
                     <td>${resultInfo.id}(${resultInfo.name})</td> <!-- 수강생 아이디(이름) -->
                     <td>${resultInfo.statusName}</td> <!-- 상태 -->
@@ -125,8 +140,27 @@
         </tbody>
     </table>
 </div>
+<div class="pagination justify-content-center">
+    <ul>
+        <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
+    </ul>
+</div>
 </div>
 <script>
+
+/* 
+$(document).ready(function() {
+    // 검색 버튼 클릭 시
+    $('.btn-search').on('click', function(e) {
+        // form을 강제로 제출
+        $('#allAttendancenForm').submit();
+    });
+    
+    $('#allAttendancenForm').on('submit', function(e) {
+        console.log('Form is being submitted...');  // 폼 제출 여부 확인
+    });
+});
+
 $(document).ready(function() {
     // 전체 선택/해제 기능
     $('#checkAll').on('click', function() {
@@ -275,4 +309,6 @@ $(document).ready(function() {
 	
 
 });
+
+ */
 </script>

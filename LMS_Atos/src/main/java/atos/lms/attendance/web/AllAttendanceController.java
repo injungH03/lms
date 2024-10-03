@@ -1,5 +1,6 @@
 package atos.lms.attendance.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -25,8 +26,9 @@ public class AllAttendanceController {
 
     // 출석 목록 조회
     @RequestMapping("allAttendanceList.do")
-    public String allAttendanceList(@ModelAttribute("searchVO") AllAttendanceVO attendanceVO, ModelMap model) throws Exception {
+    public String allAttendanceList(@ModelAttribute("attendanceSearchVO") AllAttendanceVO attendanceVO, ModelMap model) throws Exception {
     	
+    	LOGGER.info("allAttendanceList 접근");
     	System.out.println("allAttendanceList 접근");
         
         // 페이지 네이션 설정
@@ -38,17 +40,42 @@ public class AllAttendanceController {
         attendanceVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
         attendanceVO.setLastIndex(paginationInfo.getLastRecordIndex());
         attendanceVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+       
         
         // 출석 목록 조회
         Map<String, Object> map = allAttendanceService.selectAttendanceList(attendanceVO);
         
         System.out.println("allAttendanceList resultList: " + map.get("resultList"));
         System.out.println("allAttendanceList resultCnt: " + map.get("resultCnt"));
-		      
+
+
+        // 교육 목록 조회 (이미 가지고 있는 AllAttendanceVO의 eduCode와 title 사용)
+        List<AllAttendanceVO> educationList = allAttendanceService.selectEducationList();
+        model.addAttribute("educationList", educationList);
         
         // 총 레코드 수 설정
         int totalCount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
         paginationInfo.setTotalRecordCount(totalCount);
+        
+		/*
+		 * System.out.println("검색 조건: " + attendanceVO.getSearchCnd());
+		 * System.out.println("검색어: " + attendanceVO.getSearchWrd());
+		 * 
+		 * 
+		 * // 로그: PaginationInfo 객체의 설정 값 출력 System.out.println("첫 레코드 인덱스: " +
+		 * paginationInfo.getFirstRecordIndex()); System.out.println("마지막 레코드 인덱스: " +
+		 * paginationInfo.getLastRecordIndex()); System.out.println("총 레코드 수: " +
+		 * paginationInfo.getTotalRecordCount());
+		 * 
+		 */
+        LOGGER.info("선택된 강의 코드: " + attendanceVO.getLectureCode());
+        LOGGER.info("검색 조건: " + attendanceVO.getSearchCnd());
+        LOGGER.info("검색어: " + attendanceVO.getSearchWrd());
+
+        // 로그: PaginationInfo 객체의 설정 값 출력
+        LOGGER.info("첫 레코드 인덱스: " + paginationInfo.getFirstRecordIndex());
+        LOGGER.info("마지막 레코드 인덱스: " + paginationInfo.getLastRecordIndex());
+        LOGGER.info("총 레코드 수: " + paginationInfo.getTotalRecordCount());
         
         // 모델에 데이터 추가
         model.addAttribute("paginationInfo", paginationInfo);

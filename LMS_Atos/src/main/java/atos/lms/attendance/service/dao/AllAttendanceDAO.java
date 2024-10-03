@@ -14,6 +14,9 @@ public interface AllAttendanceDAO {
     
     // 출석 목록 총 개수 조회 (페이징을 위해)
     int selectAttendanceListCnt(AllAttendanceVO attendanceVO);
+    
+    // 교육 목록 조회
+    List<AllAttendanceVO> selectEducationList(); 
 
 }
 	

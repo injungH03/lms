@@ -4,31 +4,43 @@
 
 
 <!-- 조건에 따른 동적 WHERE 절 구성 -->
-<sql id="whereClause">
-    <trim prefix="WHERE" prefixOverrides="AND">
-        a.STATUS != '1005'  <!-- 기본 조건: 삭제된 항목 제외 -->
-
-        <!-- 상태 코드가 있는 경우 조건 추가 -->
-        <if test="statusCode != null and statusCode != ''">
-            AND a.STATUS = #{statusCode}
-        </if>
-
-        <!-- 강의 코드가 있는 경우 조건 추가 -->
-        <if test="lectureCode != null and lectureCode != ''">
-            AND a.LECTURE_CODE = #{lectureCode}
-        </if>
-
-        <!-- 검색 조건이 0일 때: 학생명으로 검색 -->
-        <if test="searchCnd == 0">
-            AND s.NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 학생명 검색 -->
-        </if>
-
-        <!-- 검색 조건이 1일 때: 다른 필드로 검색 (예시로 남겨둠) -->
-        <if test="searchCnd == 1">
-            <!-- 여기 다른 조건을 추가하거나 삭제할 수 있습니다. -->
-        </if>
-    </trim>
-</sql>
+	<sql id="whereClause">
+	    <trim prefix="WHERE" prefixOverrides="AND">
+	        a.STATUS != '1005'  <!-- 기본 조건: 삭제된 항목 제외 -->
+	
+	        <!-- 교육 코드(Education)에 해당하는 강의 코드 필터링 -->
+	        <if test="lectureCode != null and lectureCode != ''">
+	            AND l.EDUCATION = #{lectureCode}
+	        </if>
+	
+	        <!-- 출석일 (Attendance Date) 범위 조건 추가 -->
+	        <if test="srcStartDate != null and srcStartDate != ''">
+	            <![CDATA[
+	            AND a.ATTEND_DATE >= #{srcStartDate}
+	            ]]>
+	        </if>
+	        <if test="srcEndDate != null and srcEndDate != ''">
+	            <![CDATA[
+	            AND a.ATTEND_DATE <= #{srcEndDate}
+	            ]]>
+	        </if>
+	
+	        <!-- 검색 조건 (회원명, 업체명, 상태) 처리 -->
+	        <if test="searchCnd != null and searchCnd != ''">
+	            <choose>
+	                <when test="searchCnd == 0">
+	                    AND s.NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 학생명 검색 -->
+	                </when>
+	                <when test="searchCnd == 1">
+	                    AND c.CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 업체명 검색 -->
+	                </when>
+	                <when test="searchCnd == 2">
+	                    AND a.STATUS = #{searchWrd}  <!-- 상태 검색 -->
+	                </when>
+	            </choose>
+	        </if>
+	    </trim>
+	</sql>
 
 <!-- 출석 목록 조회 쿼리 수정 -->
 <select id="selectAttendanceList" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="atos.lms.attendance.service.AllAttendanceVO">
@@ -42,25 +54,41 @@
         a.STATUS,       <!-- 출석 상태 코드 -->
         s.ID,           <!-- 학생 아이디 -->
         s.NAME,         <!-- 학생 이름 -->
-        c.CORP_NAME,    <!-- 업체명 (소속) -->
-        d.NAME AS statusName   <!-- 상태명 추가 -->
+        c.CORP_NAME,    <!-- 업체명(소속) -->
+        d.NAME AS statusName   <!-- 상태명 -->
     FROM
         ATOS_ATTENDANCE a
-    JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
-    JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
-    JOIN ATOS_STATUS d ON a.STATUS = d.CODE   <!-- 상태 테이블 조인 -->
+    JOIN 
+        ATOS_STUDENT s ON a.STUDENT = s.ID
+    JOIN 
+        ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
+    JOIN 
+        ATOS_STATUS d ON a.STATUS = d.CODE   <!-- 상태 테이블 조인 -->
+    JOIN 
+        ATOS_LECTURE l ON a.LECTURE_CODE = l.LECTURE_CODE  <!-- 강의 테이블 조인 -->
     <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
-    ORDER BY a.ATTEND_CODE DESC
-    LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+    ORDER BY 
+        a.ATTEND_CODE DESC
+    LIMIT 
+        #{recordCountPerPage} OFFSET #{firstIndex}
 </select>
 
+
 <!-- 출석 목록 총 개수 조회 -->
-<select id="selectAttendanceListCnt" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="int">
-    SELECT COUNT(a.ATTEND_CODE)
-    FROM ATOS_ATTENDANCE a
-    JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
-    JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
-    <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
-</select>
+	<select id="selectAttendanceListCnt" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="int">
+	    SELECT COUNT(a.ATTEND_CODE)
+	    FROM ATOS_ATTENDANCE a
+	    JOIN ATOS_STUDENT s ON a.STUDENT = s.ID
+	    JOIN ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
+	    JOIN ATOS_LECTURE l ON a.LECTURE_CODE = l.LECTURE_CODE
+	    <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
+	</select>
+	
+	
+	<select id="selectEducationList" resultType="atos.lms.attendance.service.AllAttendanceVO">
+	    SELECT EDU_CODE, TITLE 
+	    FROM ATOS_EDUCATION
+	    WHERE STATUS != '1005'  <!-- 상태가 '삭제'인 경우 제외 -->
+	</select>
 
 </mapper>

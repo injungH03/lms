@@ -63,7 +63,7 @@
                                 <option value="1" <c:if test="${educationSearchVO.searchCnd == '1'}">selected="selected"</c:if>>교육분류</option>
                             </select>
                             <input type="text" id="searchText" name="searchWrd" title="검색 조건 입력" class="form-control form-control-sm short-input ms-2" 
-                            	placeholder="검색어를 입력하세요" value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="155">
+                            	placeholder="검색어를 입력하세요" value='<c:out value="${educationSearchVO.searchWrd}"/>' maxlength="100">
                             <button type="submit" class="btn btn-primary btn-sm ms-2" style="width: auto;">검색</button>
                         </div>
                     </td>
