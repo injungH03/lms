@@ -1,5 +1,8 @@
 package atos.lms.attendance.web;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.attendance.service.AllAttendanceService;
 import atos.lms.attendance.service.AllAttendanceVO;
@@ -73,6 +78,82 @@ public class AllAttendanceController {
         model.addAttribute("educationList", educationList);
         
         return "attendance/allAttendanceList";  // JSP 파일 경로에 맞게 수정
+    }
+    
+    
+ // 입실 처리
+    @RequestMapping("checkIn")
+    @ResponseBody
+    public String checkIn(@RequestParam("attendCode") int attendCode) {
+    	System.out.println("checkIn");
+        LocalTime inTime = LocalTime.now();
+        LocalDate attendDate = LocalDate.now();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("attendCode", attendCode);
+        paramMap.put("inTime", inTime);
+        paramMap.put("attendDate", attendDate);
+        allAttendanceService.updateCheckIn(paramMap);
+        return "success";
+    }
+
+    // 퇴실 처리
+    @RequestMapping("checkOut")
+    @ResponseBody
+    public String checkOut(@RequestParam("attendCode") int attendCode) {
+    	System.out.println("checkOut");
+        LocalTime outTime = LocalTime.now();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("attendCode", attendCode);
+        paramMap.put("outTime", outTime);
+        allAttendanceService.updateCheckOut(paramMap);
+        return "success";
+    }
+    
+    
+    @RequestMapping("checkInAll")
+    @ResponseBody
+    public String checkInAll(@RequestParam List<Integer> attendCodes, @RequestParam String inTime, @RequestParam String attendDate) {
+    	System.out.println("checkInAll");
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("attendCodes", attendCodes);
+            paramMap.put("inTime", inTime);
+            paramMap.put("attendDate", attendDate);
+            allAttendanceService.updateCheckInAll(paramMap);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+
+    @RequestMapping("checkOutAll")
+    @ResponseBody
+    public String checkOutAll(@RequestParam List<Integer> attendCodes, @RequestParam String outTime) {
+    	System.out.println("checkOutAll");
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("attendCodes", attendCodes);
+            paramMap.put("outTime", outTime);
+            allAttendanceService.updateCheckOutAll(paramMap);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+    }
+
+    @RequestMapping("allAbsence")
+    @ResponseBody
+    public String markAbsent(@RequestParam List<Integer> attendCodes) {
+    	System.out.println("allAbsence");
+        try {
+            allAttendanceService.updateAllAbsence(attendCodes);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
     }
 
 }

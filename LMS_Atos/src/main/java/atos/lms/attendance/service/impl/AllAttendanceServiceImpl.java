@@ -32,9 +32,35 @@ public class AllAttendanceServiceImpl implements AllAttendanceService {
 	}
 	
 	
-	  @Override
-	    public List<AllAttendanceVO> selectEducationList() {
-	        return allAttendanceDao.selectEducationList();  // DAO 메서드 호출
-	   }
+	@Override
+	public List<AllAttendanceVO> selectEducationList() {
+		return allAttendanceDao.selectEducationList(); 
+	}
+	
+	@Override
+	public void updateCheckIn(Map<String, Object> paramMap) {
+	    allAttendanceDao.updateCheckIn(paramMap);
+	}
+
+	@Override
+	public void updateCheckOut(Map<String, Object> paramMap) {
+	    allAttendanceDao.updateCheckOut(paramMap);
+	}
+	
+	
+	@Override
+	public void updateCheckInAll(Map<String, Object> paramMap) {
+	    allAttendanceDao.updateCheckInAll(paramMap);
+	}
+
+	@Override
+	public void updateCheckOutAll(Map<String, Object> paramMap) {
+	    allAttendanceDao.updateCheckOutAll(paramMap);
+	}
+
+	@Override
+	public void updateAllAbsence(List<Integer> attendCodes) {
+	    allAttendanceDao.updateAllAbsence(attendCodes);
+	}
 
 }

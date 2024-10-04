@@ -1,6 +1,7 @@
 package atos.lms.attendance.service.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,18 @@ public interface AllAttendanceDAO {
     
     // 교육 목록 조회
     List<AllAttendanceVO> selectEducationList(); 
+    
+    
+    void updateCheckIn(Map<String, Object> paramMap);
+    
+    void updateCheckOut(Map<String, Object> paramMap);
+    
+    
+    void updateCheckInAll(Map<String, Object> paramMap);
+    
+    void updateCheckOutAll(Map<String, Object> paramMap);
+    
+    void updateAllAbsence(List<Integer> attendCodes);
 
 }
 	

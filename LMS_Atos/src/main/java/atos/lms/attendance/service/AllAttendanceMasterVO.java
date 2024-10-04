@@ -1,7 +1,5 @@
 package atos.lms.attendance.service;
 
-import java.time.LocalDate;
-
 import atos.lms.exam.service.GeneralModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

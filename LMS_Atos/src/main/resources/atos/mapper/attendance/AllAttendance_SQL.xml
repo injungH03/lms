@@ -38,9 +38,6 @@
 	               <when test="searchCnd == 1">
 	                   AND c.CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')
 	               </when>
-	               <when test="searchCnd == 2">
-	                   AND d.NAME = #{searchWrd}
-	               </when>
 	           </choose>
 	       </if>
 	    </trim>
@@ -93,5 +90,58 @@
 	    FROM ATOS_EDUCATION
 	    WHERE STATUS != '1005'  <!-- 상태가 '삭제'인 경우 제외 -->
 	</select>
+	
+	
+	    <!-- 입실 시간 업데이트 -->
+    <update id="updateCheckIn" parameterType="map">
+        UPDATE ATOS_ATTENDANCE
+        SET IN_TIME = #{inTime},
+            ATTEND_DATE = #{attendDate}
+        WHERE ATTEND_CODE = #{attendCode}
+    </update>
+
+    <!-- 퇴실 시간 및 상태 업데이트 -->
+    <update id="updateCheckOut" parameterType="map">
+        UPDATE ATOS_ATTENDANCE
+        SET OUT_TIME = #{outTime},
+            STATUS = CASE WHEN IN_TIME IS NOT NULL THEN '3001' ELSE STATUS END
+        WHERE ATTEND_CODE = #{attendCode}
+    </update>
+    
+    
+    
+    
+    
+<!-- 입실 시간 업데이트 (전체) -->
+	<update id="updateCheckInAll" parameterType="map">
+	    UPDATE ATOS_ATTENDANCE
+	    SET IN_TIME = #{inTime},
+	        ATTEND_DATE = #{attendDate}
+	    WHERE ATTEND_CODE IN
+	    <foreach item="item" collection="attendCodes" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</update>
+	
+<!-- 퇴실 시간 업데이트 (전체) -->
+	<update id="updateCheckOutAll" parameterType="map">
+	    UPDATE ATOS_ATTENDANCE
+	    SET OUT_TIME = #{outTime},
+	        STATUS = CASE WHEN IN_TIME IS NOT NULL THEN '3001' ELSE STATUS END
+	    WHERE ATTEND_CODE IN
+	    <foreach item="item" collection="attendCodes" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</update>
+	
+<!-- 결석 처리 업데이트 -->
+	<update id="updateAllAbsence" parameterType="list">
+	    UPDATE ATOS_ATTENDANCE
+	    SET STATUS = '3002'
+	    WHERE ATTEND_CODE IN
+	    <foreach item="item" collection="list" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</update>
 
 </mapper>

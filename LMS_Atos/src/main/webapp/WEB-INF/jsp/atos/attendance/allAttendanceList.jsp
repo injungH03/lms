@@ -8,6 +8,9 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
+<%@ include file="/WEB-INF/jsp/atos/attendance/attendanceModal.jsp" %>
+
+
 <script>
 function fn_egov_select_linkPage(pageNo){
     document.allAttendancenForm.pageIndex.value = pageNo;
@@ -17,11 +20,9 @@ function fn_egov_select_linkPage(pageNo){
 </script>
 
 
-
 <div class="head-section">
 	<span>&nbsp;통합수강생출석관리</span>
 </div>
-
 
 
 <div class="table-section">
@@ -69,7 +70,6 @@ function fn_egov_select_linkPage(pageNo){
                             <option value="">전체</option>
                             <option value="0" <c:if test="${attendanceSearchVO.searchCnd == '0'}">selected</c:if>>회원명</option>
                             <option value="1" <c:if test="${attendanceSearchVO.searchCnd == '1'}">selected</c:if>>업체명</option>
-                            <option value="2" <c:if test="${attendanceSearchVO.searchCnd == '2'}">selected</c:if>>상태</option>
                         </select>
                         <input type="text" name="searchWrd" class="form-control search-input me-2" placeholder="검색어를 입력하세요" value='<c:out value="${attendanceSearchVO.searchWrd}"/>'/>
                         <button type="submit" class="btn-search">검색</button>
@@ -83,9 +83,9 @@ function fn_egov_select_linkPage(pageNo){
 <!-- 테이블 위에 버튼 섹션 -->
 <div class="d-flex justify-content-end mb-2 mt-5">
     <div>
-    	<button class="btn-create-course" id="attendAllCheck">전체출석</button>
-    	<button class="btn-create-course" id="attendAllCheck">전체퇴실</button>
-    	<button class="btn-create-course" id="attendAllCheck">결석처리</button>
+    	<button class="btn-create-course" id="attendAllCheckIn">전체입실</button>
+    	<button class="btn-create-course" id="attendAllCheckOut">전체퇴실</button>
+    	<button class="btn-create-course" id="attendAllAbsence">결석처리</button>
         <button class="btn-excel">EXCEL</button>
     </div>
 </div>
@@ -113,7 +113,7 @@ function fn_egov_select_linkPage(pageNo){
                 <th>출석일</th>
                 <th>입실시간</th>
                 <th>퇴실시간</th>
-                <th>관리</th>
+                <th>출결</th>
                 <th><input type="checkbox" id="checkAll"></th>
             </tr>
         </thead>
@@ -128,8 +128,14 @@ function fn_egov_select_linkPage(pageNo){
                     <td>${resultInfo.inTime}</td> <!-- 입실 시간 -->
                     <td>${resultInfo.outTime}</td> <!-- 퇴실 시간 -->
                     <td class="manage">
-                        <span class="status-box me-2 status-attend">출석</span>
-                        <span class="status-box status-absent">결석</span>
+<!--                     
+                        <span class="status-box me-2 status-attend">입실</span>
+                        <span class="status-box status-absent">퇴실</span>
+                         -->
+                        
+                        <span class="status-box me-2 status-attend" data-attend-code="${resultInfo.attendCode}">입실</span>
+                        <span class="status-box status-absent" data-attend-code="${resultInfo.attendCode}">퇴실</span>
+       
                     </td>
                     <td><input type="checkbox" name="rowCheck" value="${resultInfo.attendCode}"></td>
                 </tr>
@@ -154,167 +160,177 @@ function fn_egov_select_linkPage(pageNo){
 <script>
 
 $(document).ready(function() {
-    // 검색 버튼 클릭 시 폼 제출
-    $('.btn-search').on('click', function(e) {
-        console.log("검색 버튼 클릭됨");  // 버튼 클릭 로그 확인
-        $('#allAttendancenForm').submit(); // 폼 제출
+    // 입실 버튼 클릭 시
+    $('.status-attend').click(function() {
+        var attendCode = $(this).data('attend-code');
+        $.ajax({
+            url: "<c:url value='/attendance/checkIn' />",
+            type: "POST",
+            data: { attendCode: attendCode },
+            success: function(response) {
+                if (response === 'success') {
+                    alert("입실 처리가 완료되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                } else {
+                    alert("입실 처리에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("입실 처리 중 오류가 발생하였습니다.");
+            }
+        });
     });
-    
-    // 폼 제출 이벤트 핸들러에서 폼이 실제로 제출되는지 확인
-    $('#allAttendancenForm').on('submit', function(e) {
-        console.log('폼 제출됨');  // 폼 제출 로그 확인
-    });
-});
-/* 
 
-$(document).ready(function() {
+    // 퇴실 버튼 클릭 시
+    $('.status-absent').click(function() {
+        var attendCode = $(this).data('attend-code');
+        $.ajax({
+            url: "<c:url value='/attendance/checkOut' />",
+            type: "POST",
+            data: { attendCode: attendCode },
+            success: function(response) {
+                if (response === 'success') {
+                    alert("퇴실 처리가 완료되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                } else {
+                    alert("퇴실 처리에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("퇴실 처리 중 오류가 발생하였습니다.");
+            }
+        });
+    });
+
     // 전체 선택/해제 기능
     $('#checkAll').on('click', function() {
         $('tbody input[name="rowCheck"]').prop('checked', this.checked);
     });
+
+
     
-    //체크박스 출석 체크
-    $('#attendAllCheck').on('click', function() {
-    	if(confirm("선택한 수강생은 강의 시작, 종료 시간으로 입실, 퇴실 시간이 자동 지정 됩니다.")){
-    		
-    	}
-    });
+    /* 전체 버튼 */
     
-    //출석 버튼 클릭
-    $(document).on('click', '.attend', function() {
-        var $row = $(this).closest('tr');
-        var id = $row.data('id');
+    const attendanceModal = new bootstrap.Modal(document.getElementById('attendanceModal'));
 
-        $.ajax({
-            url: '/get-lecture-times', // 실제 엔드포인트로 변경
-            method: 'GET',
-            data: { id: id }, // 필요에 따라 파라미터 수정
-            dataType: 'json',
-            success: function(response) {
-                if(response.success) { // ResponseVO에 success 필드가 있다고 가정
-                    var lectureStartTime = response.data.lectureStartTime; // "09:00"
-                    var lectureEndTime = response.data.lectureEndTime; // "18:00"
-
-                    // 입실시간과 퇴실시간을 시간 입력 폼으로 변경하고 기본값 설정
-                    $row.find('.entry-time').html('<input type="time" class="input-entry-time" value="' + lectureStartTime + '">');
-                    $row.find('.exit-time').html('<input type="time" class="input-exit-time" value="' + lectureEndTime + '">');
-
-                    // 관리 버튼을 저장 버튼으로 변경
-                    $row.find('.manage').html('<button class="btn-save">저장</button>');
-                } else {
-                    alert('강의 시간 정보를 불러오는데 실패했습니다: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
-            }
+    // 전체입실 버튼 클릭 시
+    $('#attendAllCheckIn').click(function() {
+        console.log("전체입실 버튼 클릭됨");
+        actionType = 'checkIn';
+        selectedAttendanceCodes = [];
+        $('input[name="rowCheck"]:checked').each(function() {
+            selectedAttendanceCodes.push($(this).val());
         });
-    });
-    
- 	//저장 버튼 클릭 시
-    $(document).on('click', '.btn-save', function() {
-        var $row = $(this).closest('tr');
-        var id = $row.data('id');
-        var newStatus = '출석';
-        var newEntryTime = $row.find('.input-entry-time').val();
-        var newExitTime = $row.find('.input-exit-time').val();
 
-        // AJAX 요청을 통해 서버로 데이터 전송
-        $.ajax({
-            url: '/update-attendance', // 실제 엔드포인트로 변경
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                id: id,
-                status: newStatus,
-                entryTime: newEntryTime,
-                exitTime: newExitTime
-            }),
-            success: function(response) {
-                // 서버 응답에 따라 처리
-                if(response.success) { // ResponseVO에 success 필드가 있다고 가정
-                    // 시간을 다시 오전/오후 형식으로 변환
-                    var formattedEntryTime = formatTimeToKorean(newEntryTime);
-                    var formattedExitTime = formatTimeToKorean(newExitTime);
-
-                    // 테이블 업데이트
-                    $row.find('.status').text(newStatus);
-                    $row.find('.entry-time').text(formattedEntryTime);
-                    $row.find('.exit-time').text(formattedExitTime);
-                    $row.find('.manage').html(
-                        '<button class="btn-attend">출석</button> ' +
-                        '<button class="btn-absent">결석</button>'
-                    );
-                    alert('출석 정보가 저장되었습니다.');
-                } else {
-                    alert('저장에 실패했습니다: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
-            }
-        });
-    });
-
-    // 결석 버튼 클릭 시
-    $(document).on('click', '.absent', function() {
-        var $row = $(this).closest('tr');
-        var id = $row.data('id');
-        var newStatus = '결석';
-        var newEntryTime = '';
-        var newExitTime = '';
-
-        // AJAX 요청을 통해 서버로 데이터 전송
-        $.ajax({
-            url: '/update-attendance', // 실제 엔드포인트로 변경
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                id: id,
-                status: newStatus,
-                entryTime: newEntryTime,
-                exitTime: newExitTime
-            }),
-            success: function(response) {
-                if(response.success) { // ResponseVO에 success 필드가 있다고 가정
-                    // 테이블 업데이트
-                    $row.find('.status').text(newStatus);
-                    $row.find('.entry-time').text('-');
-                    $row.find('.exit-time').text('-');
-                    $row.find('.manage').html(
-                        '<button class="btn-attend">출석</button> ' +
-                        '<button class="btn-absent">결석</button>'
-                    );
-                    alert('결석 정보가 저장되었습니다.');
-                } else {
-                    alert('저장에 실패했습니다: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('서버와의 통신 중 오류가 발생했습니다.');
-            }
-        });
-    });
-
-    // 시간 형식 변환 함수 (24시간 형식 -> 오전/오후)
-    function formatTimeToKorean(timeStr) {
-        if (!timeStr) return '-';
-        var [hour, minute] = timeStr.split(':');
-        hour = parseInt(hour);
-        minute = parseInt(minute);
-        var period = '오전';
-
-        if (hour >= 12) {
-            period = '오후';
-            if (hour > 12) hour -= 12;
+        if (selectedAttendanceCodes.length === 0) {
+            alert("입실 처리할 수강생을 선택해주세요.");
+            return;
         }
-        if (hour === 0) hour = 12;
 
-        return period + ' ' + hour + '시 ' + ('0' + minute).slice(-2) + '분';
-    }
-	
+        $('#dateInputContainer').show();
+        attendanceModal.show();  // 모달창 띄우기
+    });
 
-});
+    // 전체퇴실 버튼 클릭 시
+    $('#attendAllCheckOut').click(function() {
+        console.log("전체퇴실 버튼 클릭됨");
+        actionType = 'checkOut';
+        selectedAttendanceCodes = [];
+        $('input[name="rowCheck"]:checked').each(function() {
+            selectedAttendanceCodes.push($(this).val());
+        });
 
- */
+        if (selectedAttendanceCodes.length === 0) {
+            alert("퇴실 처리할 수강생을 선택해주세요.");
+            return;
+        }
+
+        $('#dateInputContainer').hide();
+        attendanceModal.show();  // 모달창 띄우기
+    });
+
+    // 모달 확인 버튼 클릭 시
+    $('#confirmTimeBtn').click(function() {
+        console.log("모달 확인 버튼 클릭됨");
+        const date = $('#modalDateInput').val();
+        const time = $('#modalTimeInput').val();
+
+        if (!time) {
+            alert("시간을 입력해주세요.");
+            return;
+        }
+
+        let url = '';
+        let data = { attendCodes: selectedAttendanceCodes };
+
+        if (actionType === 'checkIn') {
+            if (!date) {
+                alert("날짜를 입력해주세요.");
+                return;
+            }
+            url = "<c:url value='/attendance/checkInAll' />";
+            data.inTime = time;
+            data.attendDate = date;
+        } else if (actionType === 'checkOut') {
+            url = "<c:url value='/attendance/checkOutAll' />";
+            data.outTime = time;
+        }
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response) {
+                if (response === 'success') {
+                    alert(actionType === 'checkIn' ? "전체 입실 처리가 완료되었습니다." : "전체 퇴실 처리가 완료되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                } else {
+                    alert(actionType === 'checkIn' ? "전체 입실 처리에 실패하였습니다." : "전체 퇴실 처리에 실패하였습니다.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error status:", status);
+                console.error("Error details:", error);
+                alert(actionType === 'checkIn' ? "전체 입실 처리 중 오류가 발생하였습니다." : "전체 퇴실 처리 중 오류가 발생하였습니다.");
+            }
+        });
+
+        attendanceModal.hide();  // 모달 닫기
+    });
+
+    // 결석 처리 버튼 클릭 시 (모달 없이 바로 처리)
+    $('#attendAllAbsence').click(function() {
+        console.log("결석 처리 버튼 클릭됨");
+        selectedAttendanceCodes = [];
+        $('input[name="rowCheck"]:checked').each(function() {
+            selectedAttendanceCodes.push($(this).val());
+        });
+
+        if (selectedAttendanceCodes.length === 0) {
+            alert("결석 처리할 수강생을 선택해주세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "<c:url value='/attendance/allAbsence' />",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ attendCodes: selectedAttendanceCodes }),
+            success: function(response) {
+                if (response === 'success') {
+                    alert("전체 결석 처리가 완료되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                } else {
+                    alert("전체 결석 처리에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("전체 결석 처리 중 오류가 발생하였습니다.");
+            }
+        });
+    });
+
+}); 
+
 </script>
