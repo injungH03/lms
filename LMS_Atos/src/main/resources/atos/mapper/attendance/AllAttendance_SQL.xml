@@ -9,7 +9,7 @@
 	        a.STATUS != '1005'  <!-- 기본 조건: 삭제된 항목 제외 -->
 	
 	        <!-- 교육 코드(Education)에 해당하는 강의 코드 필터링 -->
-	        <if test="lectureCode != null and lectureCode != ''">
+	        <if test="lectureCode > 0">
 	            AND l.EDUCATION = #{lectureCode}
 	        </if>
 	
@@ -24,21 +24,25 @@
 	            AND a.ATTEND_DATE <= #{srcEndDate}
 	            ]]>
 	        </if>
-	
-	        <!-- 검색 조건 (회원명, 업체명, 상태) 처리 -->
-	        <if test="searchCnd != null and searchCnd != ''">
-	            <choose>
-	                <when test="searchCnd == 0">
-	                    AND s.NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 학생명 검색 -->
-	                </when>
-	                <when test="searchCnd == 1">
-	                    AND c.CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 업체명 검색 -->
-	                </when>
-	                <when test="searchCnd == 2">
-	                    AND a.STATUS = #{searchWrd}  <!-- 상태 검색 -->
-	                </when>
-	            </choose>
-	        </if>
+	        
+	        <if test="searchCnd == null or searchCnd == ''">
+			    AND (s.ID LIKE CONCAT('%', #{searchWrd}, '%') OR s.NAME LIKE CONCAT('%', #{searchWrd}, '%'))
+			</if>
+	        
+			<!-- 검색 조건 (회원명, 업체명, 상태) 처리 -->
+	       <if test="searchCnd != null and searchCnd != ''">
+	           <choose>
+	               <when test="searchCnd == 0">
+	                   AND (s.ID LIKE CONCAT('%', #{searchWrd}, '%') OR s.NAME LIKE CONCAT('%', #{searchWrd}, '%'))
+	               </when>
+	               <when test="searchCnd == 1">
+	                   AND c.CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')
+	               </when>
+	               <when test="searchCnd == 2">
+	                   AND d.NAME = #{searchWrd}
+	               </when>
+	           </choose>
+	       </if>
 	    </trim>
 	</sql>
 
@@ -58,21 +62,20 @@
         d.NAME AS statusName   <!-- 상태명 -->
     FROM
         ATOS_ATTENDANCE a
-    JOIN 
+    LEFT JOIN 
         ATOS_STUDENT s ON a.STUDENT = s.ID
-    JOIN 
+    LEFT JOIN 
         ATOS_COMPANY c ON s.BIZ_REG_NO = c.BIZ_REG_NO
-    JOIN 
-        ATOS_STATUS d ON a.STATUS = d.CODE   <!-- 상태 테이블 조인 -->
-    JOIN 
-        ATOS_LECTURE l ON a.LECTURE_CODE = l.LECTURE_CODE  <!-- 강의 테이블 조인 -->
+    LEFT JOIN
+        ATOS_STATUS d ON a.STATUS = d.CODE   <!-- 상태 테이블과 조인 -->
+    LEFT JOIN
+        ATOS_LECTURE l ON a.LECTURE_CODE = l.LECTURE_CODE  <!-- 강의 테이블과 조인 -->
     <include refid="whereClause"/>  <!-- 동적 WHERE 절 추가 -->
     ORDER BY 
         a.ATTEND_CODE DESC
     LIMIT 
-        #{recordCountPerPage} OFFSET #{firstIndex}
+        #{recordCountPerPage} OFFSET #{firstIndex}  <!-- 페이징 처리: 페이지당 기록 수와 시작 인덱스 -->
 </select>
-
 
 <!-- 출석 목록 총 개수 조회 -->
 	<select id="selectAttendanceListCnt" parameterType="atos.lms.attendance.service.AllAttendanceVO" resultType="int">

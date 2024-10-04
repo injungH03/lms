@@ -22,6 +22,8 @@ function fn_egov_select_linkPage(pageNo){
 	<span>&nbsp;통합수강생출석관리</span>
 </div>
 
+
+
 <div class="table-section">
 	<form id="allAttendancenForm" name="allAttendancenForm" action="<c:url value='/attendance/allAttendanceList.do'/>" method="get">
 		<input type="hidden" name="pageIndex" value="${attendanceSearchVO.pageIndex}">
@@ -33,7 +35,7 @@ function fn_egov_select_linkPage(pageNo){
                 <td>
                     <div class="d-flex">
 						<select name="lectureCode" class="form-select search-select me-2">
-						    <option value="">전체</option>
+						    <option value="0">전체</option>
                         <c:forEach var="lecture" items="${educationList}"> <!-- 변경: items="${educationList}"로 변경 -->
 	                        <option value="${lecture.eduCode}" 
 							    <c:if test="${lecture.eduCode == attendanceSearchVO.lectureCode}">selected="selected"</c:if>>
@@ -45,7 +47,7 @@ function fn_egov_select_linkPage(pageNo){
                 </td>
             </tr>
 
-            <!-- 출석일 선택 -->
+<!-- 출석일 선택 -->
             <tr>
                 <th>출석일</th>
                 <td colspan="2">
@@ -58,11 +60,11 @@ function fn_egov_select_linkPage(pageNo){
                 </td>
             </tr>
 
-            <!-- 검색 조건 -->
+<!-- 검색 조건 -->
             <tr>
                 <th>검색</th>
                 <td>
-                    <div class="d-flex">
+                    <div class="d-flex">                  
                         <select name="searchCnd" class="form-select search-select me-2">
                             <option value="">전체</option>
                             <option value="0" <c:if test="${attendanceSearchVO.searchCnd == '0'}">selected</c:if>>회원명</option>
@@ -146,20 +148,24 @@ function fn_egov_select_linkPage(pageNo){
     </ul>
 </div>
 </div>
+
+
+
 <script>
 
-/* 
 $(document).ready(function() {
-    // 검색 버튼 클릭 시
+    // 검색 버튼 클릭 시 폼 제출
     $('.btn-search').on('click', function(e) {
-        // form을 강제로 제출
-        $('#allAttendancenForm').submit();
+        console.log("검색 버튼 클릭됨");  // 버튼 클릭 로그 확인
+        $('#allAttendancenForm').submit(); // 폼 제출
     });
     
+    // 폼 제출 이벤트 핸들러에서 폼이 실제로 제출되는지 확인
     $('#allAttendancenForm').on('submit', function(e) {
-        console.log('Form is being submitted...');  // 폼 제출 여부 확인
+        console.log('폼 제출됨');  // 폼 제출 로그 확인
     });
 });
+/* 
 
 $(document).ready(function() {
     // 전체 선택/해제 기능

@@ -29,7 +29,6 @@ public class AllAttendanceController {
     public String allAttendanceList(@ModelAttribute("attendanceSearchVO") AllAttendanceVO attendanceVO, ModelMap model) throws Exception {
     	
     	LOGGER.info("allAttendanceList 접근");
-    	System.out.println("allAttendanceList 접근");
         
         // 페이지 네이션 설정
         PaginationInfo paginationInfo = new PaginationInfo();
@@ -44,31 +43,21 @@ public class AllAttendanceController {
         
         // 출석 목록 조회
         Map<String, Object> map = allAttendanceService.selectAttendanceList(attendanceVO);
+        // 교육 목록 조회 
+        List<AllAttendanceVO> educationList = allAttendanceService.selectEducationList();
+       
         
         System.out.println("allAttendanceList resultList: " + map.get("resultList"));
         System.out.println("allAttendanceList resultCnt: " + map.get("resultCnt"));
-
-
-        // 교육 목록 조회 (이미 가지고 있는 AllAttendanceVO의 eduCode와 title 사용)
-        List<AllAttendanceVO> educationList = allAttendanceService.selectEducationList();
-        model.addAttribute("educationList", educationList);
+   
         
         // 총 레코드 수 설정
         int totalCount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
         paginationInfo.setTotalRecordCount(totalCount);
         
-		/*
-		 * System.out.println("검색 조건: " + attendanceVO.getSearchCnd());
-		 * System.out.println("검색어: " + attendanceVO.getSearchWrd());
-		 * 
-		 * 
-		 * // 로그: PaginationInfo 객체의 설정 값 출력 System.out.println("첫 레코드 인덱스: " +
-		 * paginationInfo.getFirstRecordIndex()); System.out.println("마지막 레코드 인덱스: " +
-		 * paginationInfo.getLastRecordIndex()); System.out.println("총 레코드 수: " +
-		 * paginationInfo.getTotalRecordCount());
-		 * 
-		 */
         LOGGER.info("선택된 강의 코드: " + attendanceVO.getLectureCode());
+        LOGGER.info("Start Date: " + attendanceVO.getSrcStartDate());
+        LOGGER.info("End Date: " + attendanceVO.getSrcEndDate());
         LOGGER.info("검색 조건: " + attendanceVO.getSearchCnd());
         LOGGER.info("검색어: " + attendanceVO.getSearchWrd());
 
@@ -81,6 +70,7 @@ public class AllAttendanceController {
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("resultList", map.get("resultList"));
+        model.addAttribute("educationList", educationList);
         
         return "attendance/allAttendanceList";  // JSP 파일 경로에 맞게 수정
     }
