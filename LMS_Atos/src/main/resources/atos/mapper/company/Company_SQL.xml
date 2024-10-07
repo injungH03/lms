@@ -14,14 +14,16 @@
 			<if test="corpBiz != null and corpBiz != ''">
 				AND a.BIZ_REG_NO = #{corpBiz}
 			</if>
-			<if test="searchCnd == 0">
-				AND a.CORP_NAME LIKE CONCAT ('%', #{searchWrd},'%')
-			</if>
-			<if test="searchCnd == 1">
-				AND a.TRAIN_MANAGER LIKE CONCAT ('%', #{searchWrd},'%')
-			</if>
-			<if test="searchCnd == 2">
-				AND a.BIZ_REG_NO LIKE CONCAT ('%', #{searchWrd},'%')
+			<if test="searchCnd != null and searchCnd != ''">
+				<if test="searchCnd == 0">
+					AND a.CORP_NAME LIKE CONCAT ('%', #{searchWrd},'%')
+				</if>
+				<if test="searchCnd == 1">
+					AND a.TRAIN_MANAGER LIKE CONCAT ('%', #{searchWrd},'%')
+				</if>
+				<if test="searchCnd == 2">
+					AND a.BIZ_REG_NO LIKE CONCAT ('%', #{searchWrd},'%')
+				</if>
 			</if>
 		</trim>
 	</sql>

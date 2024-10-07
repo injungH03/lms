@@ -94,12 +94,12 @@
 	font-weight: bold;
 }
 
-.status-신청 {
-	background-color: #f39c12;
+.status-attend {
+    background-color: #f39c12; /* 출석에 대한 배경색 */
 }
 
-.status-종료 {
-	background-color: #2d3436;
+.status-absent {
+    background-color: #2d3436; /* 결석에 대한 배경색 */
 }
 .status-추가 {
 	background-color:gray;

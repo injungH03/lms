@@ -2,7 +2,6 @@ package atos.lms.attendance.service;
 
 import atos.lms.exam.service.GeneralModel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -50,6 +49,12 @@ public class AllAttendanceMasterVO implements GeneralModel {
     
     /** 첨부가능파일사이즈 */
     private String atchPosblFileSize = "";
+    
+    /** 검색 시작일 */
+    private String srcStartDate;  
+    
+    /** 검색 종료일 */
+    private String srcEndDate;    
 	
 
 
