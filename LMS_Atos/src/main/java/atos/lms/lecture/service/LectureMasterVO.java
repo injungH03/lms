@@ -51,6 +51,15 @@ public class LectureMasterVO implements GeneralModel {
     
     /** 첨부가능파일사이즈 */
     private String atchPosblFileSize = "";
+    
+    /** 정렬 필드 */
+    private String sortField;
+    
+    /** 정렬 순서 */
+    private String sortOrder;
+    
+    /** CURD 타입 */
+    private String type;
 	
     /** 카테고리 검색 메인 코드*/
     private String srcMainCode;
@@ -64,5 +73,6 @@ public class LectureMasterVO implements GeneralModel {
     /** 과정날짜*/
     private String srcLearnDate;
 
+    
 
 }

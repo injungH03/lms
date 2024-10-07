@@ -183,10 +183,9 @@ $(document).ready(function() {
     
     //폼 데이터 전송 (회원등록)
     $('#submitBtn').click(function() {
-        // myFetch 함수 호출
         myFetch({
-            url: '/member/memberInsert', // 서버의 엔드포인트
-            data: 'registForm', // 폼 ID를 전달
+            url: '/member/memberInsert', 
+            data: 'registForm', 
             success: function(response) {
                 alert(response.message);
                 window.location.href = "<c:url value='/member/memberList.do'/>";

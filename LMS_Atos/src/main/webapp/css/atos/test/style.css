@@ -5,6 +5,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: Arial, sans-serif;
+	font-size:13px;
 	
 }
 
@@ -31,16 +32,9 @@ body {
 	flex-direction: column;
 	border-right: 1px solid #ddd;
     min-height: calc(100vh - 50px);
-/* 	padding: 10px 5px 0 10px; */
 }
 
-/* .dashboard-content {
-	grid-area: content;
-	min-height: calc(100vh - 50px);
-	background-color: #ecf0f1;
-	padding: 10px 10px 0 5px;
-} */
-
+ 
 .pagination {
 	margin-top: 20px;
 	text-align: center;
@@ -75,7 +69,7 @@ body {
 .current {
 	background-color:#888c88;
 	color: #ffffff;
-}
+} 
 
 /* 파일 리스트 스타일 */
 .file-list {
@@ -125,3 +119,5 @@ body {
 .file_add input[type="button"]:hover {
     background-color: #ff3034;
 }
+
+

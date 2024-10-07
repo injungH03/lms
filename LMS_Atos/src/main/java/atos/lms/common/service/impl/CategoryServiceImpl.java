@@ -1,5 +1,6 @@
 package atos.lms.common.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,6 +34,16 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<CategoryVO> selectCodeMain(CategoryVO categoryVO) {
+		
+		// 집합과정운영
+		List<String> typelist = new ArrayList<String>();
+		typelist.add("A001"); // 관리감독자 정기교육
+		typelist.add("A002"); // 근로자 정기교육
+		typelist.add("A003"); // 위험성 평가교육
+		
+		categoryVO = CategoryVO.builder().mtype(typelist).build();
+		
+		
 		return categorydao.selectCategoryCodeMain(categoryVO);
 	}
 

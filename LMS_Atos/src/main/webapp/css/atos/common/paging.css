@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.pagination {
+	margin-top: 20px;
+	text-align: center;
+	gap: 6px;
+}
+
+.pagination ul {
+	padding: 0;
+	list-style-type: none;
+	display: inline-flex;
+	gap: 5px;
+}
+
+.pagination ul li {
+	display: inline;
+}
+
+.pagination ul li a {
+	display: block;
+	padding: 8px 12px;
+	border: 1px solid #bdc3c7;
+	border-radius: 4px;
+	text-decoration: none;
+	color: #34495e;
+	transition: background-color 0.3s ease;
+}
+
+.pagination ul li a:hover {
+	background-color:#888c88;
+	color: #ffffff;
+}
+.current {
+	background-color:#888c88;
+	color: #ffffff;
+}

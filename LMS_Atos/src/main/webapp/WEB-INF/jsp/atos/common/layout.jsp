@@ -9,6 +9,7 @@
     <title><tiles:getAsString name="title" /></title>
     <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
     <script type="text/javascript" src="<c:url value='/js/atos/common/fetchFunction.js'/>" ></script>
+    <script type="text/javascript" src="<c:url value='/js/atos/common/CommonUtil.js'/>" ></script>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/test/style.css' />">
     <!-- 부트스트랩  -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
