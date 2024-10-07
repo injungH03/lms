@@ -2,17 +2,22 @@ package atos.lms.attendance.web;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -84,76 +89,124 @@ public class AllAttendanceController {
  // 입실 처리
     @RequestMapping("checkIn")
     @ResponseBody
-    public String checkIn(@RequestParam("attendCode") int attendCode) {
-    	System.out.println("checkIn");
-        LocalTime inTime = LocalTime.now();
-        LocalDate attendDate = LocalDate.now();
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("attendCode", attendCode);
-        paramMap.put("inTime", inTime);
-        paramMap.put("attendDate", attendDate);
-        allAttendanceService.updateCheckIn(paramMap);
-        return "success";
+    public ResponseEntity<String> checkIn(@RequestParam("attendCode") int attendCode) throws Exception {
+        System.out.println("checkIn");
+        
+        try {
+            LocalTime inTime = LocalTime.now();
+            LocalDate attendDate = LocalDate.now();
+
+            // 시간 형식을 HH:mm으로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedInTime = inTime.format(formatter); // 시간을 HH:mm 형식으로 변환
+            
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("attendCode", attendCode);
+            paramMap.put("inTime", formattedInTime); // 변환된 시간으로 저장
+            paramMap.put("attendDate", attendDate);
+            
+            // 입실 처리 서비스 호출
+            allAttendanceService.updateCheckIn(paramMap);
+            
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("fail");
+        }
     }
 
     // 퇴실 처리
     @RequestMapping("checkOut")
     @ResponseBody
-    public String checkOut(@RequestParam("attendCode") int attendCode) {
-    	System.out.println("checkOut");
-        LocalTime outTime = LocalTime.now();
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("attendCode", attendCode);
-        paramMap.put("outTime", outTime);
-        allAttendanceService.updateCheckOut(paramMap);
-        return "success";
+    public ResponseEntity<String> checkOut(@RequestBody Map<String, Object> requestData) throws Exception {
+        try {
+            List<Integer> attendCodes = (List<Integer>) requestData.get("attendCodes");
+            LocalTime outTime = LocalTime.now();
+
+            // 시간 형식을 HH:mm으로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedOutTime = outTime.format(formatter); // 시간을 HH:mm 형식으로 변환
+
+            // 입실 여부 확인
+            for (Integer attendCode : attendCodes) {
+                AllAttendanceVO attendanceVO = allAttendanceService.selectAttendanceByCode(attendCode);
+                if (attendanceVO.getInTime() == null) {
+                    // 입실 처리가 안 되었을 경우 400 에러 반환
+                    return ResponseEntity.status(400).body("입실 처리가 완료되지 않았습니다.");
+                }
+            }
+
+            // 입실 처리가 완료된 경우에만 퇴실 처리
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("attendCodes", attendCodes);
+            paramMap.put("outTime", formattedOutTime); // 변환된 시간으로 저장
+            allAttendanceService.updateCheckOutAll(paramMap);
+
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("fail");
+        }
     }
     
     
+    // 전체 입실 처리
     @RequestMapping("checkInAll")
     @ResponseBody
-    public String checkInAll(@RequestParam List<Integer> attendCodes, @RequestParam String inTime, @RequestParam String attendDate) {
+    public ResponseEntity<String> checkInAll(@RequestBody Map<String, Object> requestData) throws Exception {
     	System.out.println("checkInAll");
         try {
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("attendCodes", attendCodes);
-            paramMap.put("inTime", inTime);
-            paramMap.put("attendDate", attendDate);
-            allAttendanceService.updateCheckInAll(paramMap);
-            return "success";
+            allAttendanceService.updateCheckInAll(requestData);
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
+            return ResponseEntity.status(500).body("fail");
         }
     }
 
+    // 전체 퇴실 처리
     @RequestMapping("checkOutAll")
     @ResponseBody
-    public String checkOutAll(@RequestParam List<Integer> attendCodes, @RequestParam String outTime) {
+    public ResponseEntity<String> checkOutAll(@RequestBody Map<String, Object> requestData) throws Exception {
     	System.out.println("checkOutAll");
         try {
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("attendCodes", attendCodes);
-            paramMap.put("outTime", outTime);
-            allAttendanceService.updateCheckOutAll(paramMap);
-            return "success";
+            allAttendanceService.updateCheckOutAll(requestData);
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
+            return ResponseEntity.status(500).body("fail");
         }
     }
 
+ // 결석 처리
     @RequestMapping("allAbsence")
     @ResponseBody
-    public String markAbsent(@RequestParam List<Integer> attendCodes) {
-    	System.out.println("allAbsence");
+    public ResponseEntity<String> markAbsent(@RequestBody Map<String, Object> requestData) throws Exception {
+        System.out.println("allAbsence");
         try {
+            List<Integer> attendCodes = (List<Integer>) requestData.get("attendCodes");
+            
+            // 결석 처리 호출 (상태 업데이트 및 입퇴실 시간 초기화)
             allAttendanceService.updateAllAbsence(attendCodes);
-            return "success";
+
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             e.printStackTrace();
-            return "fail";
+            return ResponseEntity.status(500).body("fail");
         }
     }
+    
+    
+    @RequestMapping("attendanceExcelDownload")
+    public void attendanceExcelDownload(HttpServletResponse response, AllAttendanceVO attendanceVO) throws Exception {
+        allAttendanceService.attendanceListExcelDown(response, attendanceVO);  
+    }
+    
+    
+    
+    
+    
+    
+    
 
 }

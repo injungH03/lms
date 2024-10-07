@@ -17,6 +17,8 @@ public class EducationExcelVO implements GeneralModel {
     private String trainingTime; // 교육시간
     private LocalDate regDate; // 등록일
     private String register; // 등록자
+    
+    
 	public String getTitle() {
 		return title;
 	}

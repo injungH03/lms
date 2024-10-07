@@ -19,7 +19,6 @@ public interface EducationService {
 
     List<EducationVO> selectAllCategoryList();
    
-    
     void educationListExcelDown(HttpServletResponse response, EducationVO educationVO) throws Exception;
     
     EducationVO selectEducationDetail(int eduCode);
