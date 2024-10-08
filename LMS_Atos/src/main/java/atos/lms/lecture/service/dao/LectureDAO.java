@@ -22,6 +22,12 @@ public interface LectureDAO  {
 	
 	List<LectureInsDTO> selectInstructorList(LectureInsDTO lectureInsDTO);
 	
+	LectureVO selectLectureKey(LectureVO lectureVO);
+	
+	void insertLecture(LectureVO lectureVO);
+	
+	void updateLecture(LectureVO lectureVO);
+	
 	/** 강의에 강사 업데이트*/
 	void updateLectureInstructor(LectureInsDTO lectureInsDTO);
 	

@@ -21,18 +21,28 @@ public class LectureServiceImpl implements LectureService {
 	@Autowired
     private SortFieldValidator sortFieldValidator;
 	
+	
+	
 	@Override
 	public Map<String, Object> selectLecture(LectureVO lectureVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+//		System.out.println("넘어온 정렬 필드 = " + lectureVO.getSortField());
+//		System.out.println("넘어온 정렬 조건 = " + lectureVO.getSortOrder());
 		
 		// SQL인젝션방지
 		String validateField = sortFieldValidator.validateSortField("lecture", lectureVO.getSortField());
 		String validateOrder = sortFieldValidator.validateSortOrder(lectureVO.getSortOrder());
 		
+//		System.out.println("정렬 필드 = " + validateField);
+//		System.out.println("정렬 조건 = " + validateOrder);
+		
 		// 검증된 값 입력
 		lectureVO.setSortField(validateField);
 		lectureVO.setSortOrder(validateOrder);
 		
+		//교육방식
+		lectureVO.setLectureMethod("집체");
 		
 		map.put("resultList", lectureDao.selectLectureList(lectureVO));
 		map.put("resultCnt", lectureDao.selectLectureListCnt(lectureVO));
@@ -85,6 +95,26 @@ public class LectureServiceImpl implements LectureService {
 		}
 		
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> saveLecture(LectureVO lectureVO) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		if ("C".equals(lectureVO.getType())) {
+			lectureDao.insertLecture(lectureVO);
+			map.put("message", "강의 개설 완료");
+		} else if ("U".equals(lectureVO.getType())) {
+			lectureDao.updateLecture(lectureVO);
+			map.put("message", "강의 수정 완료");
+		}
+		
+		return map;
+	}
+
+	@Override
+	public LectureVO selectLectureKey(LectureVO lectureVO) {
+		return lectureDao.selectLectureKey(lectureVO);
 	}
 
 }

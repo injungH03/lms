@@ -5,11 +5,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
-<%pageContext.setAttribute("crlf", "\r\n"); %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/lecture/lecture.css' />">
 
 <div class="head-section">
-	<span>&nbsp;2024년 관리감독자 (제조업)</span>
+	<span>&nbsp;<c:out value="${result.title}"/> (<c:out value="${result.subName}"/>) </span>
 </div>
 <div class="table-section">
 	
@@ -17,16 +16,15 @@
 	<table class="search-table detail-table">
 		<tr>
 			<th>교육명</th>
-			<td>2024년 관리감독자</td>
+			<td><c:out value="${result.title}"/></td>
 			<th>교육형태</th>
-			<td>관리감독자/제조업</td>
+			<td><c:out value="${result.mainName}"/>/<c:out value="${result.subName}"/></td>
 		</tr>
 		<tr>
 			<th>과정목표</th>
 			<td colspan="3">
 				<div class="text-container">
-					<p>과정에 대한 목표과정에 대한 목표과정에 대한 목표과정에 대한 목표과정에 대한 목표과정에 대한 목표과정에 대한
-						목표과정에 대한 목표과정에 대한 목표</p>
+					<p><c:out value="${result.objective}"/></p>
 				</div>
 			</td>
 		</tr>
@@ -34,44 +32,44 @@
 			<th>과정소개</th>
 			<td colspan="3">
 				<div class="text-container">
-					<p>과정에대한 소개과정에대한 소개과정에대한 소개과정에대한 소개과정에대한 소개과정에대한 소개과정에대한
-						소개과정에대한 소개과정에대한 소개</p>
+					<p><c:out value="${result.description}"/></p>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<th>교육장소</th>
-			<td colspan="3"></td>
+			<td colspan="3"><c:out value="${result.location}"/> <c:out value="${result.locationDetail}"/></td>
+		</tr>
+		<tr>
+			<th>배정강사</th>
+			<td><c:out value="${result.instructorName}"/></td>
+			<th>인원수</th>
+			<td><c:out value="${result.enrolled}"/> / <c:out value="${result.capacity}"/></td>
 		</tr>
 		<tr>
 			<th>접수시작일</th>
-			<td>2024-02-01</td>
+			<td><c:out value="${result.recStartDate}"/></td>
 			<th>접수종료일</th>
-			<td>2024-05-05</td>
+			<td><c:out value="${result.recEndDate}"/></td>
 		</tr>
 		<tr>
 			<th>과정날짜</th>
-			<td>2024-02-21</td>
-			<th>과정시간</th>
-			<td>8시간</td>
+			<td><c:out value="${result.learnDate}"/></td>
+			<th>과정 총시간</th>
+			<td><c:out value="${result.trainingTime}"/></td>
 		</tr>		
-		<tr>
-			<th>현재인원수</th>
-			<td>30명</td>
-			<th>모집인원수</th>
-			<td>50명</td>
-		</tr>
+
 		<tr>
 			<th>시작시간</th>
-			<td>오전 9시</td>
+			<td><c:out value="${result.startTime}"/></td>
 			<th>종료시간</th>
-			<td>오후 6시</td>
+			<td><c:out value="${result.endTime}"/></td>
 		</tr>
 		<tr>
 			<th>담당자</th>
-			<td>홍길동</td>
+			<td><c:out value="${result.manager}"/></td>
 			<th>연락처</th>
-			<td>010-2222-2222</td>
+			<td><c:out value="${result.managerContact}"/></td>
 		</tr>
 		<tr>
 			<th>첨부파일</th>
@@ -90,7 +88,7 @@
             <button type="button" class="btn btn-danger" style="float:right">삭제</button>
         </div>
 </div>
-
+<input type="hidden" name="pageIndex" value="${searchVO.pageIndex}">
 
 <!-- jQuery Script -->
 <script>

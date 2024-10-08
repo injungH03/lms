@@ -97,6 +97,7 @@ function fn_egov_select_linkPage(pageNo){
                 <th data-sort="L.ENROLLED">인원수</th>
                 <th data-sort="L.REC_START_DATE, L.REC_END_DATE">접수 신청 기간</th>
                 <th data-sort="L.LEARN_DATE">과정날짜</th>
+                <th>상태</th>
                 <th>관리</th>
             </tr>
         </thead>
@@ -120,6 +121,7 @@ function fn_egov_select_linkPage(pageNo){
     				<c:out value="${fn:substring(resultInfo.recEndDate, 0, 10)}" />
     			</td>
                 <td><c:out value="${resultInfo.learnDate }" /></td>
+                <td><c:out value="${resultInfo.learnStatus }" /></td>
                 <td>
                     <div class="btn-group">
                     	<button class="instructorButton" data-key="${resultInfo.lectureCode }" data-type="U">강사 수정</button>

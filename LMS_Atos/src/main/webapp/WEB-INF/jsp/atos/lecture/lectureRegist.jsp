@@ -42,13 +42,13 @@
                 <th>접수 시작일</th>
                 <td>
                     <div class="d-flex">
-                        <input type="date" name="regStartDate" class="form-control me-2" />
+                        <input type="date" name="recStartDate" class="form-control me-2" />
                     </div>
                 </td>
                 <th>접수 종료일</th>
                 <td>
                     <div class="d-flex">
-                        <input type="date" name="regEndDate" class="form-control me-2" />
+                        <input type="date" name="recEndDate" class="form-control me-2" />
                     </div>
                 </td>
  
@@ -93,8 +93,8 @@
             <button type="button" class="btn btn-secondary" id="btnList">목록</button>
         </div>
         
-        <input type="hidden" id="atchPosblFileNumber" name="atchPosblFileNumber" value="<c:out value='${searchVO.atchPosblFileNumber}'/>" />
-		<input type="hidden" name="atchPosblFileSize" value="<c:out value='${searchVO.atchPosblFileSize}'/>" />
+        <input type="hidden" id="atchPosblFileNumber" name="atchPosblFileNumber" value="${searchVO.atchPosblFileNumber}" />
+        <input type="hidden"  name="type" value="C" />
     </form>
 </div>
 
@@ -133,11 +133,9 @@ $(document).ready(function() {
             },
             startTime: {
                 required: true,  // 시작 시간 필수
-                time: true       // 시간 형식 확인 (HTML5로 처리)
             },
             endTime: {
                 required: true,  // 종료 시간 필수
-                time: true       // 시간 형식 확인 (HTML5로 처리)
             },
             manager: {
                 required: true,  // 담당자 필수 입력

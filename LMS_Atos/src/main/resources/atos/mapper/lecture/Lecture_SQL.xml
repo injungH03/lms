@@ -33,6 +33,10 @@
 					AND E.TITLE LIKE CONCAT ('%', #{searchWrd},'%') 		
 				</if>
 			</if>
+			<if test="lectureMethod != null and lectureMethod !=''">
+		    	AND LECTURE_METHOD = #{lectureMethod}
+		    </if>
+			
 		</trim>
 	</sql>
 	
@@ -73,6 +77,7 @@
 				FROM ATOS_INSTRUCTOR_ASSIGNMENTS AIA
 				WHERE AIA.INSTRUCTOR = I.ID 
 			)
+			AND STATUS = '4001'
 		</where>
 	</sql>
 	
@@ -94,7 +99,11 @@
 		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME,         
 		    CD.USE_YN, CM.MAIN_CODE, CM.MAIN_NAME,            
 		    CS.SUB_NAME, CS.SUB_CODE,
-		    I.NAME AS instructorName              
+		    I.NAME AS instructorName,
+		CASE
+            WHEN L.LEARN_DATE <![CDATA[>=]]> CURDATE() THEN '진행중'
+            ELSE '종료'
+        END AS learnStatus
 		FROM ATOS_LECTURE L
 		INNER JOIN ATOS_EDUCATION E 
 			ON L.EDUCATION = E.EDU_CODE
@@ -175,6 +184,66 @@
 		<include refid="whereIns" />
 		<include refid="orderBy" />		
 	</select>
+	
+	<select id="selectLectureKey" resultType="atos.lms.lecture.service.LectureVO">
+		SELECT
+		    L.LECTURE_CODE, L.EDUCATION, L.INSTRUCTOR, L.LOCATION, L.LOCATION_DETAIL, L.ATCH_FILE_ID,          
+		    L.REC_START_DATE, L.REC_END_DATE, L.STATUS, L.LEARN_DATE, L.START_TIME,            
+		    L.END_TIME, L.MANAGER, L.MANAGER_CONTACT, L.LECTURE_METHOD, L.CAPACITY,              
+		    L.ENROLLED, L.REG_DATE, L.REGISTER,              
+		    E.TITLE, E.CATEGORY, E.DESCRIPTION, E.OBJECTIVE,             
+		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME,         
+		    CD.USE_YN, CM.MAIN_CODE, CM.MAIN_NAME,            
+		    CS.SUB_NAME, CS.SUB_CODE,
+		    I.NAME AS instructorName              
+		FROM ATOS_LECTURE L
+		INNER JOIN ATOS_EDUCATION E 
+			ON L.EDUCATION = E.EDU_CODE
+		LEFT JOIN ATOS_INSTRUCTOR I
+	   		ON L.INSTRUCTOR = I.ID 
+		INNER JOIN ATOS_CATEGORY_DETAIL CD 
+			ON E.CATEGORY = CD.CODE
+		INNER JOIN ATOS_CATEGORY_MAIN CM 
+			ON CD.MAIN_CODE = CM.MAIN_CODE
+		INNER JOIN ATOS_CATEGORY_SUB CS 
+			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
+		WHERE L.LECTURE_CODE = #{lectureCode}
+	</select>
+	
+	<insert id="insertLecture">
+		INSERT INTO ATOS_LECTURE
+			(
+				EDUCATION, LOCATION, LOCATION_DETAIL, 
+				ATCH_FILE_ID, REC_START_DATE, REC_END_DATE, 
+				LEARN_DATE, START_TIME, END_TIME,
+				MANAGER, MANAGER_CONTACT, CAPACITY
+			)
+		VALUES
+			(
+				#{education}, #{location}, #{locationDetail},
+				#{atchFileId}, #{recStartDate}, #{recEndDate},
+				#{learnDate}, #{startTime}, #{endTime},
+				#{manager}, #{managerContact}, #{capacity}
+			)
+	</insert>
+	
+	<update id="updateLecture">
+		UPDATE ATOS_LECTURE
+		SET
+			EDUCATION = #{education},
+			LOCATION = #{location},
+			LOCATION_DETAIL = #{locationDetail},
+			REC_START_DATE = #{recStartDate},
+			REC_END_DATE = #{recEndDate},
+			LEARN_DATE = #{learnDate},
+			START_TIME = #{startTime},
+			END_TIME = #{endTime},
+			MANAGER = #{manager},
+			MANAGER_CONTACT = #{managerContact},
+			CAPACITY = #{capacity}
+		WHERE = LECTURE_CODE = #{lectureCode}
+	</update>
+	
 	
 	<update id="updateLectureInstructor">
 		UPDATE ATOS_LECTURE

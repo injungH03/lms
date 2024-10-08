@@ -39,6 +39,8 @@ public class LectureVO extends LectureMasterVO implements GeneralModel {
     private String regDate;          // 등록일
     private String register;         // 등록자
     
+    private String learnStatus;      // 강의상태
+    
     /**### atos_instructor ###*/
     private String instructorName;   // 강사 이름
     
