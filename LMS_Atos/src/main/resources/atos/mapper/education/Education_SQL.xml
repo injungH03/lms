@@ -10,16 +10,30 @@
 	            AND a.STATUS = #{statusCode}
 	        </if>
 	        <if test="eduCode != null and eduCode != ''">
-				AND a.EDU_CODE = #{eduCode}
-			</if>
-		<if test="searchCnd != null and searchCnd != ''">
-	        <if test="searchCnd == 0">
-	            AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 교육명으로 검색 -->
-	        </if>	                
-	        <if test="searchCnd == 1">
-	         AND (m.MAIN_NAME LIKE CONCAT('%', #{searchWrd}, '%') OR sub.SUB_NAME LIKE CONCAT('%', #{searchWrd}, '%'))
+	            AND a.EDU_CODE = #{eduCode}
 	        </if>
-  		</if>
+	        <if test="searchWrd != null and searchWrd != ''">
+	            <choose>
+	                <when test="searchCnd == 0">
+	                    AND a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 교육명으로 검색 -->
+	                </when>
+	                <when test="searchCnd == 1">
+                    	AND CAST(a.TRAINING_TIME AS CHAR) LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 교육 시간으로 검색 -->
+	                </when>
+	                <when test="searchCnd == 2">
+	                    AND DATE_FORMAT(a.REG_DATE, '%Y-%m-%d') LIKE CONCAT('%', #{searchWrd}, '%')  <!-- 등록일로 검색 -->
+	                </when>
+	                <otherwise>
+	   					<!-- 검색 조건이 없을 경우 모든 데이터 조회 -->
+	                    AND (
+	                        a.TITLE LIKE CONCAT('%', #{searchWrd}, '%')
+	                        OR CAST(a.TRAINING_TIME AS CHAR) LIKE CONCAT('%', #{searchWrd}, '%')
+	                        OR DATE_FORMAT(a.REG_DATE, '%Y-%m-%d') LIKE CONCAT('%', #{searchWrd}, '%')
+	                        OR a.REGISTER LIKE CONCAT('%', #{searchWrd}, '%')
+	                    )
+	                </otherwise>
+	            </choose>
+	        </if>
 	    </trim>
 	</sql>
 
@@ -92,9 +106,9 @@
 	        OBJECTIVE, 
 	        COMPLETION_CRITERIA, 
 	        NOTE, 
-	        STATUS,
+
 	        TRAINING_TIME,
-	        REG_DATE,  <!-- 등록일 추가 -->
+	       
 	        REGISTER  <!-- 등록자 추가 -->
 	    )
 	    VALUES(
@@ -104,9 +118,9 @@
 	        #{objective}, 
 	        #{completionCriteria},
 	        #{note}, 
-	        '1002',  <!-- 상태는 기본값으로 1002 설정 -->
+	       
 	        #{trainingTime}, 
-	        NOW(),  <!-- 등록일은 현재 시간으로 설정 -->
+	       
 	        #{register}  <!-- 등록자 값 설정 -->
 	    )
 	</insert>

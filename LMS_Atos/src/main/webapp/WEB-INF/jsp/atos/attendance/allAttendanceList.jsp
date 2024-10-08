@@ -32,10 +32,10 @@ function fn_egov_select_linkPage(pageNo){
 <!-- 과정 선택 -->
         <table class="search-table">
             <tr>
-                <th>과정</th>
+                <th>과정명</th>
                 <td>
                     <div class="d-flex">
-						<select name="lectureCode" class="form-select search-select me-2">
+						<select name="lectureCode" class="form-select search-selectle me-2">
 						    <option value="0">전체</option>
                         <c:forEach var="lecture" items="${educationList}"> 
 	                        <option value="${lecture.eduCode}" 
@@ -98,11 +98,11 @@ function fn_egov_select_linkPage(pageNo){
 	        <col style="width: 15%;">
 	        <col style="width: 15%;">
 	        <col style="width: 20%;">
-	        <col style="width: 5%;">
+	        <col style="width: 7%;">
 	        <col style="width: 9%;">
 	        <col style="width: 7%;">
 	        <col style="width: 7%;">
-	        <col style="width: 10%;">
+	        <col style="width: 12%;">
 	        <col style="width: 3%;">
     	</colgroup>
         <thead>
