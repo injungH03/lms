@@ -45,14 +45,14 @@ function fn_egov_select_linkPage(pageNo){
                  <th class="custom-th-width">신청시작/종료일
                  <td colspan="2">
                     <div class="d-flex">
-                        <span>시작일 :</span><input type="date" name="srcStartDate" id="startDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcStartDate }"/> 
-						<span class="span-ml">종료일 :</span><input type="date" name="srcEndDate" id="endDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcEndDate }"/>
+                        <span>시작일 :</span><input type="date" name="srcStartDate" id="startDate" class="form-control me-2 " value="${searchVO.srcStartDate }"/> 
+						<span class="span-ml">종료일 :</span><input type="date" name="srcEndDate" id="endDate" class="form-control me-2 " value="${searchVO.srcEndDate }"/>
                     </div>
                 </td>
                 <th class="custom-th-width">과정날짜</th>
                 <td colspan="3">
                     <div class="d-flex">
-                        <input type="date" name="srcLearnDate" id="learningStartDate" class="form-control me-2 custom-date-picker" value="${searchVO.srcLearnDate }" />
+                        <input type="date" name="srcLearnDate" id="learningStartDate" class="form-control me-2 " value="${searchVO.srcLearnDate }" />
                     </div>
                 </td>
             </tr>
@@ -87,25 +87,32 @@ function fn_egov_select_linkPage(pageNo){
 
 <!-- 과정 테이블 섹션 -->
 <div class="course-table-section">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover" id="lectureTable">
         <thead>
             <tr>
                 <th>No</th>
-                <th>과정명</th>
-                <th>배정 강사명</th>
-                <th>교육시간</th>
-                <th>인원수</th>
-                <th>접수 신청 기간</th>
-                <th>과정날짜</th>
+                <th data-sort="E.TITLE">과정명</th>
+                <th data-sort="I.NAME">배정 강사명</th>
+                <th data-sort="E.TRAINING_TIME">교육시간</th>
+                <th data-sort="L.ENROLLED">인원수</th>
+                <th data-sort="L.REC_START_DATE, L.REC_END_DATE">접수 신청 기간</th>
+                <th data-sort="L.LEARN_DATE">과정날짜</th>
                 <th>관리</th>
             </tr>
         </thead>
         <tbody>
         <c:forEach items="${resultList }" var="resultInfo" varStatus="status">
-            <tr>
+            <tr >
                 <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.index + 1}"/></td>
                 <td class="left"><a href="<c:url value='/education/lectureDetail.do' />?lectureCode=${resultInfo.lectureCode }&pageIndex=${searchVO.pageIndex}"><c:out value="${resultInfo.title }" /></a></td>
-                <td><c:out value="${resultInfo.instructorName }" /></td>
+                <td>
+                <c:if test="${empty resultInfo.instructorName }">
+                	<div class="btn-group">
+                    	<button class="instructorButton" data-key="${resultInfo.lectureCode }" data-type="C">강사 배정</button>
+                    </div>
+                </c:if>
+                	<c:out value="${resultInfo.instructorName }" />
+                </td>
                 <td><c:out value="${resultInfo.trainingTime }" /></td>
                 <td><c:out value="${resultInfo.enrolled }" />/<c:out value="${resultInfo.capacity }" /></td>
                 <td>
@@ -115,6 +122,7 @@ function fn_egov_select_linkPage(pageNo){
                 <td><c:out value="${resultInfo.learnDate }" /></td>
                 <td>
                     <div class="btn-group">
+                    	<button class="instructorButton" data-key="${resultInfo.lectureCode }" data-type="U">강사 수정</button>
                         <button>삭제</button>
                     </div>
                 </td>
@@ -141,6 +149,13 @@ function fn_egov_select_linkPage(pageNo){
 </form>
 <script>
 $(document).ready(function() {
+	var pageIndex = $('input[name="pageIndex"]').val();
+	
+	$('.instructorButton').on('click', function() {
+		var key = $(this).data('key');
+		var type = $(this).data('type');
+		window.open("<c:url value='/education/instructorPopup.do'/>?lectureCode=" + key + "&type=" + type + "&pageIndex=" + pageIndex, 'popup', 'width=1200,height=800');
+	});
 	
 	$('#regist').on('click', function(event){
 		event.preventDefault();
@@ -159,6 +174,11 @@ $(document).ready(function() {
         // form 전송
         $('#searchForm').submit();
     });
+    
+    var initialSortField = '${searchVO.sortField}';
+    var initialSortOrder = '${searchVO.sortOrder}';
+	
+    handleSort('#lectureTable', '#searchForm', initialSortField, initialSortOrder);
     
 
 });

@@ -36,6 +36,54 @@
 		</trim>
 	</sql>
 	
+	<sql id="whereEdu">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="srcMainCode != null and srcMainCode !=''">
+				AND CD.MAIN_CODE = #{srcMainCode}
+			</if>	
+			<if test="searchCnd != null and searchCnd != ''">
+				<if test="searchCnd == 0">
+					AND E.TITLE LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
+				<if test="searchCnd == 1">
+					AND E.TRAINING_TIME LIKE CONCAT ('%', #{searchWrd},'%') 		
+				</if>
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="whereIns">
+		<where>
+			<if test="lectureCode > 0">
+				AND S.SCHEDULE_DATE = (SELECT LEARN_DATE FROM ATOS_LECTURE WHERE LECTURE_CODE = #{lectureCode})
+			</if>
+			<if test="searchCnd != null and searchCnd != ''">
+	            <choose>
+	                <when test="searchCnd == 0">
+	                    AND I.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	                <when test="searchCnd == 1">
+	                    AND I.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	            </choose>
+            </if>
+			AND NOT EXISTS 
+			(
+				SELECT 1
+				FROM ATOS_INSTRUCTOR_ASSIGNMENTS AIA
+				WHERE AIA.INSTRUCTOR = I.ID 
+			)
+		</where>
+	</sql>
+	
+	
+	<sql id="orderBy">
+		<if test="sortField != null and sortField != ''">
+			ORDER BY ${sortField} ${sortOrder}
+		</if>
+	</sql>
+	
+	
 	<select id="selectLectureList" resultType="atos.lms.lecture.service.LectureVO">
 		SELECT
 		    L.LECTURE_CODE, L.EDUCATION, L.INSTRUCTOR, L.LOCATION, L.ATCH_FILE_ID,          
@@ -50,7 +98,7 @@
 		FROM ATOS_LECTURE L
 		INNER JOIN ATOS_EDUCATION E 
 			ON L.EDUCATION = E.EDU_CODE
-		INNER JOIN ATOS_INSTRUCTOR I
+		LEFT JOIN ATOS_INSTRUCTOR I
 	   		ON L.INSTRUCTOR = I.ID 
 		INNER JOIN ATOS_CATEGORY_DETAIL CD 
 			ON E.CATEGORY = CD.CODE
@@ -59,7 +107,7 @@
 		INNER JOIN ATOS_CATEGORY_SUB CS 
 			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
 		<include refid="whereClause" />
-		ORDER BY L.LECTURE_CODE DESC		
+		<include refid="orderBy" />		
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}	
 	</select>
 	
@@ -78,150 +126,80 @@
 		<include refid="whereClause" />
 	</select>
 	
-<!-- 	<select id="selectStatusCode" resultType="atos.lms.member.service.MemberMasterVO">
-		SELECT
-			CODE AS statusCode, 
-			NAME AS statusName
-		FROM
-			ATOS_STATUS
-		WHERE CODE IN ('1001', '1002', '1003', '1004')
-	</select>
-	
-	<select id="selectCompany" resultType="atos.lms.member.service.MemberMasterVO">
-		SELECT
-			BIZ_REG_NO AS corpBiz,
-			CORP_NAME AS corpName
-		FROM
-			ATOS_COMPANY
-	</select>
-
-	<select id="selectMemberList" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberVO">
-		SELECT
-			A.ID, A.NAME, A.PHONE_NO, A.BIZ_REG_NO, A.STATUS, C.CORP_NAME, B.NAME AS listStatusName
-		FROM
-			ATOS_STUDENT A
-		LEFT JOIN ATOS_STATUS B
-			ON A.STATUS = B.CODE
-		LEFT JOIN
-			ATOS_COMPANY C
-		ON A.BIZ_REG_NO = C.BIZ_REG_NO
-		<include refid="whereClause" />
-		ORDER BY A.ID DESC		
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-	</select>	
-	
-	<select id="selectMemberListCnt" parameterType="atos.lms.member.service.MemberVO" resultType="java.lang.Integer">
-		SELECT
-			COUNT(ID)
-		FROM
-			ATOS_STUDENT a
-		<include refid="whereClause" />
-	</select>
-	
-	<select id="selectCompanyKey" parameterType="String" resultType="atos.lms.member.service.CompanyVO">
+	<select id="selectEducationList" resultType="atos.lms.lecture.service.LectureVO">
 		SELECT 
-			BIZ_REG_NO, CORP_NAME, REP_NAME, BIZ_TYPE, BIZ_ITEM, PHONE_NO, ADDR1, ADDR2
-		FROM
-			ATOS_COMPANY
-		WHERE BIZ_REG_NO = #{corpBiz}
-	</select>
-	
-	<select id="selectMemberKey" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberDTO">
-		SELECT 
-			  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
-			, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
-			, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
-			, B.BIZ_REG_NO AS companybizRegNo
-			, B.PHONE_NO AS companyPhoneNo
-			, B.ZIPCODE AS companyZipcode
-			, B.ADDR1 AS companyAddr1
-			, B.ADDR2 AS companyAddr2
-		FROM
-			ATOS_STUDENT A 
+			E.EDU_CODE, E.TITLE, E.CATEGORY, E.DESCRIPTION, E.OBJECTIVE,             
+		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME, E.STATUS AS eStatus,
+		    CD.USE_YN, CM.MAIN_CODE, CM.MAIN_NAME,            
+		    CS.SUB_NAME, CS.SUB_CODE
+		FROM ATOS_EDUCATION E
+		INNER JOIN
+		ATOS_CATEGORY_DETAIL CD
+			ON E.CATEGORY = CD.CODE
 		INNER JOIN 
-			ATOS_COMPANY B
-		ON A.BIZ_REG_NO = B.BIZ_REG_NO
-		WHERE A.ID = #{id}
+		ATOS_CATEGORY_MAIN CM
+			ON CD.MAIN_CODE = CM.MAIN_CODE
+		INNER JOIN 
+		ATOS_CATEGORY_SUB CS
+			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
+		<include refid="whereEdu" />
+		<include refid="orderBy" />
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+	
 	</select>
 	
-	<select id="selectMemberListExcel" parameterType="atos.lms.member.service.MemberVO" resultType="atos.lms.member.service.MemberExcelVO">
+	<select id="selectEducationListCnt" resultType="java.lang.Integer">
 		SELECT 
-			  A.ID, A.NAME, A.BIRTHDATE, A.PHONE_NO, A.EMAIL, A.ZIPCODE
-			, A.ADDR1, A.ADDR2, A.BIZ_REG_NO, A.DEPARTMENT, A.POSITION
-			, B.CORP_NAME, B.REP_NAME, B.BIZ_TYPE, B.BIZ_ITEM 
-			, B.BIZ_REG_NO AS companybizRegNo
-			, B.PHONE_NO AS companyPhoneNo
-			, B.ZIPCODE AS companyZipcode
-			, B.ADDR1 AS companyAddr1
-			, B.ADDR2 AS companyAddr2
-		FROM
-			ATOS_STUDENT A 
-		left JOIN 
-			ATOS_COMPANY B
-		ON A.BIZ_REG_NO = B.BIZ_REG_NO
-		<include refid="whereClause" />
+			COUNT(E.EDU_CODE)
+		FROM ATOS_EDUCATION E
+		INNER JOIN
+		ATOS_CATEGORY_DETAIL CD
+			ON E.CATEGORY = CD.CODE
+		INNER JOIN 
+		ATOS_CATEGORY_MAIN CM
+			ON CD.MAIN_CODE = CM.MAIN_CODE
+		INNER JOIN 
+		ATOS_CATEGORY_SUB CS
+			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
+		<include refid="whereEdu" />
 	</select>
 	
-	<select id="checkEmailDuplicate" resultType="int">
-	    SELECT COUNT(1)
-	    FROM ATOS_STUDENT
-	    WHERE ID = #{email}
+	<select id="selectInstructorList" resultType="atos.lms.lecture.service.LectureInsDTO">
+		SELECT 
+			I.ID, I.NAME AS instructorName, 
+			I.PHONE_NO, I.EMAIL, I.DEPARTMENT, I.POSITION
+		FROM ATOS_INSTRUCTOR I
+		INNER JOIN 
+		ATOS_INSTRUCTOR_SCHEDULE S
+			ON I.ID = S.ID
+		<include refid="whereIns" />
+		<include refid="orderBy" />		
 	</select>
 	
-	<select id="checkDuplicateId" resultType="int">
-		SELECT COUNT(1)
-		FROM ATOS_STUDENT
-		WHERE ID = #{id}
-	</select>
-	
-	
-	<update id="updateStatus">
-		UPDATE ATOS_STUDENT
-		SET STATUS = #{status}
-		WHERE ID IN
-		<foreach item="id" collection="idlist" open="(" separator="," close=")">
-			#{id}
-		</foreach>
+	<update id="updateLectureInstructor">
+		UPDATE ATOS_LECTURE
+		SET
+			INSTRUCTOR = #{id}
+		WHERE LECTURE_CODE = #{lectureCode}
 	</update>
 	
-
-	<insert id="insertMember">
-		INSERT INTO ATOS_STUDENT
-			(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, ZIPCODE, ADDR1, ADDR2, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
+	<insert id="insertInstructor">
+		INSERT INTO ATOS_INSTRUCTOR_ASSIGNMENTS
+			(INSTRUCTOR, LECTURE_CODE)
 		VALUES
-			(#{id}, #{password}, #{name}, #{birthdate}, #{phoneNo}, #{zipcode}, #{addr1}, #{addr2}, #{email}, #{bizRegNo}, '1002', #{department}, #{position})
+			(#{id}, #{lectureCode})
 	</insert>
 	
-	<insert id="insertMemberList">
-	    INSERT INTO ATOS_STUDENT 
-	    	(ID, PASSWORD, NAME, BIRTHDATE, PHONE_NO, EMAIL, BIZ_REG_NO, STATUS, DEPARTMENT, POSITION)
-	    VALUES
-	    <foreach collection="memberList" item="member" separator=",">
-	        (#{member.id}, #{member.password}, #{member.name}, #{member.birthdate}, #{member.phoneNo}, #{member.email}, #{member.bizRegNo}, #{member.status}, #{member.department}, #{member.position})
-	    </foreach>
-	</insert>
-	
-	<update id="updateMember">
-		UPDATE ATOS_STUDENT
-		SET 
-			  NAME = #{name}
-			, BIRTHDATE = #{birthdate}
-			, PHONE_NO = #{phoneNo}
-			, ZIPCODE = #{zipcode}
-			, ADDR1 = #{addr1}
-			, ADDR2 = #{addr2}
-			, EMAIL = #{email}
-			, BIZ_REG_NO = #{bizRegNo}
-			, DEPARTMENT = #{department}
-			, POSITION = #{position}
-		WHERE ID = #{id}
+	<update id="updateInstructor">
+		UPDATE ATOS_INSTRUCTOR_ASSIGNMENTS
+		SET
+			INSTRUCTOR = #{id}
+		WHERE LECTURE_CODE = #{lectureCode}
 	</update>
 	
-	<update id="deleteMember">
-		UPDATE ATOS_STUDENT
-		SET STATUS = '1005'
-		WHERE ID = #{id}
-	</update> -->
-
+	<delete id="deleteInstructor">
+		DELETE FROM ATOS_INSTRUCTOR_ASSIGNMENTS
+		WHERE LECTURE_CODE = #{lectureCode}
+	</delete>
 	
 </mapper>
