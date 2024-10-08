@@ -17,13 +17,14 @@
 </div>
 
 <!-- FullCalendar 달력 -->
-<div id='calendar'></div>
+<div class="instructorCalendar"></div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+    var calendarEl = document.querySelector('.instructorCalendar'); // 클래스명으로 선택
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'ko', // 한국어 설정
       headerToolbar: {
         left: 'prevYear,prev,next,nextYear today',
         center: 'title',
@@ -55,17 +56,3 @@
     calendar.render();
   });
 </script>
-
-<style>
-  body {
-    margin: 40px 10px;
-    padding: 0;
-    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-    font-size: 14px;
-  }
-
-  #calendar {
-    max-width: 900px; /* max-width 조정하여 여유 있게 표시 */
-    margin: 0 auto;
-  }
-</style>

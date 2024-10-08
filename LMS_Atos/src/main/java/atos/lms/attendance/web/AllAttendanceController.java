@@ -26,7 +26,7 @@ import atos.lms.attendance.service.AllAttendanceService;
 import atos.lms.attendance.service.AllAttendanceVO;
 
 @Controller
-@RequestMapping("/attendance/")
+@RequestMapping("/education/")
 public class AllAttendanceController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AllAttendanceController.class);

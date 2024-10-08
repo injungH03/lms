@@ -20,6 +20,7 @@ public class InstructorScheduleVO extends InstructorScheduleMasterVO implements 
 	private int scheduleCode;
 	private String id;
 	private LocalDate scheduleDate;
+	private String remarks;
 
 
 }

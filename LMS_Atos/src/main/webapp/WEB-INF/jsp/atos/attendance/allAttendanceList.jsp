@@ -24,10 +24,10 @@ function fn_egov_select_linkPage(pageNo){
 	<span>&nbsp;통합수강생출석관리</span>
 </div>
 
-
+<input type="hidden" name="pageIndex" value="${attendanceSearchVO.pageIndex}">
 <div class="table-section">
 	<form id="allAttendancenForm" name="allAttendancenForm" action="<c:url value='/attendance/allAttendanceList.do'/>" method="get">
-		<input type="hidden" name="pageIndex" value="${attendanceSearchVO.pageIndex}">
+
 	
 <!-- 과정 선택 -->
         <table class="search-table">
