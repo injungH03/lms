@@ -45,7 +45,12 @@ public class EducationController {
         educationVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
         educationVO.setLastIndex(paginationInfo.getLastRecordIndex());
         educationVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
+        
+        // 검색어 처리
+        if (educationVO.getSearchWrd() != null) {
+            String searchWrd = educationVO.getSearchWrd().trim();
+            educationVO.setSearchWrd(searchWrd);
+        }
         
         System.out.println("검색 조건: " + educationVO.getSearchCnd());
         System.out.println("검색어: " + educationVO.getSearchWrd());

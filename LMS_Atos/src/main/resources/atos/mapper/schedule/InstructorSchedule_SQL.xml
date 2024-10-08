@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="atos.lms.schedule.service.dao.InstructorScheduleDAO">
+
+
+    <!-- 강사의 스케줄 조회 -->
+    <select id="selectScheduleByInstructor" parameterType="string" resultType="atos.lms.schedule.service.InstructorScheduleVO">
+        SELECT SCHEDULE_CODE, ID, SCHEDULE_DATE
+        FROM ATOS_INSTRUCTOR_SCHEDULE
+        WHERE ID = #{instructorId}
+    </select>
+
+    <!-- 스케줄 등록 -->
+    <insert id="insertSchedule" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
+        INSERT INTO ATOS_INSTRUCTOR_SCHEDULE (ID, SCHEDULE_DATE)
+        VALUES (#{id}, #{scheduleDate})
+    </insert>
+
+
+
+</mapper>

@@ -5,9 +5,12 @@
 
 	<sql id="whereClause">
 		<trim prefix="WHERE" prefixOverrides="AND">
-		     <!-- 삭제된 상태를 제외 -->
-        	AND a.STATUS != '1005'
-        	
+
+		     <if test="true"> 
+	            a.STATUS != '1005' 
+	         </if>
+
+
 			<if test="statusCode != null and statusCode != ''">
 				AND a.STATUS = #{statusCode}
 			</if>
@@ -25,6 +28,7 @@
 					AND a.BIZ_REG_NO LIKE CONCAT ('%', #{searchWrd},'%')
 				</if>
 			</if>
+
 		</trim>
 	</sql>
 
@@ -205,14 +209,6 @@
 	    WHERE BIZ_REG_NO = #{bizRegNo}
 	</update>
 	
-	<!-- 업체 상태 변경 -->
-<!-- 	
-	<update id="updateStatus" >
-	    UPDATE ATOS_COMPANY
-	    SET STATUS = #{statusCode}
-	    WHERE BIZ_REG_NO = #{corpBiz}
-	</update>
-	 -->
 	<update id="updateStatus" parameterType="atos.lms.company.service.CompanyMasterVO">
 	    UPDATE ATOS_COMPANY
 	    SET STATUS = #{statusCode}
@@ -222,17 +218,6 @@
 	    </foreach>
 	</update>
 	 
-	
-	<!-- 해당 업체에 소속된 회원 상태 변경 -->
-<!-- 	
-	<update id="updateMembersByCompany" >
-	    UPDATE ATOS_STUDENT
-	    SET STATUS = #{statusCode}
-	    WHERE BIZ_REG_NO = #{corpBiz}
-	</update>
-
- -->
-
 	<update id="updateMembersByCompany" parameterType="atos.lms.company.service.CompanyMasterVO">
 	    UPDATE ATOS_STUDENT
 	    SET STATUS = #{statusCode}
@@ -265,18 +250,9 @@
 	        ADDR1 AS addr1,
 	        ADDR2 AS addr2
 	    FROM
-	        ATOS_COMPANY
-	    WHERE STATUS != '1005'
-	    <if test="statusCode != null and statusCode != ''">
-	        AND STATUS = #{statusCode}
-	    </if>
-	    <if test="searchWrd != null and searchWrd != ''">
-	        <if test="searchCnd == 0">AND CORP_NAME LIKE CONCAT('%', #{searchWrd}, '%')</if>
-	        <if test="searchCnd == 1">AND TRAIN_MANAGER LIKE CONCAT('%', #{searchWrd}, '%')</if>
-	        <if test="searchCnd == 2">AND BIZ_REG_NO LIKE CONCAT('%', #{searchWrd}, '%')</if>
-	    </if>
+	        ATOS_COMPANY a
+	   <include refid="whereClause"/> 
 	    ORDER BY REG_DATE DESC
 	</select>
-	
 
 </mapper>
