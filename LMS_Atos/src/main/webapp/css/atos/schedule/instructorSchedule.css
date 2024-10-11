@@ -197,11 +197,10 @@
 
 
 .instructorCalendar {
-    max-width: 1500px; /* max-width 조정하여 여유 있게 표시 */
+    max-width: 1400px; /* max-width 조정하여 여유 있게 표시 */
     margin: 0 auto;
     padding-bottom: 100px;
  }
-
 
 
 
