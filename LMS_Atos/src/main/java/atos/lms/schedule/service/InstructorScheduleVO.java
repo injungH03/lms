@@ -1,7 +1,6 @@
 package atos.lms.schedule.service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import atos.lms.exam.service.GeneralModel;
 import lombok.AllArgsConstructor;
@@ -20,14 +19,17 @@ public class InstructorScheduleVO extends InstructorScheduleMasterVO implements 
 	
 	private int scheduleCode;
 	private String id;
-	private LocalDate scheduleDate;
 	private String mainEvent;
-	private String subEvent;
-    private LocalTime startTime;        
-    private LocalTime endTime;          
+	private String description;
+    private LocalDate startDate;        
+    private LocalDate endDate;
+    private int allDay;
+    private String scheduleColor;
 	
     // atos_instructor
 	private String name;
+
+
 	
 
 

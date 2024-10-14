@@ -49,5 +49,8 @@ public class InstructorScheduleMasterVO implements GeneralModel {
     
     /** 첨부가능파일사이즈 */
     private String atchPosblFileSize = "";
+    
+    /** CURD 타입 */
+    private String type;
 
 }

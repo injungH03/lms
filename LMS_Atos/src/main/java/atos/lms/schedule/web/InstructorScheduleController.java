@@ -1,6 +1,6 @@
 package atos.lms.schedule.web;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import atos.lms.schedule.service.InstructorScheduleService;
@@ -36,15 +35,14 @@ public class InstructorScheduleController {
 
 	    LOGGER.info("Instructor map size: {}", instructorMap.size());
 	    
-	    // 강사 선택 여부 확인을 위한 로그 추가
+	    // 강사 선택 여부 확인
 	    if (scheduleVO.getId() != null && !scheduleVO.getId().isEmpty()) {
 	        LOGGER.info("Selected instructor ID: {}", scheduleVO.getId());
 
-	        // 스케줄 리스트 조회
+	        // 선택된 강사의 스케줄 리스트 조회
 	        Map<String, Object> resultMap = instructorScheduleService.getSchedulesByInstructor(scheduleVO);
 	        List<InstructorScheduleVO> scheduleList = (List<InstructorScheduleVO>) resultMap.get("scheduleList");
 
-	        // 스케줄 리스트 로그 확인
 	        LOGGER.info("Schedule list size: {}", scheduleList.size());
 	        for (InstructorScheduleVO schedule : scheduleList) {
 	            LOGGER.info("Schedule: {}", schedule);
@@ -53,37 +51,48 @@ public class InstructorScheduleController {
 	        model.addAttribute("scheduleList", scheduleList);
 	        model.addAttribute("totalCount", resultMap.get("totalCount"));
 	    } else {
-	        LOGGER.info("No instructor selected, displaying empty schedule list.");
-	        model.addAttribute("scheduleList", Collections.emptyList());
-	        model.addAttribute("totalCount", 0);
+	        LOGGER.info("No instructor selected, displaying all schedules.");
+
+	        // 전체 강사의 스케줄 리스트 조회
+	        Map<String, Object> resultMap = instructorScheduleService.getAllSchedules(scheduleVO);
+	        List<InstructorScheduleVO> scheduleList = (List<InstructorScheduleVO>) resultMap.get("scheduleList");
+
+	        LOGGER.info("All schedules list size: {}", scheduleList.size());
+	        for (InstructorScheduleVO schedule : scheduleList) {
+	            LOGGER.info("Schedule: {}", schedule);
+	        }
+
+	        model.addAttribute("scheduleList", scheduleList);
+	        model.addAttribute("totalCount", resultMap.get("totalCount"));
 	    }
 
 	    return "schedule/instructorSchedule";  // JSP 경로에 맞게 수정 필요
 	}
+	
 
+	@RequestMapping("loadInstructorModal.do")
+	public String loadInstructorModal(@ModelAttribute("scheduleSearchVO") InstructorScheduleVO scheduleVO, ModelMap model) throws Exception {
+	    // 강사 목록을 모달에 전달
+	    Map<String, InstructorScheduleVO> instructorMap = instructorScheduleService.selectAllInstructors(scheduleVO);
+	    model.addAttribute("instructorList", instructorMap);
+
+	    // 모달 JSP 파일 반환
+	    return "schedule/instructorModal"; // JSP 파일 경로에 맞게 수정 필요
+	}
 	
 	
 	
-    // MAIN_EVENT 등록
-    @RequestMapping("registerMainEvent")
-    @ResponseBody
-    public ResponseEntity<String> registerMainEvent(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
-        LOGGER.info("registerMainEvent called with requestData: {}", scheduleVO);
-
-        // MAIN_EVENT 등록
-        instructorScheduleService.registerMainEvent(scheduleVO);
-        return ResponseEntity.ok("success");
-    }
-
-    // SUB_EVENT 등록
-    @RequestMapping("registerSubEvent")
-    @ResponseBody
-    public ResponseEntity<String> registerSubEvent(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
-        LOGGER.info("registerSubEvent called with requestData: {}", scheduleVO);
-
-        // SUB_EVENT 등록
-        instructorScheduleService.registerSubEvent(scheduleVO);
-        return ResponseEntity.ok("success");
-    }
-    
+	 // 새로운 스케줄 저장 요청을 처리
+	@RequestMapping("registerSchedule")
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> registerSchedule(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
+	    Map<String, Object> map = instructorScheduleService.registerSchedule(scheduleVO);
+	    
+	    Map<String, String> response = new HashMap<>();
+	    response.put("message", (String) map.get("message"));
+	    
+	    return ResponseEntity.ok(response);
+	}
+	
+	
 }

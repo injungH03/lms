@@ -3,44 +3,69 @@
 <mapper namespace="atos.lms.schedule.service.dao.InstructorScheduleDAO">
 
 
-    <!-- 강사별 스케줄 조회 -->
-    <select id="selectScheduleByInstructor" resultType="atos.lms.schedule.service.InstructorScheduleVO">
-        SELECT SCHEDULE_CODE, ID, SCHEDULE_DATE, MAIN_EVENT, SUB_EVENT, START_TIME, END_TIME
-        FROM ATOS_INSTRUCTOR_SCHEDULE
-        WHERE ID = #{id}  <!-- 동적으로 전달된 ID를 사용 -->
-        <if test="scheduleDate != null">
-            AND SCHEDULE_DATE = #{scheduleDate}
-        </if>
-    </select>
-    
-    <!-- 스케줄 총 개수 조회 -->
+
+
+
+<!-- 모든 강사의 스케줄 조회 -->
+<select id="selectAllSchedules" resultType="atos.lms.schedule.service.InstructorScheduleVO">
+    SELECT 
+        S.SCHEDULE_CODE, 
+        S.ID,  <!-- 스케줄 테이블의 ID -->
+        S.MAIN_EVENT,
+        S.START_DATE, 
+        S.END_DATE, 
+        S.ALL_DAY,
+        S.SCHEDULE_COLOR, 
+        I.NAME  <!-- 강사 이름 -->
+    FROM 
+        ATOS_INSTRUCTOR_SCHEDULE S
+    JOIN 
+        ATOS_INSTRUCTOR I ON S.ID = I.ID
+</select>
+
+<!-- 강사별 스케줄 조회 -->
+<select id="selectScheduleByInstructor" resultType="atos.lms.schedule.service.InstructorScheduleVO">
+    SELECT 
+        S.SCHEDULE_CODE, 
+        S.ID,  <!-- 스케줄 테이블의 ID -->
+        S.MAIN_EVENT,
+        S.START_DATE, 
+        S.END_DATE, 
+        S.ALL_DAY,
+        S.SCHEDULE_COLOR,
+        I.NAME  <!-- 강사 이름 -->
+    FROM 
+        ATOS_INSTRUCTOR_SCHEDULE S
+    JOIN 
+        ATOS_INSTRUCTOR I ON S.ID = I.ID
+    WHERE 
+        S.ID = #{id}  <!-- 동적으로 전달된 ID를 사용 -->
+</select>
+
+
+<!-- 스케줄 총 개수 조회 -->
     <select id="selectScheduleCountByInstructor" resultType="int">
         SELECT COUNT(SCHEDULE_CODE)
         FROM ATOS_INSTRUCTOR_SCHEDULE
         WHERE ID = #{id}  <!-- 동적으로 전달된 ID를 사용 -->
-        <if test="scheduleDate != null">
-            AND SCHEDULE_DATE = #{scheduleDate}
-        </if>
     </select>
 
-    <!-- 모든 강사 목록 조회 -->
+
+
+<!-- 모든 강사 목록 조회 -->
     <select id="selectAllInstructors" resultType="atos.lms.schedule.service.InstructorScheduleVO">
         SELECT ID, NAME
         FROM ATOS_INSTRUCTOR  <!-- 강사 목록 조회 -->
     </select>
+    
+    
 
-    <!-- MAIN_EVENT 등록 -->
-    <insert id="insertMainEvent" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
-        INSERT INTO ATOS_INSTRUCTOR_SCHEDULE (ID, SCHEDULE_DATE, MAIN_EVENT)
-        VALUES (#{id}, #{scheduleDate}, #{mainEvent})  <!-- 동적으로 전달된 값들 사용 -->
+<!-- 새로운 스케줄 등록 -->
+    <insert id="insertSchedule" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
+        INSERT INTO ATOS_INSTRUCTOR_SCHEDULE
+        (ID, MAIN_EVENT, START_DATE, END_DATE, SCHEDULE_COLOR)
+        VALUES
+        (#{id}, #{mainEvent}, #{startDate}, #{endDate}, #{scheduleColor})
     </insert>
-
-    <!-- SUB_EVENT 등록 (시간 정보 포함) -->
-    <insert id="insertSubEvent" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
-        INSERT INTO ATOS_INSTRUCTOR_SCHEDULE (ID, SCHEDULE_DATE, SUB_EVENT, START_TIME, END_TIME)
-        VALUES (#{id}, #{scheduleDate}, #{subEvent}, #{startTime}, #{endTime})  <!-- 동적으로 전달된 시간 정보 추가 -->
-    </insert>
-
-
 
 </mapper>
