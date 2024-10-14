@@ -95,7 +95,7 @@ function fn_egov_select_linkPage(pageNo){
                 <th data-sort="I.NAME">배정 강사명</th>
                 <th data-sort="E.TRAINING_TIME">교육시간</th>
                 <th data-sort="L.ENROLLED">인원수</th>
-                <th data-sort="L.REC_START_DATE, L.REC_END_DATE">접수 신청 기간</th>
+                <th data-sort="L.REC_START_DATE">접수 신청 기간</th>
                 <th data-sort="L.LEARN_DATE">과정날짜</th>
                 <th>상태</th>
                 <th>관리</th>
@@ -125,7 +125,7 @@ function fn_egov_select_linkPage(pageNo){
                 <td>
                     <div class="btn-group">
                     	<button class="instructorButton" data-key="${resultInfo.lectureCode }" data-type="U">강사 수정</button>
-                        <button>삭제</button>
+                        <button class="deleteButton" data-key="${resultInfo.lectureCode }">삭제</button>
                     </div>
                 </td>
             </tr>
@@ -157,6 +157,29 @@ $(document).ready(function() {
 		var key = $(this).data('key');
 		var type = $(this).data('type');
 		window.open("<c:url value='/education/instructorPopup.do'/>?lectureCode=" + key + "&type=" + type + "&pageIndex=" + pageIndex, 'popup', 'width=1200,height=800');
+	});
+	
+	$('.deleteButton').on('click', function(event) {
+		event.preventDefault();
+		var key = $(this).data('key');
+		var isConfirmed = confirm("정말로 삭제하시겠습니까?");
+		
+		if (isConfirmed) {
+	        myFetch({
+	            url: '/education/deleteLecture',
+	            data: {
+	            	lectureCode: key
+	            },
+	            success: function(response) {
+	                alert(response.message);
+	                window.location.reload();
+	            },
+	            error: function(error) {
+	                console.error('오류 발생:', error);
+	                alert('삭제가 실패하였습니다.');
+	            }
+	        });
+		}
 	});
 	
 	$('#regist').on('click', function(event){

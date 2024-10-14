@@ -12,21 +12,12 @@
     <script type="text/javascript" src="<c:url value='/js/atos/common/fetchFunction.js'/>" ></script>
     <script type="text/javascript" src="<c:url value='/js/atos/common/CommonUtil.js'/>" ></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/paging.css' />">
+	<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/common/popup.css' />">
 	<link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/lecture/lecture.css' />">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <meta charset="UTF-8">
     <title>과정 선택</title>
 </head>
-<style>
-* {
-	font-size: 13px;
-}
-
-#eduTable tbody tr:hover td {
-	cursor: pointer;
-}
-</style>
 <script>
 function fn_egov_select_linkPage(pageNo){
 	document.searchForm.pageIndex.value = pageNo;

@@ -72,11 +72,14 @@ public class EgovFileDownloadController {
 	@RequestMapping(value = "/cmm/fms/FileDown.do")
 	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		
+		System.out.println("인증전 확인 ");
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
 
+			System.out.println("인증됐는지 확인 ");
+			
 			// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
 			String param_atchFileId = (String) commandMap.get("atchFileId");
 	    	param_atchFileId = param_atchFileId.replaceAll(" ", "+");

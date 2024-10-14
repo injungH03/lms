@@ -35,13 +35,13 @@
 <div class="nav-tabs">
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link <c:if test="${page == 'lectureDetail'}">active</c:if>" href="<c:url value='/education/lectureDetail.do'/>">강의상세</a>
+            <a class="nav-link <c:if test="${page == 'lectureDetail'}">active</c:if>" href="<c:url value='/education/lectureDetail.do?lectureCode=${searchVO.lectureCode}&pageIndex=${searchVO.pageIndex }'/>">강의상세</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <c:if test="${page == 'lectureStudentList'}">active</c:if>" href="<c:url value='/education/lectureStudentList.do'/>">수강생목록</a>
+            <a class="nav-link <c:if test="${page == 'lectureStudentList'}">active</c:if>" href="<c:url value='/education/lectureStudentList.do?lectureCode=${searchVO.lectureCode}'/>">수강생목록</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <c:if test="${page == 'attendanceInfo'}">active</c:if>" href="/education/attendanceInfo.do">출석관리</a>
+            <a class="nav-link <c:if test="${page == 'lectureAttendance'}">active</c:if>" href="/education/lectureAttendance.do?lectureCode=${searchVO.lectureCode}">출석관리</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <c:if test="${page == 'completion'}">active</c:if>" href="#">수료관리</a>

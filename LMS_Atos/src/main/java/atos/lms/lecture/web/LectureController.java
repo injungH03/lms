@@ -29,7 +29,9 @@ import atos.lms.common.utl.FileUtil;
 import atos.lms.common.utl.ResponseVO;
 import atos.lms.exam.web.TestBoardController;
 import atos.lms.instructor.service.InstructorVO;
+import atos.lms.lecture.service.LectureEnrollDTO;
 import atos.lms.lecture.service.LectureInsDTO;
+import atos.lms.lecture.service.LectureMemDTO;
 import atos.lms.lecture.service.LectureService;
 import atos.lms.lecture.service.LectureVO;
 import egovframework.com.cmm.service.EgovFileMngService;
@@ -102,21 +104,75 @@ public class LectureController {
 		
 		return "lecture/lectureDetail";
 	}
+	
+	@RequestMapping("/lectureUpdt.do")
+	public String lectureUpdt(@ModelAttribute("searchVO") LectureVO lectureVO, ModelMap model) throws Exception {
+		
+		LectureVO lecture = lectureService.selectLectureKey(lectureVO);
+		
+		lectureVO.setAtchPosblFileNumber(2);
+		
+		//날짜 시간 포멧
+		String recStartDate = (lecture.getRecStartDate() != null) ? lecture.getRecStartDate().substring(0, 10) : null;
+		String recEndDate = (lecture.getRecEndDate() != null) ? lecture.getRecEndDate().substring(0, 10) : null;
+		String startTime = (lecture.getStartTime() != null) ? lecture.getStartTime().substring(0, 5) : null;
+		String endTime = (lecture.getEndTime() != null) ? lecture.getEndTime().substring(0, 5) : null;
+		
+		lecture.setRecStartDate(recStartDate);
+		lecture.setRecEndDate(recEndDate);
+		lecture.setStartTime(startTime);
+		lecture.setEndTime(endTime);
+		
+		model.addAttribute("result", lecture);
+		
+		return "lecture/lectureUpdt";
+	}
+	
 
 	@RequestMapping("/lectureStudentList.do")
-	public String lectureStudentList(ModelMap model) throws Exception {
+	public String lectureStudentList(@ModelAttribute("searchVO") LectureEnrollDTO lectureEnrollDTO, ModelMap model) throws Exception {
 		
+		LectureVO lecture = lectureService.selectLectureTitle(lectureEnrollDTO);
 		
+		System.out.println(">>>>lecture " + lecture);
+		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		
+    	paginationInfo.setCurrentPageNo(lectureEnrollDTO.getPageIndex());
+    	paginationInfo.setRecordCountPerPage(lectureEnrollDTO.getPageUnit());
+    	paginationInfo.setPageSize(lectureEnrollDTO.getPageSize());
+    	
+    	lectureEnrollDTO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+    	lectureEnrollDTO.setLastIndex(paginationInfo.getLastRecordIndex());
+    	lectureEnrollDTO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+    	
+    	Map<String, Object> map = lectureService.selectEnrollList(lectureEnrollDTO);
+    	
+    	
+
+    	int totalcount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
+    	
+    	paginationInfo.setTotalRecordCount(totalcount);
+		
+    	
+    	model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("totalcount", totalcount);
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("result", lecture);
 		model.addAttribute("page", "lectureStudentList");
 		
 		return "lecture/lectureStudentList";
 	}
 	
-	@RequestMapping("/attendanceInfo.do")
-	public String attendanceInfo(ModelMap model) throws Exception {
+	@RequestMapping("/lectureAttendance.do")
+	public String attendanceInfo(@ModelAttribute("searchVO") LectureEnrollDTO lectureEnrollDTO, ModelMap model) throws Exception {
+		
+		LectureVO lecture = lectureService.selectLectureTitle(lectureEnrollDTO);
 		
 		
-		model.addAttribute("page", "attendanceInfo");
+		
+		model.addAttribute("result", lecture);
+		model.addAttribute("page", "lectureAttendance");
 		
 		return "lecture/lectureAttendance";
 	}
@@ -165,8 +221,28 @@ public class LectureController {
 	}
 	
 	@RequestMapping("/studentListPopup.do")
-	public String studentListPopup(ModelMap model) throws Exception {
+	public String studentListPopup(@ModelAttribute("searchVO") LectureMemDTO lectureMemDTO, ModelMap model) throws Exception {
 		
+		PaginationInfo paginationInfo = new PaginationInfo();
+		
+    	paginationInfo.setCurrentPageNo(lectureMemDTO.getPageIndex());
+    	paginationInfo.setRecordCountPerPage(lectureMemDTO.getPageUnit());
+    	paginationInfo.setPageSize(lectureMemDTO.getPageSize());
+    	
+    	lectureMemDTO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+    	lectureMemDTO.setLastIndex(paginationInfo.getLastRecordIndex());
+    	lectureMemDTO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+    	
+    	Map<String, Object> map = lectureService.selectStudentList(lectureMemDTO);
+
+    	int totalcount = Integer.parseInt(String.valueOf(map.get("resultCnt")));
+    	
+    	paginationInfo.setTotalRecordCount(totalcount);
+    	
+    	model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("biz", map.get("biz"));
+		model.addAttribute("totalCount", totalcount);
 		
 		return "atos/lecture/popupStudentList";
 	}
@@ -193,6 +269,60 @@ public class LectureController {
 		System.out.println(">>>>>데이터 = " + lectureInsDTO);
 		
 		Map<String, Object> map = lectureService.saveInstructor(lectureInsDTO);
+		
+		ResponseVO responseVO = new ResponseVO();
+		responseVO.setHttpStatus(HttpStatus.OK);
+		responseVO.setMessage((String) map.get("message"));
+
+		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+	
+	@RequestMapping("/deleteLecture")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> deleteLecture(@RequestBody LectureVO lectureVO) throws Exception {
+		
+		Map<String, Object> map = lectureService.deleteLecture(lectureVO);
+		
+		ResponseVO responseVO = new ResponseVO();
+		responseVO.setHttpStatus(HttpStatus.OK);
+		responseVO.setMessage((String) map.get("message"));
+
+		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+	
+	@RequestMapping("/deleteStudent")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> deleteStudent(@RequestBody LectureMemDTO lectureMemDTO) throws Exception {
+		
+		Map<String, Object> map = lectureService.deleteStudent(lectureMemDTO);
+		
+		ResponseVO responseVO = new ResponseVO();
+		responseVO.setHttpStatus(HttpStatus.OK);
+		responseVO.setMessage((String) map.get("message"));
+
+		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+	
+	@RequestMapping("/addStudent")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> addStudent(@RequestBody LectureMemDTO lectureMemDTO) throws Exception {
+		
+		Map<String, Object> map = lectureService.insertStudent(lectureMemDTO);
+		
+		ResponseVO responseVO = new ResponseVO();
+		responseVO.setHttpStatus(HttpStatus.OK);
+		responseVO.setMessage((String) map.get("message"));
+
+		return ResponseEntity.status(responseVO.getHttpStatus()).body(responseVO);
+	}
+	
+	@RequestMapping("/addSelectedStudents")
+	@ResponseBody
+	public ResponseEntity<ResponseVO> addSelectedStudents(@RequestBody LectureMemDTO lectureMemDTO) throws Exception {
+		
+		lectureMemDTO.getMemberIds().forEach(mem -> System.out.println("넘어온 셀렉트 데이터 = " + mem));
+		
+		Map<String, Object> map = lectureService.insertSelectedStudents(lectureMemDTO);
 		
 		ResponseVO responseVO = new ResponseVO();
 		responseVO.setHttpStatus(HttpStatus.OK);

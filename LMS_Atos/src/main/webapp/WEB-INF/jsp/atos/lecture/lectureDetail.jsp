@@ -8,7 +8,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/lecture/lecture.css' />">
 
 <div class="head-section">
-	<span>&nbsp;<c:out value="${result.title}"/> (<c:out value="${result.subName}"/>) </span>
+	<span>&nbsp;<c:out value="${result.title}"/> </span>
 </div>
 <div class="table-section">
 	
@@ -48,9 +48,9 @@
 		</tr>
 		<tr>
 			<th>접수시작일</th>
-			<td><c:out value="${result.recStartDate}"/></td>
+			<td><c:out value="${fn:substring(result.recStartDate, 0, 10)}"/></td>
 			<th>접수종료일</th>
-			<td><c:out value="${result.recEndDate}"/></td>
+			<td><c:out value="${fn:substring(result.recEndDate, 0, 10)}"/></td>
 		</tr>
 		<tr>
 			<th>과정날짜</th>
@@ -61,9 +61,9 @@
 
 		<tr>
 			<th>시작시간</th>
-			<td><c:out value="${result.startTime}"/></td>
+			<td><c:out value="${result.startTimeFormat}"/></td>
 			<th>종료시간</th>
-			<td><c:out value="${result.endTime}"/></td>
+			<td><c:out value="${result.endTimeFormat}"/></td>
 		</tr>
 		<tr>
 			<th>담당자</th>
@@ -83,17 +83,52 @@
 	</table>
 
         <div class="mt-3">
-            <button type="submit" class="btn btn-success me-2">수정</button>
-            <button type="button" class="btn btn-secondary me-2">목록</button>
-            <button type="button" class="btn btn-danger" style="float:right">삭제</button>
+            <button type="submit" class="btn btn-success me-2" id="Updt">수정</button>
+            <button type="button" class="btn btn-secondary me-2" id="list">목록</button>
+            <button type="button" class="btn btn-danger" id="deleteButton" style="float:right">삭제</button>
         </div>
 </div>
 <input type="hidden" name="pageIndex" value="${searchVO.pageIndex}">
+<input type="hidden" name="lectureCode" value="${searchVO.lectureCode}">
 
 <!-- jQuery Script -->
 <script>
 $(document).ready(function() {
+	$('#Updt').on('click', function() {
+		event.preventDefault();
+		const lectureCode = $('input[name=lectureCode]').val();
+		window.location.href = "<c:url value='/education/lectureUpdt.do'/>?lectureCode=" + lectureCode;
+		
+	});
+	$('#list').on('click', function() {
+		event.preventDefault();
+		const pageIndex = $('input[name=pageIndex]').val();
+		window.location.href = "<c:url value='/education/lectureList.do'/>?pageIndex=" + pageIndex;
+		
+	});
 	
+	$('#deleteButton').on('click', function(event) {
+		event.preventDefault();
+		const lectureCode = $('input[name=lectureCode]').val();
+		var isConfirmed = confirm("정말로 삭제하시겠습니까?");
+		
+		if (isConfirmed) {
+	        myFetch({
+	            url: '/education/deleteLecture',
+	            data: {
+	            	lectureCode: lectureCode
+	            },
+	            success: function(response) {
+	                alert(response.message);
+	                window.location.href = "<c:url value='/education/lectureList.do'/>?pageIndex=" + pageIndex;
+	            },
+	            error: function(error) {
+	                console.error('오류 발생:', error);
+	                alert('삭제가 실패하였습니다.');
+	            }
+	        });
+		}
+	});
     
 });
 </script>

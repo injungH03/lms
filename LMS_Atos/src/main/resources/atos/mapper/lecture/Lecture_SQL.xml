@@ -36,6 +36,7 @@
 			<if test="lectureMethod != null and lectureMethod !=''">
 		    	AND LECTURE_METHOD = #{lectureMethod}
 		    </if>
+		    AND L.STATUS = '4001'
 			
 		</trim>
 	</sql>
@@ -77,7 +78,57 @@
 				FROM ATOS_INSTRUCTOR_ASSIGNMENTS AIA
 				WHERE AIA.INSTRUCTOR = I.ID 
 			)
-			AND STATUS = '4001'
+		</where>
+	</sql>
+	<sql id="whereEnroll">
+		<where>
+			<if test="srcLearnDate != null and srcLearnDate !=''">
+				AND L.LEARN_DATE = #{srcLearnDate}
+			</if>
+			<if test="certStatus != null and certStatus !=''">
+				AND CE.CERT_STATUS = #{certStatus}
+			</if>
+			<if test="searchCnd != null and searchCnd != ''">
+	            <choose>
+	                <when test="searchCnd == 0">
+	                    AND ED.TITLE LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	                <when test="searchCnd == 1">
+	                    AND C.CORP_NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	                <when test="searchCnd == 2">
+	                    AND EN.MEMBER_ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	                <when test="searchCnd == 3">
+	                    AND S.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	            </choose>
+            </if>
+		</where>
+	</sql>
+	
+		<sql id="whereStudent">
+		<where>
+			<if test="bizRegNo != null and bizRegNo !=''">
+				AND S.BIZ_REG_NO = #{bizRegNo}
+			</if>
+
+			<if test="searchCnd != null and searchCnd != ''">
+	            <choose>
+	                <when test="searchCnd == 0">
+	                    AND S.ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	                <when test="searchCnd == 1">
+	                    AND S.NAME LIKE CONCAT ('%', #{searchWrd},'%') 		
+	                </when>
+	            </choose>
+            </if>
+            AND NOT EXISTS (
+			    SELECT 1
+			    FROM ATOS_ENROLLMENT E
+			    WHERE E.MEMBER_ID = S.ID
+			    AND E.LECTURE_ID = #{lectureCode}
+			)
 		</where>
 	</sql>
 	
@@ -185,17 +236,93 @@
 		<include refid="orderBy" />		
 	</select>
 	
+	<select id="selectEnrollList" resultType="atos.lms.lecture.service.LectureEnrollDTO">
+		SELECT 
+			EN.ENROLL_CODE, EN.MEMBER_ID, EN.LECTURE_ID, EN.APP_DATE, L.LEARN_DATE,
+			ED.TITLE, S.NAME AS memName, S.PHONE_NO, S.EMAIL, C.CORP_NAME, CE.ISSUE_DATE, CE.CERT_STATUS
+		FROM ATOS_ENROLLMENT EN
+		INNER JOIN ATOS_LECTURE L
+			ON EN.LECTURE_ID = L.LECTURE_CODE
+		INNER JOIN ATOS_EDUCATION ED
+			ON L.EDUCATION = ED.EDU_CODE
+		INNER JOIN ATOS_STUDENT S
+			ON S.ID = EN.MEMBER_ID
+		INNER JOIN ATOS_COMPANY C
+			ON S.BIZ_REG_NO = C.BIZ_REG_NO
+		INNER JOIN ATOS_CERTIFICATION CE
+			ON EN.ENROLL_CODE = CE.ENROLL_ID
+		<include refid="whereEnroll" />
+		<include refid="orderBy" />
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectEnrollListCnt" resultType="java.lang.Integer">
+		SELECT 
+			COUNT(EN.ENROLL_CODE)
+		FROM ATOS_ENROLLMENT EN
+		INNER JOIN ATOS_LECTURE L
+			ON EN.LECTURE_ID = L.LECTURE_CODE
+		INNER JOIN ATOS_EDUCATION ED
+			ON L.EDUCATION = ED.EDU_CODE
+		INNER JOIN ATOS_STUDENT S
+			ON S.ID = EN.MEMBER_ID
+		INNER JOIN ATOS_COMPANY C
+			ON S.BIZ_REG_NO = C.BIZ_REG_NO
+		INNER JOIN ATOS_CERTIFICATION CE
+			ON EN.ENROLL_CODE = CE.ENROLL_ID
+		<include refid="whereEnroll" />
+	</select>
+	
+	<select id="selectStudentList" resultType="atos.lms.lecture.service.LectureMemDTO">
+		SELECT
+			S.ID AS memberId,
+			S.NAME AS memName,
+			S.BIZ_REG_NO,
+			C.CORP_NAME,
+			S.PHONE_NO
+		FROM ATOS_STUDENT S
+		INNER JOIN ATOS_COMPANY C
+		    ON S.BIZ_REG_NO = C.BIZ_REG_NO
+		<include refid="whereStudent" />
+		<include refid="orderBy" />
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectStudentListCnt" resultType="java.lang.Integer">
+		SELECT
+			COUNT(S.ID)
+		FROM ATOS_STUDENT S
+		INNER JOIN ATOS_COMPANY C
+		    ON S.BIZ_REG_NO = C.BIZ_REG_NO
+		<include refid="whereStudent" />
+	</select>
+	
+	
 	<select id="selectLectureKey" resultType="atos.lms.lecture.service.LectureVO">
 		SELECT
 		    L.LECTURE_CODE, L.EDUCATION, L.INSTRUCTOR, L.LOCATION, L.LOCATION_DETAIL, L.ATCH_FILE_ID,          
-		    L.REC_START_DATE, L.REC_END_DATE, L.STATUS, L.LEARN_DATE, L.START_TIME,            
-		    L.END_TIME, L.MANAGER, L.MANAGER_CONTACT, L.LECTURE_METHOD, L.CAPACITY,              
+		    L.REC_START_DATE, L.REC_END_DATE, L.STATUS, L.LEARN_DATE, L.START_TIME, L.END_TIME,            
+		    L.MANAGER, L.MANAGER_CONTACT, L.LECTURE_METHOD, L.CAPACITY,              
 		    L.ENROLLED, L.REG_DATE, L.REGISTER,              
 		    E.TITLE, E.CATEGORY, E.DESCRIPTION, E.OBJECTIVE,             
 		    E.COMPLETION_CRITERIA, E.NOTE, E.TRAINING_TIME,         
 		    CD.USE_YN, CM.MAIN_CODE, CM.MAIN_NAME,            
 		    CS.SUB_NAME, CS.SUB_CODE,
-		    I.NAME AS instructorName              
+		    I.NAME AS instructorName,
+		    CONCAT(
+		        CASE 
+		            WHEN TIME_FORMAT(L.START_TIME, '%p') = 'AM' THEN '오전 '
+		            ELSE '오후 '
+		        END, 
+		        TIME_FORMAT(L.START_TIME, '%h:%i')
+		    ) AS startTimeFormat, 
+		    CONCAT(
+		        CASE 
+		            WHEN TIME_FORMAT(L.END_TIME, '%p') = 'AM' THEN '오전 '
+		            ELSE '오후 '
+		        END, 
+		        TIME_FORMAT(L.END_TIME, '%h:%i')
+		    ) AS endTimeFormat
 		FROM ATOS_LECTURE L
 		INNER JOIN ATOS_EDUCATION E 
 			ON L.EDUCATION = E.EDU_CODE
@@ -209,6 +336,33 @@
 			ON CD.SUB_CODE = CS.SUB_CODE AND CD.MAIN_CODE = CS.MAIN_CODE
 		WHERE L.LECTURE_CODE = #{lectureCode}
 	</select>
+	
+	<select id="selectLectureOne" resultType="atos.lms.lecture.service.LectureVO">
+		SELECT 
+			L.LECTURE_CODE, E.TITLE
+		FROM ATOS_LECTURE L
+		INNER JOIN ATOS_EDUCATION E 
+			ON L.EDUCATION = E.EDU_CODE
+		WHERE L.LECTURE_CODE = #{lectureCode}	
+	</select>
+	
+	<select id="selectCompanyList" resultType="atos.lms.lecture.service.LectureMemDTO">
+		SELECT
+			BIZ_REG_NO, CORP_NAME
+		FROM
+			ATOS_COMPANY
+	</select>
+	
+	<select id="selectEnrollIds" resultType="int">
+	    SELECT ENROLL_CODE
+	    FROM ATOS_ENROLLMENT
+	    WHERE MEMBER_ID IN
+	    <foreach collection="memberIds" item="memberId" open="(" separator="," close=")">
+	        #{memberId}
+	    </foreach>
+	</select>
+	
+
 	
 	<insert id="insertLecture">
 		INSERT INTO ATOS_LECTURE
@@ -240,8 +394,16 @@
 			END_TIME = #{endTime},
 			MANAGER = #{manager},
 			MANAGER_CONTACT = #{managerContact},
-			CAPACITY = #{capacity}
-		WHERE = LECTURE_CODE = #{lectureCode}
+			CAPACITY = #{capacity},
+			INSTRUCTOR = #{instructor}
+		WHERE LECTURE_CODE = #{lectureCode}
+	</update>
+	
+	<update id="deleteLecture">
+		UPDATE ATOS_LECTURE
+		SET
+			STATUS = '4002'
+		WHERE LECTURE_CODE = #{lectureCode}
 	</update>
 	
 	
@@ -259,6 +421,54 @@
 			(#{id}, #{lectureCode})
 	</insert>
 	
+	<insert id="insertStudent" useGeneratedKeys="true" keyProperty="enrollCode">
+		INSERT INTO ATOS_ENROLLMENT
+			(MEMBER_ID, LECTURE_ID)
+		VALUES
+			(#{memberId}, #{lectureCode})
+	</insert>
+	
+	<insert id="insertStudentBatch">
+	    INSERT INTO ATOS_ENROLLMENT 
+	    	(MEMBER_ID, LECTURE_ID)
+	    VALUES
+	    <foreach collection="memberIds" item="memberId" separator=",">
+	        (#{memberId}, #{lectureCode})
+	    </foreach>
+	</insert>
+	
+	<insert id="insertAttendance">
+		INSERT INTO ATOS_ATTENDANCE
+			(ENROLL_ID)
+		VALUES
+			(#{enrollCode})
+	</insert>
+	
+	<insert id="insertAttendanceBatch">
+	    INSERT INTO ATOS_ATTENDANCE 
+	    	(ENROLL_ID)
+	    VALUES
+	    <foreach collection="enrollIds" item="enrollId" separator=",">
+	        (#{enrollId})
+	    </foreach>
+	</insert>
+	
+	<insert id="insertCertification">
+		INSERT INTO ATOS_CERTIFICATION
+			(ENROLL_ID)
+		VALUES
+			(#{enrollCode})
+	</insert>
+	<insert id="insertCertificationBatch">
+	    INSERT INTO ATOS_CERTIFICATION 
+	    	(ENROLL_ID)
+	    VALUES
+	    <foreach collection="enrollIds" item="enrollId" separator=",">
+	        (#{enrollId})
+	    </foreach>
+	</insert>
+	
+	
 	<update id="updateInstructor">
 		UPDATE ATOS_INSTRUCTOR_ASSIGNMENTS
 		SET
@@ -269,6 +479,21 @@
 	<delete id="deleteInstructor">
 		DELETE FROM ATOS_INSTRUCTOR_ASSIGNMENTS
 		WHERE LECTURE_CODE = #{lectureCode}
+	</delete>
+	
+	<delete id="deleteLectureInstructor">
+		DELETE FROM ATOS_INSTRUCTOR_ASSIGNMENTS
+		WHERE LECTURE_CODE = #{lectureCode}
+		AND ASSIGNMENTS_DATE != (
+			SELECT LEARN_DATE	
+			FROM ATOS_LECTURE
+			WHERE LECTURE_CODE = #{lectureCode}	
+		)
+	</delete>
+	
+	<delete id="deleteStudent">
+		DELETE FROM ATOS_ENROLLMENT
+		WHERE ENROLL_CODE = #{enrollCode}
 	</delete>
 	
 </mapper>
