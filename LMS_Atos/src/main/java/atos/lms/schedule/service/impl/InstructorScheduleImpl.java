@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import atos.lms.schedule.service.InstructorScheduleService;
 import atos.lms.schedule.service.InstructorScheduleVO;
 import atos.lms.schedule.service.dao.InstructorScheduleDAO;
-import atos.lms.schedule.web.InstructorScheduleController;
 
 @Service
 public class InstructorScheduleImpl implements InstructorScheduleService {

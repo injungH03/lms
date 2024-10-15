@@ -71,28 +71,91 @@
             editable: true,
             navLinks: true,
             events: [
-                <c:forEach var="schedule" items="${scheduleList}" varStatus="status">
-                    {
-                        title: '${schedule.mainEvent}', // 메인 이벤트
-                        start: '${schedule.startDate != null ? schedule.startDate.toString() : ""}', // 시작 날짜
-                        end: '${schedule.endDate != null ? schedule.endDate.plusDays(1).toString() : ""}', // 종료 날짜에 하루 추가
-                        allDay: true, // All-day 이벤트로 설정
-                        color: '${schedule.scheduleColor}',  // DB에서 가져온 색상 정보 사용
-                    }<c:if test="${!status.last}">,</c:if>
-                </c:forEach>
+            	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
+                {
+                	title: '${schedule.name} - ${schedule.mainEvent}', // 강사 이름과 메인 이벤트
+                    start: '${schedule.startDate}', // 시작 날짜
+                    end: '${schedule.endDate}', // 종료 날짜
+                    allDay: true, // All-day 이벤트로 설정
+                    color: '${schedule.scheduleColor}', // DB에서 가져온 색상 정보 사용
+                }<c:if test="${!status.last}">,</c:if>
+          	  </c:forEach>
             ]
         });
 
         calendar.render(); // 달력 렌더링
+        
+        // 종료 날짜에 하루 추가하기 위해 JavaScript로 처리
+        calendar.getEvents().forEach(function(event) {
+            if (event.end) {
+                let endDate = new Date(event.end);
+                endDate.setDate(endDate.getDate() + 1);
+                event.setEnd(endDate);
+            }
+        });
 
-        // 부모 창에서 FullCalendar을 참조할 수 있도록 전역 변수로 설정
-        window.FullCalendarInstance = calendar;
+        // 모달의 저장 버튼 클릭 시 이벤트 핸들러 등록
+        $('#saveScheduleBtn').on('click', function() {
+            var instructorId = $('#modalInstructorId').val();
+            var mainEvent = $('#mainEvent').val();
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            var scheduleColor = $('#scheduleColor').val();
+
+            if (!instructorId) {
+                console.warn("강사 ID가 선택되지 않았습니다.");
+            }
+            if (!mainEvent) {
+                console.warn("타이틀이 입력되지 않았습니다.");
+            }
+            if (!startDate) {
+                console.warn("시작일이 입력되지 않았습니다.");
+            }
+            if (!endDate) {
+                console.warn("종료일이 입력되지 않았습니다.");
+            }
+            if (!scheduleColor) {
+                console.warn("스케줄 색상이 선택되지 않았습니다.");
+            }
+
+            if (!instructorId || !mainEvent || !startDate || !endDate || !scheduleColor) {
+                alert("모든 필수 입력값을 입력해주세요.");
+                return;
+            }
+
+            // 폼 데이터를 JSON 형식으로 변환
+            var formDataJson = {
+                id: instructorId,
+                mainEvent: mainEvent,
+                startDate: startDate,
+                endDate: endDate,
+                scheduleColor: scheduleColor
+            };
+            console.log("Form Data as JSON: ", formDataJson);
+            
+            $.ajax({
+                type: 'POST',
+                url: '<c:url value="/education/registerSchedule"/>',
+                contentType: 'application/json',  // JSON 형식으로 전송
+                data: JSON.stringify(formDataJson), // 데이터를 JSON 문자열로 변환
+                success: function(response) {
+                    if (response.message) {
+                        alert(response.message);
+                        $('#scheduleModal').modal('hide'); // 모달 닫기
+                        
+                        
+                        calendar.refetchEvents(); // 달력 이벤트 새로고침
+                    } else {
+                        alert('스케줄 등록에 실패했습니다.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: ", error);
+                    alert('오류가 발생했습니다. 다시 시도해 주세요.');
+                }
+            });
+        });
     });
 
-    // 부모 창에서 호출할 수 있는 reloadCalendar 함수 정의
-    function reloadCalendar() {
-        if (window.FullCalendarInstance) {
-            window.FullCalendarInstance.refetchEvents(); // 이벤트 다시 가져오기
-        }
-    }
+  
 </script>

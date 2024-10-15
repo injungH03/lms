@@ -7,16 +7,18 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import atos.lms.schedule.service.InstructorScheduleService;
 import atos.lms.schedule.service.InstructorScheduleVO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 @RequestMapping("/education/")
@@ -69,30 +71,19 @@ public class InstructorScheduleController {
 	    return "schedule/instructorSchedule";  // JSP 경로에 맞게 수정 필요
 	}
 	
-
-	@RequestMapping("loadInstructorModal.do")
-	public String loadInstructorModal(@ModelAttribute("scheduleSearchVO") InstructorScheduleVO scheduleVO, ModelMap model) throws Exception {
-	    // 강사 목록을 모달에 전달
-	    Map<String, InstructorScheduleVO> instructorMap = instructorScheduleService.selectAllInstructors(scheduleVO);
-	    model.addAttribute("instructorList", instructorMap);
-
-	    // 모달 JSP 파일 반환
-	    return "schedule/instructorModal"; // JSP 파일 경로에 맞게 수정 필요
-	}
-	
-	
-	
+		
 	 // 새로운 스케줄 저장 요청을 처리
 	@RequestMapping("registerSchedule")
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> registerSchedule(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
+	    LOGGER.info("===== Register Schedule Endpoint Reached =====");
+	    LOGGER.info("Schedule registration request received for: {}", scheduleVO);
+
 	    Map<String, Object> map = instructorScheduleService.registerSchedule(scheduleVO);
-	    
+
 	    Map<String, String> response = new HashMap<>();
 	    response.put("message", (String) map.get("message"));
-	    
-	    return ResponseEntity.ok(response);
+
+	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
-	
-	
 }
