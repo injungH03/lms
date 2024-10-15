@@ -21,7 +21,7 @@ public class AllAttendanceVO extends AllAttendanceMasterVO implements GeneralMod
 	/* atos_attendance */
 	private int attendCode;        // 출석 코드
 	private int lectureCode;       // 강의정보코드
-	private String student;        // 학생아이디
+	private int enrollID;        // 학생아이디
 	private LocalTime inTime;         // 입실시간
 	private LocalTime outTime;        // 퇴실시간
 	private LocalDate attendDate;  // 출석일

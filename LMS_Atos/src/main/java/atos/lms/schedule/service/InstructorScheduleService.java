@@ -13,7 +13,13 @@ public interface InstructorScheduleService {
     // 모든 강사의 스케줄 조회
     Map<String, Object> getAllSchedules(InstructorScheduleVO scheduleVO);
 
-
+    // 등록
     Map<String, Object> registerSchedule(InstructorScheduleVO scheduleVO);
+    
+    // 수정
+    Map<String, Object> updateSchedule(InstructorScheduleVO scheduleVO); 
+    
+    // 삭제
+    Map<String, Object> deleteSchedule(InstructorScheduleVO scheduleVO);
 
 }

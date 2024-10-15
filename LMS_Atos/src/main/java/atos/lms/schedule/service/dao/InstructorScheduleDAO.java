@@ -22,5 +22,9 @@ public interface InstructorScheduleDAO {
     int selectScheduleCountByInstructor(InstructorScheduleVO scheduleVO);
 
     void insertSchedule(InstructorScheduleVO scheduleVO);
+    
+    void updateSchedule(InstructorScheduleVO scheduleVO);
+    
+    void deleteSchedule(InstructorScheduleVO scheduleVO);
 
 }

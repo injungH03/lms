@@ -44,6 +44,7 @@
 
 <!-- 모달 내용 포함 -->
 <%@ include file="/WEB-INF/jsp/atos/schedule/instructorModal.jsp" %>
+<%@ include file="/WEB-INF/jsp/atos/schedule/instructorEditModal.jsp" %>
 
 
 <script>
@@ -52,38 +53,152 @@
         var calendarEl = document.querySelector('.instructorCalendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            locale: 'ko', // 한국어 설정
+            locale: 'ko',
             headerToolbar: {
-                left: 'prev,next today register', // 'register' 버튼 추가
+                left: 'prev,next today register',
                 center: 'title',
-                right: 'dayGridMonth,listMonth'
+                right: 'dayGridMonth,dayGridWeek,listMonth'
             },
             customButtons: {
                 register: {
-                    text: '등록', // 버튼에 표시될 텍스트
+                    text: '등록',
                     click: function() {
-                        // 모달 띄우기
                         $('#scheduleModal').modal('show');
                     }
                 }
             },
             initialView: 'dayGridMonth',
-            editable: true,
+            editable: false,
             navLinks: true,
             events: [
-            	<c:forEach var="schedule" items="${scheduleList}" varStatus="status">
+                <c:forEach var="schedule" items="${scheduleList}" varStatus="status">
                 {
-                	title: '${schedule.name} - ${schedule.mainEvent}', // 강사 이름과 메인 이벤트
-                    start: '${schedule.startDate}', // 시작 날짜
-                    end: '${schedule.endDate}', // 종료 날짜
-                    allDay: true, // All-day 이벤트로 설정
-                    color: '${schedule.scheduleColor}', // DB에서 가져온 색상 정보 사용
+                    id: '${schedule.scheduleCode}', // 스케줄 코드 추가
+                    title: '${schedule.name} - ${schedule.mainEvent}',
+                    start: '${schedule.startDate}',
+                    end: '${schedule.endDate}',
+                    allDay: true,
+                    color: '${schedule.scheduleColor}',
+                    extendedProps: {
+                        instructorId: '${schedule.id}' // 강사 ID를 extendedProps에 포함
+                    }
                 }<c:if test="${!status.last}">,</c:if>
-          	  </c:forEach>
-            ]
+                </c:forEach>
+            ],
+            eventClick: function(info) {
+                // 스케줄 정보를 수정 모달에 표시
+                var event = info.event;
+
+                // 강사 선택 드롭다운에서 해당 강사 선택하기
+                $('#editModalInstructorId').val(event.extendedProps.instructorId).change(); // 강사 ID
+
+                // 타이틀, 시작일, 종료일, 색상 설정
+                $('#editMainEvent').val(event.title.split(' - ')[1]); // 타이틀
+                $('#editStartDate').val(event.startStr); // 시작일
+                $('#editEndDate').val(event.endStr); // 종료일
+                $('#editScheduleColor').val(event.backgroundColor); // 색상
+
+                // 수정 및 삭제 모달 띄우기
+                $('#editScheduleModal').modal('show');
+
+                // 수정 버튼 클릭 시 이벤트 등록
+                $('#updateScheduleBtn').off('click').on('click', function() {
+                    updateSchedule(event.id);
+                });
+
+                // 삭제 버튼 클릭 시 이벤트 등록
+                $('#deleteScheduleBtn').off('click').on('click', function() {
+                    deleteSchedule(event.id);
+                });
+            }
         });
 
-        calendar.render(); // 달력 렌더링
+        calendar.render();
+        
+        
+        
+        
+        // 수정 기능 구현
+        function updateSchedule(scheduleId) {
+            var instructorId = $('#editModalInstructorId').val();
+            var mainEvent = $('#editMainEvent').val();
+            var startDate = $('#editStartDate').val();
+            var endDate = $('#editEndDate').val();
+            var scheduleColor = $('#editScheduleColor').val();
+
+            if (!instructorId || !mainEvent || !startDate || !scheduleColor) {
+                alert("모든 필수 입력값을 입력해주세요.");
+                return;
+            }
+
+            // 수정할 데이터를 JSON으로 변환
+            var formDataJson = {
+                scheduleCode: scheduleId,
+                id: instructorId,
+                mainEvent: mainEvent,
+                startDate: startDate,
+                scheduleColor: scheduleColor
+            };
+            
+            if (endDate) {
+                formDataJson.endDate = endDate;
+            }
+			
+            console.log("수정할 데이터:", formDataJson); // 로그로 데이터 확인
+            
+            $.ajax({
+                type: 'PUT',
+                url: '<c:url value="/education/updateSchedule"/>',
+                contentType: 'application/json', // JSON 형식으로 전송
+                data: JSON.stringify(formDataJson), // 데이터를 JSON 문자열로 변환
+                success: function(response) {
+                    if (response.message) {
+                        alert(response.message);
+                        $('#editScheduleModal').modal('hide'); // 모달 닫기
+                        window.location.reload(); // 페이지 새로고침
+                    } else {
+                        alert('스케줄 수정에 실패했습니다.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: ", error);
+                    alert('오류가 발생했습니다. 다시 시도해 주세요.');
+                }
+            });
+        }
+
+        // 삭제 기능 구현
+        function deleteSchedule(scheduleId) {
+            if (!confirm("정말로 삭제하시겠습니까?")) {
+                return;
+            }
+
+            var formDataJson = {
+                scheduleCode: scheduleId
+            };
+
+            $.ajax({
+                type: 'DELETE',
+                url: '<c:url value="/education/deleteSchedule"/>',
+                contentType: 'application/json', // JSON 형식으로 전송
+                data: JSON.stringify(formDataJson), // 데이터를 JSON 문자열로 변환
+                success: function(response) {
+                    if (response.message) {
+                        alert(response.message);
+                        $('#editScheduleModal').modal('hide'); // 모달 닫기
+                        window.location.reload(); // 페이지 새로고침
+                    } else {
+                        alert('스케줄 삭제에 실패했습니다.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: ", error);
+                    alert('오류가 발생했습니다. 다시 시도해 주세요.');
+                }
+            });
+        }
+        
+               
         
         // 종료 날짜에 하루 추가하기 위해 JavaScript로 처리
         calendar.getEvents().forEach(function(event) {
@@ -94,8 +209,10 @@
             }
         });
 
-        // 모달의 저장 버튼 클릭 시 이벤트 핸들러 등록
-        $('#saveScheduleBtn').on('click', function() {
+     // 모달의 저장 버튼 클릭 시 이벤트 핸들러 등록
+        $('#saveScheduleBtn').on('click', function(event) {
+            event.preventDefault(); // 기본 동작인 폼 제출을 막음
+
             var instructorId = $('#modalInstructorId').val();
             var mainEvent = $('#mainEvent').val();
             var startDate = $('#startDate').val();
@@ -142,9 +259,9 @@
                     if (response.message) {
                         alert(response.message);
                         $('#scheduleModal').modal('hide'); // 모달 닫기
-                        
-                        
-                        calendar.refetchEvents(); // 달력 이벤트 새로고침
+
+                        // 페이지 새로고침
+                        window.location.reload(); // 전체 페이지를 새로고침하여 최신 데이터를 반영
                     } else {
                         alert('스케줄 등록에 실패했습니다.');
                     }
@@ -154,7 +271,10 @@
                     alert('오류가 발생했습니다. 다시 시도해 주세요.');
                 }
             });
+
         });
+     
+     
     });
 
   

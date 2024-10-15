@@ -85,7 +85,7 @@ public class AllAttendanceServiceImpl implements AllAttendanceService {
         Map<String, String> fieldToHeaderMap = new LinkedHashMap<>();
         fieldToHeaderMap.put("corpName", "소속");
         fieldToHeaderMap.put("title", "교육명칭");
-        fieldToHeaderMap.put("student", "수강생 아이디");
+        fieldToHeaderMap.put("enrollId", "수강생 배정 코드");
         fieldToHeaderMap.put("name", "수강생 이름");
         fieldToHeaderMap.put("status", "상태");
         fieldToHeaderMap.put("attendDate", "출석일");

@@ -12,7 +12,7 @@
       <div class="modal-body">
         <form id="scheduleForm">
           <div class="mb-3">
-            <label for="modalInstructorId" class="form-label">강사 선택</label>
+            <label for="modalInstructorId" class="form-label">강사명</label>
             <select name="id" id="modalInstructorId" class="form-select search-selectle me-2" required>
               <option value="">강사 선택</option>
               <!-- 강사 목록 표시 -->

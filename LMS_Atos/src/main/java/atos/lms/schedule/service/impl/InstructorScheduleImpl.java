@@ -81,6 +81,25 @@ public class InstructorScheduleImpl implements InstructorScheduleService {
         
         return map;
     }
+    
+    
+    @Override
+    public Map<String, Object> updateSchedule(InstructorScheduleVO scheduleVO) {
+        Map<String, Object> map = new HashMap<>();
+        instructorScheduleDao.updateSchedule(scheduleVO);
+        map.put("message", "스케줄 수정 완료");
+        return map;
+    }
+    
+    
+    @Override
+    public Map<String, Object> deleteSchedule(InstructorScheduleVO scheduleVO) {
+        Map<String, Object> map = new HashMap<>();
+        instructorScheduleDao.deleteSchedule(scheduleVO);
+        map.put("message", "스케줄 삭제 완료");
+        return map;
+    }
+
 }
 
 

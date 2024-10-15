@@ -71,7 +71,8 @@ public class InstructorScheduleController {
 	    return "schedule/instructorSchedule";  // JSP 경로에 맞게 수정 필요
 	}
 	
-		
+	
+	
 	 // 새로운 스케줄 저장 요청을 처리
 	@RequestMapping("registerSchedule")
 	@ResponseBody
@@ -86,4 +87,36 @@ public class InstructorScheduleController {
 
 	    return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+	
+	
+	
+	 // 스케줄 수정 요청 처리
+    @RequestMapping("updateSchedule")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> updateSchedule(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
+        LOGGER.info("===== Update Schedule Endpoint Reached =====");
+        LOGGER.info("Schedule update request received for: {}", scheduleVO);
+
+        Map<String, Object> map = instructorScheduleService.updateSchedule(scheduleVO);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", (String) map.get("message"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // 스케줄 삭제 요청 처리
+    @RequestMapping("deleteSchedule")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> deleteSchedule(@RequestBody InstructorScheduleVO scheduleVO) throws Exception {
+        LOGGER.info("===== Delete Schedule Endpoint Reached =====");
+        LOGGER.info("Schedule delete request received for: {}", scheduleVO);
+
+        Map<String, Object> map = instructorScheduleService.deleteSchedule(scheduleVO);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", (String) map.get("message"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

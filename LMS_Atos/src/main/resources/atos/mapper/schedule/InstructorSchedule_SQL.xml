@@ -67,5 +67,26 @@
         VALUES
         (#{id}, #{mainEvent}, #{startDate}, #{endDate}, #{scheduleColor})
     </insert>
+    
+    
+<!-- 스케줄 수정 -->
+	<update id="updateSchedule" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
+	    UPDATE ATOS_INSTRUCTOR_SCHEDULE
+	    SET 
+	        MAIN_EVENT = #{mainEvent},
+	        START_DATE = #{startDate},
+	        END_DATE = #{endDate},
+	        SCHEDULE_COLOR = #{scheduleColor},
+	         `ID`  = #{id} 
+	    WHERE 
+	        SCHEDULE_CODE = #{scheduleCode}
+	</update>
+	
+	
+<!-- 스케줄 삭제 -->
+	<delete id="deleteSchedule" parameterType="atos.lms.schedule.service.InstructorScheduleVO">
+	    DELETE FROM ATOS_INSTRUCTOR_SCHEDULE
+	    WHERE SCHEDULE_CODE = #{scheduleCode}
+	</delete>
 
 </mapper>
