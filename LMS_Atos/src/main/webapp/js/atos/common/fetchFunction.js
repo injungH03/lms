@@ -11,7 +11,7 @@
  * 수정일         수정자        수정내용
  * ----------   ---------   ----------------------------
  * 2024.09.16   김권영        String 데이터 추가
- *
+ * 2024.10.08   김권영        헤더 및 폼데이터 파일 업로드 처리 추가
  *
  */
 
@@ -19,9 +19,18 @@ const myFetch = (args) => {
     let body;
     let contentType = "application/json; charset=utf-8";
     let processData = true;
-
+	let headers = {
+        "Accept": "application/json"
+    };
     if (args.isFormData) {
-        body = new FormData(document.getElementById(args.data));
+	    const formElement = document.getElementById(args.data);
+        if (!(formElement instanceof HTMLFormElement)) {
+            console.error(`Element with id '${args.data}' is not a form element.`);
+            return; // 폼 요소가 아닌 경우 함수 종료
+        }
+
+		body = new FormData(formElement);
+
         contentType = false; // jQuery가 contentType을 설정하지 않도록 함
         processData = false; // jQuery가 데이터를 처리하지 않도록 함
     } else if (typeof(args.data) === "string") {
@@ -40,7 +49,8 @@ const myFetch = (args) => {
         data: body,
         contentType: contentType,
         processData: processData,
-        dataType: "json"
+        dataType: "json",
+		headers: headers
     }).done(resp => {
         args.success(resp);
     }).fail(err => {

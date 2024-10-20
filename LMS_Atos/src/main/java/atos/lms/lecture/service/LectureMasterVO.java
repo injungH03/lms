@@ -70,9 +70,7 @@ public class LectureMasterVO implements GeneralModel {
     /** 신청종료일 */
     private String srcEndDate;
     
-    /** 과정날짜*/
+    /** 과정날짜 */
     private String srcLearnDate;
-
-    
 
 }

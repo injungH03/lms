@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/atos/lecture/lecture.css' />">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script>
@@ -12,7 +13,7 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div class="head-section">
-	<span>&nbsp;과정개설</span>
+	<span>&nbsp;과정수정</span>
 </div>
 <div class="table-section">
 
@@ -22,16 +23,16 @@
                 <th>교육정보</th>
                 <td colspan="3">
                     <input type="button" class="btn btn-sm btn-primary" value="교육정보 선택" id="eduInfoButton" />
-                    <span class="popup-add-span" id="selectedEduInfo"></span>
-                    <input type="hidden" id="selectedEduKey" name="education" value="" />
+                    <span class="popup-add-span" id="selectedEduInfo">${result.title }</span>
+                    <input type="hidden" id="selectedEduKey" name="education" value="${result.education }" />
                 </td>
             </tr>
             <tr>
                 <th>교육장소</th>
                 <td colspan="3">
 				
-				<input type="text" id="address" name="location" class="form-control me-2 custom-width" placeholder="주소를 검색해주세요" readonly /><br />
-				<input type="text"id="detailedAddress" name="locationDetail" class="form-control mt-2 custom-width" placeholder="상세주소를 입력하세요" />
+				<input type="text" id="address" name="location" class="form-control me-2 custom-width" placeholder="주소를 검색해주세요" readonly value="${result.location }" /><br />
+				<input type="text"id="detailedAddress" name="locationDetail" class="form-control mt-2 custom-width" placeholder="상세주소를 입력하세요" value="${result.locationDetail }" />
                 <button type="button" class="btn btn-sm btn-primary" id="addressSearchButton">주소검색</button>
                 </td>
             </tr>
@@ -42,13 +43,13 @@
                 <th>접수 시작일</th>
                 <td>
                     <div class="d-flex">
-                        <input type="date" name="recStartDate" class="form-control me-2" />
+                        <input type="date" name="recStartDate" value="${result.recStartDate }" class="form-control me-2" />
                     </div>
                 </td>
                 <th>접수 종료일</th>
                 <td>
                     <div class="d-flex">
-                        <input type="date" name="recEndDate" class="form-control me-2" />
+                        <input type="date" name="recEndDate" value="${result.recEndDate }" class="form-control me-2" />
                     </div>
                 </td>
  
@@ -57,44 +58,55 @@
             	<th>과정 날짜</th>
                 <td>
                     <div class="d-flex">
-                        <input type="date" name="learnDate" class="form-control me-2" />
+                        <input type="date" name="learnDate" value="${result.learnDate }" class="form-control me-2" />
                     </div>
                 </td>
                 <th>모집 인원수</th>
                 <td>
-                    <input type="number" name="capacity" class="form-control custom-width" min="1" max="100"  />
+                    <input type="number" name="capacity" value="${result.capacity }" class="form-control custom-width" min="1" max="100"  />
                 </td>  
             </tr>
             <tr>
                 <th>시작시간</th>
-                <td><input type="time" name="startTime" class="form-control custom-width" /></td>
+                <td><input type="time" name="startTime" value="${result.startTime }" class="form-control custom-width" /></td>
                 <th>종료시간</th>
-                <td><input type="time" name="endTime" class="form-control custom-width" /></td>
+                <td><input type="time" name="endTime" value="${result.endTime }" class="form-control custom-width" /></td>
             </tr>
             <tr>
             	<th>담당자</th>
-            	<td><input type="text" name="manager" class="form-control custom-width" placeholder="담당자를 입력하세요" /></td>
+            	<td><input type="text" name="manager" value="${result.manager }" class="form-control custom-width" placeholder="담당자를 입력하세요" /></td>
                 <th>연락처</th>
-            	<td><input type="text" name="managerContact" class="form-control custom-width" placeholder="연락처를 입력하세요" /></td>
+            	<td><input type="text" name="managerContact" value="${result.managerContact }" class="form-control custom-width" placeholder="연락처를 입력하세요" /></td>
             </tr>
 			<tr>
 			    <th>파일</th>
 			    <td colspan="3">
-			        <input name="file_1" id="egovComFileUploader" class="file-button" type="file" title="첨부파일" multiple />
-			        <div id="egovComFileList" class="file-list"></div>
+					<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
+						<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
+					</c:import>
+
 			    </td>
+			    
+			</tr>
+			<tr>
+				<th>파일 추가</th>
+				<td colspan="3">
+					<input name="file_1" id="egovComFileUploader" type="file" title="첨부파일" multiple/><!-- 첨부파일 -->
+				    <div id="egovComFileList"></div>
+				</td>
 			</tr>
 
         </table>
 
         <!-- 등록 및 목록 버튼 -->
         <div class="d-flex justify-content-between mt-3">
-            <button type="submit" class="btn btn-success" id="submitBtn">등록</button>
+            <button type="submit" class="btn btn-success" id="submitBtn">수정</button>
             <button type="button" class="btn btn-secondary" id="btnList">목록</button>
         </div>
         
         <input type="hidden" id="atchPosblFileNumber" name="atchPosblFileNumber" value="${searchVO.atchPosblFileNumber}" />
-        <input type="hidden"  name="type" value="C" />
+        <input type="hidden"  name="lectureCode" value="${result.lectureCode}" />
+        <input type="hidden"  name="type" value="U" />
     </form>
 </div>
 

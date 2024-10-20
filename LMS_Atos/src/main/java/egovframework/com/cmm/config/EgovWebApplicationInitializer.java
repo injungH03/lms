@@ -163,7 +163,8 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		MultipartFilter springMultipartFilter = new MultipartFilter();
 		springMultipartFilter.setMultipartResolverBeanName("multipartResolver");
 		FilterRegistration.Dynamic multipartFilter = servletContext.addFilter("springMultipartFilter", springMultipartFilter);
-		multipartFilter.addMappingForUrlPatterns(null, false, "*.do");
+//		multipartFilter.addMappingForUrlPatterns(null, false, "*.do");
+		multipartFilter.addMappingForUrlPatterns(null, false, "/*");
 		
 		//-------------------------------------------------------------
 	    // HTMLTagFilter의 경우는 파라미터에 대하여 XSS 오류 방지를 위한 변환을 처리합니다.

@@ -1,4 +1,11 @@
 @charset "UTF-8";
+* {
+	font-size: 13px;
+}
+
+.course-table tbody tr:hover td {
+	cursor: pointer;
+}
 
 .pagination {
 	margin-top: 20px;
